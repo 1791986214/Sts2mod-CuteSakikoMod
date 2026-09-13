@@ -69,16 +69,7 @@ public static class AncientEventModelUpdateRunHistoryPatch
 
             // 发送完整选项信息（包含被跳过的）
             CuteSakikoModTelemetry.CaptureEventChoices(eventId, characterId, floor, choices);
-
-            // 额外为每个被跳过的选项单独发一条，方便按 option_key 聚合
-            foreach (var (key, title, chosen) in choices)
-            {
-                if (!chosen)
-                {
-                    CuteSakikoModTelemetry.CaptureEventOptionSkipped(
-                        eventId, characterId, floor, key, title);
-                }
-            }
+            
         }
         catch (Exception ex)
         {

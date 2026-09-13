@@ -5,8 +5,8 @@ namespace CuteSakikoMod.CuteSakikoModCode.Relics.Rana.Starter;
 
 public class BigMatchaParfait : MatchaParfait
 {
-    // 重写初始杯数方法，返回 12（基类 6 + 额外 6）
-    protected override int GetInitialCharges() => 12;
+    // 初始杯数由 AfterObtained 决定，不在这里写死
+    protected override int GetInitialCharges() => 0;
 
     public BigMatchaParfait()
     {
@@ -19,9 +19,28 @@ public class BigMatchaParfait : MatchaParfait
         new EnergyVar(EnergyGain)
     };
 
+    public override async Task AfterObtained()
+    {
+        // 查找玩家身上已有的普通芭菲（排除自己）
+        var oldParfait = Owner?.Relics.OfType<MatchaParfait>().FirstOrDefault(r => r != this);
+
+        if (oldParfait != null)
+        {
+            // 继承旧杯数 + 额外 6 杯
+            Charges = oldParfait.Charges + 6;
+        }
+        else
+        {
+            // 玩家原本没有芭菲时，直接给 12 杯
+            Charges = 12;
+        }
+
+        await Task.CompletedTask;
+    }
+
     public override Task AfterRoomEntered(AbstractRoom room)
     {
-        if (room is RestSiteRoom) Charges += 8; // 休息处增加 8 杯
+        if (room is RestSiteRoom) Charges += 8;
         return Task.CompletedTask;
     }
 }

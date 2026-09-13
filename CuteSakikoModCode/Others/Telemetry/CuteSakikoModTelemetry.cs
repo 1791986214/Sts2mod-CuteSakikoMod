@@ -20,11 +20,13 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
         private static ITelemetryClient Client = null!;
         private static string? _cachedVersion;
 
+        private static readonly Dictionary<string, string> _locCache = new();
+        private static readonly HashSet<string> _locMissLogged = new();
+
         private static I18N I18n => new(
             instanceName: ApplicantId,
             fsFolders: new[] { "res://CuteSakikoMod/localization" });
 
-        /// <summary>当前 Mod 版本号，从 csproj 的 InformationalVersion 读取。</summary>
         public static string ModVersion
         {
             get
@@ -73,7 +75,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                     TelemetryRequest.Diagnostics(
                         ModSettingsText.I18N(I18n, "TELEMETRY.DIAGNOSTICS.DESC",
                             "发送异常和诊断上下文，用于定位崩溃。")),
-                    // ❌ 不再订阅 RunHistory —— 我们走自己的 balance_event 上传
                 }
             });
 
@@ -85,22 +86,64 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
         public static string LocalizeOrId(string locTable, string id)
         {
             if (string.IsNullOrEmpty(id)) return id;
+
+            var cacheKey = locTable + "|" + id;
+            if (_locCache.TryGetValue(cacheKey, out var cached))
+                return cached;
+
+            var result = id;
             try
             {
-                // ModelId 形如 "CARD.CUTE_SAKIKO_MOD_CARD_XXX"，去掉前缀
                 var dot = id.IndexOf('.');
                 var entry = dot >= 0 ? id[(dot + 1)..] : id;
 
-                var loc = new LocString(locTable, entry + ".title");
-                if (loc.Exists())
+                foreach (var suffix in new[] { ".title", ".name", "" })
                 {
-                    var text = loc.GetFormattedText();
-                    if (!string.IsNullOrWhiteSpace(text) && text != loc.LocEntryKey)
-                        return text;
+                    try
+                    {
+                        var key = entry + suffix;
+                        var loc = new LocString(locTable, key);
+                        if (!loc.Exists()) continue;
+                        var text = loc.GetFormattedText();
+                        if (!string.IsNullOrWhiteSpace(text) && text != key)
+                        {
+                            result = text;
+                            break;
+                        }
+                    }
+                    catch { }
                 }
             }
             catch { }
-            return id;
+
+            _locCache[cacheKey] = result;
+            if (result == id && _locMissLogged.Add(cacheKey))
+                Entry.Logger.Info($"[Loc] miss: table={locTable}, id={id}");
+            return result;
+        }
+
+        public static string LocalizeByKey(string locTable, string key)
+        {
+            if (string.IsNullOrEmpty(locTable) || string.IsNullOrEmpty(key)) return key;
+            var cacheKey = "BYKEY|" + locTable + "|" + key;
+            if (_locCache.TryGetValue(cacheKey, out var cached))
+                return cached;
+
+            var result = key;
+            try
+            {
+                var loc = new LocString(locTable, key);
+                if (loc.Exists())
+                {
+                    var text = loc.GetFormattedText();
+                    if (!string.IsNullOrWhiteSpace(text) && text != key)
+                        result = text;
+                }
+            }
+            catch { }
+
+            _locCache[cacheKey] = result;
+            return result;
         }
 
         public static string LocalizeCard(string id) => LocalizeOrId("cards", id);
@@ -110,6 +153,21 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
         public static string LocalizePotion(string id) => LocalizeOrId("potions", id);
         public static string LocalizePower(string id) => LocalizeOrId("powers", id);
         public static string LocalizeAct(string id) => LocalizeOrId("acts", id);
+        public static string LocalizeModifier(string id)
+        {
+            var t = LocalizeOrId("modifiers", id);
+            if (t != id) return t;
+            return LocalizeOrId("relics", id);
+        }
+
+        public static string LocalizeEncounter(string id)
+        {
+            var t = LocalizeOrId("encounters", id);
+            if (t != id) return t;
+            t = LocalizeOrId("monsters", id);
+            if (t != id) return t;
+            return id;
+        }
 
         public static string LocalizeEvent(string id)
         {
@@ -128,15 +186,11 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
         }
 
         public static void Track(string eventName, Dictionary<string, object?>? properties = null)
-        {
-            Client?.Capture(eventName: eventName, requestId: BalanceRequestId, properties: WithVersion(properties));
-        }
+            => Client?.Capture(eventName: eventName, requestId: BalanceRequestId, properties: WithVersion(properties));
 
         public static void TrackPayload(string eventName, JsonNode payload, Dictionary<string, object?>? properties = null)
-        {
-            Client?.CapturePayload(eventName: eventName, requestId: BalanceRequestId,
+            => Client?.CapturePayload(eventName: eventName, requestId: BalanceRequestId,
                 payload: payload, properties: WithVersion(properties));
-        }
 
         // ==================== 通用事件 ====================
 
@@ -199,8 +253,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
             });
         }
 
-        // ==================== 房间按钮 ====================
-
         public static void CaptureRoomButtonClicked(
             string roomType, string buttonId, string characterId, int floor,
             Dictionary<string, object?>? extra = null)
@@ -216,8 +268,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
             if (extra != null) foreach (var kv in extra) props[kv.Key] = kv.Value;
             Track("room_button.clicked", props);
         }
-
-        // ==================== 事件选项 ====================
 
         public static void CaptureEventChoices(
             string eventId, string characterId, int floor,
@@ -259,40 +309,19 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                 });
         }
 
-        public static void CaptureEventOptionSkipped(
-            string eventId, string characterId, int floor, string optionKey, string optionTitle)
-        {
-            Track("event.option.skipped", new Dictionary<string, object?>
-            {
-                ["event_id"] = eventId,
-                ["event_name"] = LocalizeEvent(eventId),
-                ["character_id"] = characterId,
-                ["character_name"] = LocalizeCharacter(characterId),
-                ["floor"] = floor,
-                ["option_key"] = optionKey,
-                ["option_title"] = optionTitle,
-            });
-        }
-
         // ==================== 本地化跑局上传 ====================
 
-        /// <summary>
-        /// 把一局 SerializableRun 本地化后上传（替代 RitsuLib 的 run_history.completed）。
-        /// 事件名：run_history.localized
-        /// </summary>
         public static void CaptureLocalizedRun(SerializableRun run)
         {
             if (run == null) return;
             try
             {
-                // 1) 用游戏自带序列化，ModelId 会输出为 "CARD.XXX" 字符串
                 var jsonText = SaveManager.ToJson(run);
                 if (JsonNode.Parse(jsonText) is not JsonObject root) return;
 
-                // 2) 补 Mod 版本号
                 root["mod_version"] = ModVersion;
 
-                // 3) 本地化 players
+                // ============ players ============
                 if (root["players"] is JsonArray players)
                 {
                     foreach (var pNode in players)
@@ -305,10 +334,36 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                         AddNamesByIdArray(player, "deck", LocalizeCard);
                         AddNamesByIdArray(player, "relics", LocalizeRelic);
                         AddNamesByIdArray(player, "potions", LocalizePotion);
+
+                        if (player["discovered_cards"] is JsonArray dc)
+                            player["discovered_cards_names"] = LocalizeModelIdArray(dc, LocalizeCard);
+                        if (player["discovered_enemies"] is JsonArray de)
+                            player["discovered_enemies_names"] = LocalizeModelIdArray(de, LocalizeMonster);
+                        if (player["discovered_potions"] is JsonArray dp)
+                            player["discovered_potions_names"] = LocalizeModelIdArray(dp, LocalizePotion);
+                        if (player["discovered_relics"] is JsonArray dr)
+                            player["discovered_relics_names"] = LocalizeModelIdArray(dr, LocalizeRelic);
                     }
                 }
 
-                // 4) 本地化 map_point_history
+                // ============ events_seen / modifiers ============
+                if (root["events_seen"] is JsonArray eventsSeen)
+                    root["events_seen_names"] = LocalizeModelIdArray(eventsSeen, LocalizeEvent);
+
+                if (root["modifiers"] is JsonArray modifiers)
+                {
+                    var names = new JsonArray();
+                    foreach (var m in modifiers)
+                    {
+                        if (m is JsonObject mo && mo["id"] is JsonValue mv)
+                            names.Add(LocalizeModifier(mv.ToString()));
+                        else
+                            names.Add("");
+                    }
+                    root["modifiers_names"] = names;
+                }
+
+                // ============ map_point_history ============
                 if (root["map_point_history"] is JsonArray acts)
                 {
                     foreach (var actNode in acts)
@@ -318,12 +373,16 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                         {
                             if (mpNode is not JsonObject mp) continue;
 
-                            // rooms[].monster_ids
+                            // rooms
                             if (mp["rooms"] is JsonArray rooms)
                             {
                                 foreach (var rNode in rooms)
                                 {
                                     if (rNode is not JsonObject room) continue;
+
+                                    if (room["model_id"] is JsonValue mid)
+                                        room["model_id_name"] = LocalizeEncounter(mid.ToString());
+
                                     if (room["monster_ids"] is JsonArray mons)
                                         AddNamesFromStringArray(room, "monster_ids", mons, LocalizeMonster);
                                 }
@@ -335,16 +394,12 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                             {
                                 if (sNode is not JsonObject stat) continue;
 
-                                // 数组元素是 { id: "..." }
                                 AddNamesByIdArray(stat, "cards_gained", LocalizeCard);
                                 AddNamesByIdArray(stat, "cards_removed", LocalizeCard);
-
-                                // 数组元素是 { card: { id } } / { relic: { id } } / { potion: { id } }
                                 AddNamesByIdArray(stat, "card_choices", LocalizeCard, "card");
                                 AddNamesByIdArray(stat, "relic_choices", LocalizeRelic, "relic");
                                 AddNamesByIdArray(stat, "potion_choices", LocalizePotion, "potion");
 
-                                // 数组元素是纯字符串 ModelId
                                 AddNamesFromStringArray(stat, "potion_discarded", stat["potion_discarded"] as JsonArray, LocalizePotion);
                                 AddNamesFromStringArray(stat, "potion_used", stat["potion_used"] as JsonArray, LocalizePotion);
                                 AddNamesFromStringArray(stat, "relics_removed", stat["relics_removed"] as JsonArray, LocalizeRelic);
@@ -353,12 +408,73 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                                 AddNamesFromStringArray(stat, "bought_relics", stat["bought_relics"] as JsonArray, LocalizeRelic);
                                 AddNamesFromStringArray(stat, "bought_potions", stat["bought_potions"] as JsonArray, LocalizePotion);
                                 AddNamesFromStringArray(stat, "bought_colorless", stat["bought_colorless"] as JsonArray, LocalizeCard);
+                                AddNamesFromStringArray(stat, "completed_quests", stat["completed_quests"] as JsonArray, LocalizeRelic);
+
+                                // 附魔卡牌
+                                if (stat["cards_enchanted"] is JsonArray enchants)
+                                {
+                                    var names = new JsonArray();
+                                    foreach (var e in enchants)
+                                    {
+                                        if (e is JsonObject eo && eo["card"] is JsonObject ecard && ecard["id"] is JsonValue eid)
+                                            names.Add(LocalizeCard(eid.ToString()));
+                                        else
+                                            names.Add("");
+                                    }
+                                    stat["cards_enchanted_names"] = names;
+                                }
+
+                                // 转化卡牌
+                                if (stat["cards_transformed"] is JsonArray transforms)
+                                {
+                                    var origNames = new JsonArray();
+                                    var finalNames = new JsonArray();
+                                    foreach (var t in transforms)
+                                    {
+                                        if (t is not JsonObject to) continue;
+                                        if (to["original_card"] is JsonObject oc && oc["id"] is JsonValue oid)
+                                            origNames.Add(LocalizeCard(oid.ToString()));
+                                        else origNames.Add("");
+                                        if (to["final_card"] is JsonObject fc && fc["id"] is JsonValue fid)
+                                            finalNames.Add(LocalizeCard(fid.ToString()));
+                                        else finalNames.Add("");
+                                    }
+                                    stat["cards_transformed_original_names"] = origNames;
+                                    stat["cards_transformed_final_names"] = finalNames;
+                                }
+
+                                // 远古选择（TextKey 通常为遗物短名）
+                                if (stat["ancient_choice"] is JsonArray ancientChoices)
+                                {
+                                    var names = new JsonArray();
+                                    foreach (var a in ancientChoices)
+                                    {
+                                        if (a is JsonObject ao && ao["TextKey"] is JsonValue tk)
+                                            names.Add(LocalizeRelic(tk.ToString()));
+                                        else names.Add("");
+                                    }
+                                    stat["ancient_choice_names"] = names;
+                                }
+
+                                // 事件选择（title.table + title.key）
+                                if (stat["event_choices"] is JsonArray eventChoices)
+                                {
+                                    var names = new JsonArray();
+                                    foreach (var e in eventChoices)
+                                    {
+                                        if (e is JsonObject eo && eo["title"] is JsonObject title
+                                            && title["table"] is JsonValue tv && title["key"] is JsonValue kv)
+                                            names.Add(LocalizeByKey(tv.ToString(), kv.ToString()));
+                                        else names.Add("");
+                                    }
+                                    stat["event_choices_names"] = names;
+                                }
                             }
                         }
                     }
                 }
 
-                // 5) 本地化 acts
+                // ============ acts ============
                 if (root["acts"] is JsonArray actsArr)
                 {
                     foreach (var aNode in actsArr)
@@ -369,7 +485,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                     }
                 }
 
-                // 6) 上传
                 TrackPayload(
                     eventName: "run_history.localized",
                     payload: root,
@@ -380,7 +495,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                         ["num_reloads"] = run.NumReloads,
                         ["game_mode"] = run.GameMode.ToString(),
                         ["current_act_index"] = run.CurrentActIndex,
-                        ["is_victory"] = run.WinTime > 0,   // 简化判断，见备注
+                        ["is_victory"] = run.WinTime > 0,
                     });
 
                 Entry.Logger.Info($"[Telemetry] Localized run uploaded (mod={ModVersion}, asc={run.Ascension}).");
@@ -391,7 +506,8 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
             }
         }
 
-        // ---- 辅助：数组元素是 { id: "..." } 或 { <nestedKey>: { id: "..." } } ----
+        // ==================== 辅助方法 ====================
+
         private static void AddNamesByIdArray(JsonObject obj, string key, Func<string, string> localizer, string? nestedKey = null)
         {
             if (obj[key] is not JsonArray arr) return;
@@ -416,7 +532,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
             obj[key + "_names"] = names;
         }
 
-        // ---- 辅助：数组元素是纯字符串 ModelId ----
         private static void AddNamesFromStringArray(JsonObject obj, string key, JsonArray? source, Func<string, string> localizer)
         {
             if (source == null) return;
@@ -429,7 +544,16 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
             obj[key + "_names"] = names;
         }
 
-        // ==================== 异常 ====================
+        private static JsonArray LocalizeModelIdArray(JsonArray source, Func<string, string> localizer)
+        {
+            var result = new JsonArray();
+            foreach (var item in source)
+            {
+                var id = item is JsonValue v ? v.ToString() : null;
+                result.Add(id != null ? JsonValue.Create(localizer(id)) : JsonValue.Create(""));
+            }
+            return result;
+        }
 
         public static void CaptureExceptionSafe(Exception ex, string context = "")
         {
@@ -439,8 +563,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                 ["mod_version"] = ModVersion,
             });
         }
-
-        // ==================== 工具方法 ====================
 
         public static int GetCurrentFloor(MegaCrit.Sts2.Core.Entities.Players.Player player)
         {

@@ -198,8 +198,9 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
                 {
                     Entry.Logger.Warn("[芭菲] choiceContext 为 null，无法添加 BrainFreeze");
                 }
+
                 CurrentTurnCount = 0;
-                break;
+                // ★ 不 break，继续处理剩余杯数
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.CardSelection;
+﻿using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Relics;
@@ -30,7 +29,7 @@ public class FlaxenHairedGirl : CuteSakikoEventRelic
             allCards.AddRange(deck.Cards);
         }
 
-        // 去重：相同 ID + 升级状态 + 附魔（ID及数量）视为相同
+        // 去重：按 ID + 升级等级 + 附魔 去重（保留原状态用于预览）
         var distinctCards = allCards
             .GroupBy(c => new
             {
@@ -44,16 +43,19 @@ public class FlaxenHairedGirl : CuteSakikoEventRelic
 
         if (distinctCards.Count == 0) return;
 
-        // 为每个去重卡牌创建预览用可变卡牌（保留升级与附魔）
+        // 预览卡：完全复制队友牌组中的原卡状态（升级等级 + 附魔），不做额外升级。
         var previewCards = distinctCards.Select(original =>
         {
             var preview = ModelDb.GetById<CardModel>(original.Id).ToMutable();
-            // 复制升级
-            for (int i = 0; i < original.CurrentUpgradeLevel; i++)
+
+            // 复制原卡的升级等级（不超过 MaxUpgradeLevel）
+            int baseUpgrade = Math.Min(original.CurrentUpgradeLevel, preview.MaxUpgradeLevel);
+            for (int i = 0; i < baseUpgrade; i++)
             {
                 preview.UpgradeInternal();
                 preview.FinalizeUpgradeInternal();
             }
+
             // 复制附魔
             if (original.Enchantment != null)
             {
@@ -63,6 +65,7 @@ public class FlaxenHairedGirl : CuteSakikoEventRelic
                     preview.EnchantInternal(ench, ench.Amount);
                 }
             }
+
             return preview;
         }).ToList();
 
@@ -74,19 +77,31 @@ public class FlaxenHairedGirl : CuteSakikoEventRelic
         };
 
         // 手动选择一张
-        var context =new BlockingPlayerChoiceContext(); 
+        var context = new BlockingPlayerChoiceContext();
         var selected = await CardSelectCmd.FromSimpleGrid(context, previewCards, Owner, prefs);
 
         if (!selected.Any()) return;
 
         var chosenPreview = selected.First();
 
-        // 创建真正属于自己的卡牌（复制升级与附魔）
+        // 创建真正属于自己的卡牌：使用基础版本
         var newCard = Owner.RunState.CreateCard(ModelDb.GetById<CardModel>(chosenPreview.Id), Owner);
-        for (int i = 0; i < chosenPreview.CurrentUpgradeLevel; i++)
+
+        // 1) 先复制原卡的升级等级
+        int baseUpgrade = Math.Min(chosenPreview.CurrentUpgradeLevel, newCard.MaxUpgradeLevel);
+        for (int i = 0; i < baseUpgrade && newCard.IsUpgradable; i++)
         {
             CardCmd.Upgrade(newCard);
         }
+
+        // 2) 额外升级一次 —— 这才是“比队友多一级”的效果
+        //    若已满级则跳过，避免越界
+        if (newCard.IsUpgradable)
+        {
+            CardCmd.Upgrade(newCard);
+        }
+
+        // 3) 复制附魔
         if (chosenPreview.Enchantment != null)
         {
             var ench = (EnchantmentModel)chosenPreview.Enchantment.MutableClone();
@@ -95,9 +110,6 @@ public class FlaxenHairedGirl : CuteSakikoEventRelic
                 CardCmd.Enchant(ench, newCard, ench.Amount);
             }
         }
-        
-        newCard.UpgradeInternal();
-        newCard.FinalizeUpgradeInternal();
 
         // 加入牌组
         await CardPileCmd.Add(newCard, PileType.Deck);
