@@ -20,6 +20,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Monsters.Boss.ChocolateSnail;
 [RegisterMonster]
 public class GiantChocolateSnail : ModMonsterTemplate
 {
+    // ★ 场上最多同时存在的小怪数量（对应遭遇的 5 个槽位）
+    private const int MaxSnails = 5;
+
     private MoveState _summonState = null!;
 
     public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 170, 155);
@@ -44,13 +47,20 @@ public class GiantChocolateSnail : ModMonsterTemplate
         var strengthState = new MoveState("BUFF_SNAILS", StrengthMove, new BuffIntent());
         var cardState = new MoveState("ADD_CARD", AddCardMove, new StatusIntent(1));
 
-        // 循环：召唤 → 格挡 → 强化小怪 → 加卡 → 格挡 → 强化小怪 → 加卡 → ...
+        // ★ 格挡之后的条件分支：小怪少于 3 只才召唤，否则进入强化流程
+        var afterBlockBranch = new ConditionalBranchState("AFTER_BLOCK_BRANCH");
+        afterBlockBranch.AddState(_summonState, () => CountAliveSnails() < 3);
+        afterBlockBranch.AddState(strengthState, () => CountAliveSnails() >= 3);
+
         _summonState.FollowUpState = blockState;
-        blockState.FollowUpState = strengthState;
+        blockState.FollowUpState = afterBlockBranch;
         strengthState.FollowUpState = cardState;
         cardState.FollowUpState = blockState;
 
-        var states = new List<MonsterState> { _summonState, blockState, strengthState, cardState };
+        var states = new List<MonsterState>
+        {
+            _summonState, blockState, strengthState, cardState, afterBlockBranch
+        };
         return new MonsterMoveStateMachine(states, _summonState);
     }
 
@@ -60,29 +70,31 @@ public class GiantChocolateSnail : ModMonsterTemplate
         ICombatState combatState)
     {
         if (side != CombatSide.Enemy) return;
-        // 当场上所有小巧克力螺死亡时，强制回到召唤意图
-        if (!HasAliveSnails())
+        // 小怪全死时立刻回到召唤，避免空过一整个回合
+        if (CountAliveSnails() == 0)
         {
             SetMoveImmediate(_summonState, true);
         }
     }
-    
 
-    private bool HasAliveSnails()
+    private int CountAliveSnails()
     {
         return Creature.CombatState.GetTeammatesOf(Creature)
-            .Any(c => c.IsAlive && c.Monster is SmallChocolateSnail);
+            .Count(c => c.IsAlive && c.Monster is SmallChocolateSnail);
     }
 
     private async Task SummonMove(IReadOnlyList<Creature> targets)
     {
         var combatState = Creature.CombatState;
         var encounter = combatState.Encounter;
-        int summoned = 0;
 
+        int needed = MaxSnails - CountAliveSnails();
+        if (needed <= 0) return;
+
+        int summoned = 0;
         foreach (var slot in encounter.Slots)
         {
-            if (summoned >= 3) break;
+            if (summoned >= needed) break;
             if (!slot.StartsWith("snail")) continue;
             if (combatState.Enemies.Any(e => e.SlotName == slot)) continue;
 

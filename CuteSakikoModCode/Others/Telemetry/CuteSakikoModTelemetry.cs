@@ -473,15 +473,23 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                         }
                     }
                 }
-
+                
                 // ============ acts ============
                 if (root["acts"] is JsonArray actsArr)
                 {
                     foreach (var aNode in actsArr)
                     {
                         if (aNode is not JsonObject act) continue;
+
                         if (act["id"] is JsonValue idv)
                             act["name"] = LocalizeAct(idv.ToString());
+
+                        // 新增：给 acts[].rooms 补古代事件中文名
+                        if (act["rooms"] is JsonObject rooms
+                            && rooms["ancient_id"] is JsonValue aid)
+                        {
+                            rooms["ancient_name"] = LocalizeEvent(aid.ToString());
+                        }
                     }
                 }
 
@@ -505,6 +513,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry
                 Entry.Logger.Warn($"[Telemetry] CaptureLocalizedRun failed: {ex.Message}");
             }
         }
+
 
         // ==================== 辅助方法 ====================
 

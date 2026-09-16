@@ -16,6 +16,18 @@
   "CUTE_SAKIKO_MOD_EVENT_MASQUERADE_INVITATION_EVENT.pages.REFUSE_SUCCESS.description": "暗闇の中の声を安易に信じるのは良くないと思い、あなたは首を横に振る。\n暗闇の声がため息をつく。何かの力があなたをここから押し出した。だが、途中で何かを落としてしまったようだ。",
   "CUTE_SAKIKO_MOD_EVENT_MASQUERADE_INVITATION_EVENT.pages.BLIND_PERFORMANCE_SUCCESS.description": "たとえ高塔の中の幻影であっても、あなたはかすかな演奏への欲求を感じる。\n一曲が終わると、いつの間にか元の道に戻っていた。\n手には、彼女の初ライブのチケットが握られていた。",
 
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.title": "エビフライの群れ",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.description": "[gold]ウメワパワー！[/gold]\n[blue]ですわ！[/blue]\n[orange]オーイエー！[/orange]\n...\n\n茂みの後ろから奇妙な鳴き声が聞こえ、あなたはとても興味を惹かれる。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.CROSS_BUSH.title": "茂みを抜ける",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.CROSS_BUSH.description": "一群の[orange]エビフライ[/orange]と戦う。勝利後、いくつかの[gold]小さなおもちゃ[/gold]を獲得する。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.DETOUR.title": "迂回する",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.DETOUR.description": "[red]8[/red]ダメージを受け、[gold]デッキ[/gold]からカードを[blue]1[/blue]枚除去する。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.REST_HERE.title": "その場で休む",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.REST_HERE.description": "最大HPの[green]30[/green]%を回復する。一群の[orange]エビフライ[/orange]と戦う。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.DETOUR_DESC.description": "あなたは奇妙な鳴き声を避けることにした。\n\n険しい道でうっかり転んでしまい、ついでに不要なガラクタもいくつか捨てた。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.CROSS_BUSH_WIN.description": "あなたはこの[orange]エビフライ[/orange]の群れを捕まえた。とても可愛らしいので、連れて先へ進むことにした。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.REST_HERE_WIN.description": "あなたはしばらく快適に休んだが、[orange]エビフライ[/orange]たちはその隙に散り散りになり、茂みの奥へと消えてしまった。",
+  
   "CUTE_SAKIKO_MOD_EVENT_HANEOKA_CORRIDOR_EVENT.title": "羽丘の廊下",
   "CUTE_SAKIKO_MOD_EVENT_HANEOKA_CORRIDOR_EVENT.pages.INITIAL.description": "うつむきながら歩いていると、周囲の景色が少しずつ変化し、やがて前方に一つの扉が現れる。\n扉の向こうからかすかにピアノの音が聞こえてくる。\n顔を上げて表札を見る。\n「音楽室」",
   "CUTE_SAKIKO_MOD_EVENT_HANEOKA_CORRIDOR_EVENT.pages.INITIAL.options.LISTEN.title": "扉に近づいて聞く",

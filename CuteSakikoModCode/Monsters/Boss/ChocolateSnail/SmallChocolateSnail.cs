@@ -17,16 +17,16 @@ namespace CuteSakikoMod.CuteSakikoModCode.Monsters.Boss.ChocolateSnail;
 [RegisterMonster]
 public class SmallChocolateSnail : ModMonsterTemplate
 {
-    public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 15, 12);
-    public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 20, 15);
+    public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 14, 10);
+    public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 19, 14);
 
     public override MonsterAssetProfile AssetProfile => new(
         "res://CuteSakikoMod/scenes/monster/small_chocolate_snail.tscn"
     );
 
-    private int Attack2Damage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
+    private int Attack2Damage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 2, 1);
     private int Attack3HitCount => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
-    private int Attack6Damage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 8, 6);
+    private int Attack6Damage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 3);
 
     protected override NCreatureVisuals? TryCreateCreatureVisuals()
     {

@@ -8,6 +8,18 @@
   "CUTE_SAKIKO_MOD_EVENT_GOLD_DOG_EVENT.pages.DOG_TREASURE.description": "跟着她走了一段路之后，它带你找到了一个宝藏，你摸了摸它的头，它便高兴的离开了。",
   "CUTE_SAKIKO_MOD_EVENT_GOLD_DOG_EVENT.pages.DOG_TRAP.description": "离开后你掉进了陷阱，在这昏暗无光的地方你似乎又回忆起从前痛苦的时刻，费了好大力气，你才从中逃离出来。",
 
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.title": "一群炸虾",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.description": "[gold]U咩瓦帕瓦！[/gold]\n[blue]Desuwa！[/blue]\n[orange]欧耶！[/orange]\n...\n\n你听到了草丛后一堆奇奇怪怪的叫声，这令你十分的好奇。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.CROSS_BUSH.title": "穿过草丛",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.CROSS_BUSH.description": "与一群[orange]炸虾[/orange]战斗，胜利后获得一些[gold]小玩具[/gold]。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.DETOUR.title": "绕路而行",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.DETOUR.description": "受到[red]8[/red]点伤害，从你的[gold]牌组[/gold]中移除[blue]1[/blue]张牌。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.REST_HERE.title": "原地休息",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.REST_HERE.description": "回复[green]30[/green]%最大生命值。与一群[orange]炸虾[/orange]战斗。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.DETOUR_DESC.description": "你决定绕开那些奇怪的叫声。\n\n在崎岖的路上你不小心摔了一跤，也顺手丢掉了一些不太需要的杂物。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.CROSS_BUSH_WIN.description": "你抓住了这群[orange]炸虾[/orange]，它们看上去十分可爱，于是你决定带着它们继续前行。",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.REST_HERE_WIN.description": "你舒舒服服地休息了一会儿，那些[orange]炸虾[/orange]却趁机一哄而散，消失在草丛深处。",
+  
   "CUTE_SAKIKO_MOD_EVENT_MASQUERADE_INVITATION_EVENT.title": "假面舞会的邀约",
   "CUTE_SAKIKO_MOD_EVENT_MASQUERADE_INVITATION_EVENT.pages.INITIAL.description": "你在尖塔中穿行，沿着它蜿蜒的走廊慢慢前进，却发现自己多次迷失了方向。\n不知多久，你发现脑子里的声音开始向你低语。",
   "CUTE_SAKIKO_MOD_EVENT_MASQUERADE_INVITATION_EVENT.pages.INITIAL.options.CONTINUE.title": "……",

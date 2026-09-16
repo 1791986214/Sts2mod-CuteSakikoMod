@@ -12,5 +12,9 @@
   "CUTE_SAKIKO_MOD_ENCOUNTER_JENNIFER_ENCOUNTER.title": "小さなジェニファー？",
   "CUTE_SAKIKO_MOD_ENCOUNTER_JENNIFER_ENCOUNTER.loss": "{character}は[gold]{encounter}[/gold]の不可解な方法で恐怖のあまり気絶した。",
   "CUTE_SAKIKO_MOD_ENCOUNTER_GIANT_CHOCOLATE_SNAIL_ENCOUNTER.title": "巨大チョコレートカタツムリ",
-  "CUTE_SAKIKO_MOD_ENCOUNTER_GIANT_CHOCOLATE_SNAIL_ENCOUNTER.loss": "{character}は[gold]{encounter}[/gold]の甘さに倒された。"
+  "CUTE_SAKIKO_MOD_ENCOUNTER_GIANT_CHOCOLATE_SNAIL_ENCOUNTER.loss": "{character}は[gold]{encounter}[/gold]の甘さに倒された。",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_ARALUO_ENCOUNTER.title": "アラロ",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_ARALUO_ENCOUNTER.loss": "{character}は[gold]{encounter}[/gold]の愛嬌にやられてしまった。",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_LUO_ENCOUNTER.title": "エビフライの群れ",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_LUO_ENCOUNTER.loss": "{character}は[gold]{encounter}[/gold]の愛嬌にやられてしまった。"
 }

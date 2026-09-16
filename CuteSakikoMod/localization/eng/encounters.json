@@ -12,5 +12,9 @@
   "CUTE_SAKIKO_MOD_ENCOUNTER_JENNIFER_ENCOUNTER.title": "Little Jennifer?",
   "CUTE_SAKIKO_MOD_ENCOUNTER_JENNIFER_ENCOUNTER.loss": "{character} was scared to death by [gold]{encounter}[/gold]'s unknown methods.",
   "CUTE_SAKIKO_MOD_ENCOUNTER_GIANT_CHOCOLATE_SNAIL_ENCOUNTER.title": "Giant Chocolate Snail",
-  "CUTE_SAKIKO_MOD_ENCOUNTER_GIANT_CHOCOLATE_SNAIL_ENCOUNTER.loss": "{character} was overwhelmed by the sweetness of [gold]{encounter}[/gold]."
+  "CUTE_SAKIKO_MOD_ENCOUNTER_GIANT_CHOCOLATE_SNAIL_ENCOUNTER.loss": "{character} was overwhelmed by the sweetness of [gold]{encounter}[/gold].",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_ARALUO_ENCOUNTER.title": "Alaro",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_ARALUO_ENCOUNTER.loss": "{character} was overwhelmed by [gold]{encounter}[/gold]'s cuteness.",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_LUO_ENCOUNTER.title": "A Bunch of Fried Shrimp",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_LUO_ENCOUNTER.loss": "{character} was overwhelmed by [gold]{encounter}[/gold]'s cuteness."
 }

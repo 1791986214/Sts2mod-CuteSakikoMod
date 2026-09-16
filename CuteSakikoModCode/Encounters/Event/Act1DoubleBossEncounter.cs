@@ -47,7 +47,7 @@ public class Act1DoubleBossEncounter : ModEncounterTemplate
             .Where(m => !IsMinionMonster(m))
             .Distinct();
 
-    public override RoomType RoomType => RoomType.Elite;
+    public override RoomType RoomType => RoomType.Monster;
     public override bool IsWeak => false;
 
     // 槽位名称必须和场景文件中的 Marker2D 节点名完全一致

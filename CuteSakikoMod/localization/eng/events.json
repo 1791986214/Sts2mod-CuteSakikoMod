@@ -16,6 +16,18 @@
   "CUTE_SAKIKO_MOD_EVENT_MASQUERADE_INVITATION_EVENT.pages.REFUSE_SUCCESS.description": "You decide that trusting voices in the dark is unwise and shake your head.\nThe voice in the darkness sighs. A force pushes you out of this place, though something seems to have been knocked off along the way.",
   "CUTE_SAKIKO_MOD_EVENT_MASQUERADE_INVITATION_EVENT.pages.BLIND_PERFORMANCE_SUCCESS.description": "Even if it is only a phantom within the Spire, you still feel a faint desire to perform.\nWhen the song ends, you find yourself back on the original path.\nIn your hand, a ticket to her first live has appeared.",
 
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.title": "A Bunch of Fried Shrimp",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.description": "[gold]Ume wa Pawa![/gold]\n[blue]Desuwa![/blue]\n[orange]Oh yeah![/orange]\n...\n\nYou hear a bunch of strange cries from behind the bushes, which makes you very curious.",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.CROSS_BUSH.title": "Cross the bushes",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.CROSS_BUSH.description": "Fight a bunch of [orange]Fried Shrimp[/orange]. Upon victory, obtain some [gold]Little Toys[/gold].",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.DETOUR.title": "Take a detour",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.DETOUR.description": "Take [red]8[/red] damage, remove [blue]1[/blue] card from your [gold]deck[/gold].",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.REST_HERE.title": "Rest here",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.INITIAL.options.REST_HERE.description": "Heal [green]30[/green]% of your Max HP. Fight a bunch of [orange]Fried Shrimp[/orange].",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.DETOUR_DESC.description": "You decide to avoid those strange cries.\n\nOn the rugged path, you accidentally trip and also discard some unnecessary junk along the way.",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.CROSS_BUSH_WIN.description": "You catch this bunch of [orange]Fried Shrimp[/orange]. They look very cute, so you decide to bring them along as you continue.",
+  "CUTE_SAKIKO_MOD_EVENT_FRIED_SHRIMP_EVENT.pages.REST_HERE_WIN.description": "You rest comfortably for a while, but the [orange]Fried Shrimp[/orange] take the opportunity to scatter and disappear deep into the bushes.",
+  
   "CUTE_SAKIKO_MOD_EVENT_HANEOKA_CORRIDOR_EVENT.title": "Haneoka Corridor",
   "CUTE_SAKIKO_MOD_EVENT_HANEOKA_CORRIDOR_EVENT.pages.INITIAL.description": "You walk with your head lowered, only to notice that the scenery around you is gradually changing, until a door appears ahead.\nThe faint sound of a piano drifts from within.\nYou glance up at the nameplate:\n\"Music Room\"",
   "CUTE_SAKIKO_MOD_EVENT_HANEOKA_CORRIDOR_EVENT.pages.INITIAL.options.LISTEN.title": "Move closer to the door and listen",

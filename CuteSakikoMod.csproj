@@ -11,20 +11,20 @@
         <PathMap>$(AppOutputBase)=.\</PathMap>
     </PropertyGroup>
 
-    <!-- ★ Mod 版本号自动从 CuteSakikoMod.json 读取（顶层 PropertyGroup，SDK 生成 AssemblyInfo 前即可见） -->
+    <!-- ★ Mod 版本号自动从 CuteSakikoMod.json 读取 -->
     <PropertyGroup>
         <_ManifestPath>$(MSBuildProjectDirectory)\CuteSakikoMod.json</_ManifestPath>
         <_ManifestContent Condition="Exists('$(_ManifestPath)')">$([System.IO.File]::ReadAllText('$(_ManifestPath)'))</_ManifestContent>
         <_ManifestVersion Condition="'$(_ManifestContent)' != ''">$([System.Text.RegularExpressions.Regex]::Match($(_ManifestContent), '"version"\s*:\s*"([^"]+)"').Groups[1].Value)</_ManifestVersion>
+        <_ManifestGameVersion Condition="'$(_ManifestContent)' != ''">$([System.Text.RegularExpressions.Regex]::Match($(_ManifestContent), '"min_game_version"\s*:\s*"([^"]+)"').Groups[1].Value)</_ManifestGameVersion>
         <Version Condition="'$(_ManifestVersion)' != ''">$(_ManifestVersion)</Version>
         <InformationalVersion Condition="'$(_ManifestVersion)' != ''">$(_ManifestVersion)</InformationalVersion>
         <AssemblyVersion Condition="'$(_ManifestVersion)' != ''">$(_ManifestVersion).0</AssemblyVersion>
     </PropertyGroup>
 
-    <!-- 版本号诊断日志（可选） -->
+    <!-- 版本号诊断日志 -->
     <Target Name="LogModVersion" BeforeTargets="CoreCompile">
-        <Message Text="[CuteSakikoMod] Version from manifest: $(_ManifestVersion) (Version=$(Version), InformationalVersion=$(InformationalVersion))"
-                 Importance="high" />
+        <Message Text="[CuteSakikoMod] Version from manifest: $(_ManifestVersion) (Version=$(Version), InformationalVersion=$(InformationalVersion)), GameTarget: $(_ManifestGameVersion)" Importance="high" />
     </Target>
 
     <!-- OS Detection & Paths -->
@@ -83,8 +83,7 @@
 
     <ItemGroup>
         <AdditionalFiles Include="CuteSakikoMod/localization/**/*.json"/>
-        <!-- ★ 使用浮动版本 *，还原时自动解析为最新可用版本 -->
-        <PackageReference Include="STS2.RitsuLib" Version="*" />
+        <PackageReference Include="STS2.RitsuLib" Version="0.6.2" />
     </ItemGroup>
 
     <!-- 资源排除与包含 -->
@@ -138,57 +137,6 @@
         <MakeDir Directories="$(ModsPath)$(MSBuildProjectName)" Condition="!Exists('$(ModsPath)$(MSBuildProjectName)')"/>
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModsPath)$(MSBuildProjectName)"/>
         <Copy SourceFiles="CuteSakikoMod.json" DestinationFolder="$(ModsPath)$(MSBuildProjectName)"/>
-    </Target>
-
-    <!-- ★ 从 project.assets.json 读取 NuGet 实际解析出的 RitsuLib 版本 -->
-    <Target Name="ResolveRitsuLibVersion" BeforeTargets="CopyRitsuLibToModsFolder">
-        <PropertyGroup>
-            <!-- Godot 项目的中间目录在 .godot/mono/temp/obj/，用 MSBuild 扩展路径自动指向 -->
-            <_AssetsFile>$(MSBuildProjectExtensionsPath)project.assets.json</_AssetsFile>
-        </PropertyGroup>
-
-        <Error Text="[CuteSakikoMod] project.assets.json not found at $(_AssetsFile). Run 'dotnet restore' first."
-               Condition="!Exists('$(_AssetsFile)')" />
-
-        <PropertyGroup>
-            <_AssetsContent>$([System.IO.File]::ReadAllText('$(_AssetsFile)'))</_AssetsContent>
-            <_RitsuLibResolvedVersion>$([System.Text.RegularExpressions.Regex]::Match($(_AssetsContent), '"STS2\.RitsuLib/([^"]+)"').Groups[1].Value)</_RitsuLibResolvedVersion>
-        </PropertyGroup>
-
-        <Error Text="[CuteSakikoMod] Could not resolve STS2.RitsuLib version from $(_AssetsFile)"
-               Condition="'$(_RitsuLibResolvedVersion)' == ''" />
-
-        <PropertyGroup>
-            <RitsuLibPackageVersion>$(_RitsuLibResolvedVersion)</RitsuLibPackageVersion>
-        </PropertyGroup>
-
-        <Message Text="[CuteSakikoMod] RitsuLib resolved version: $(RitsuLibPackageVersion)"
-                 Importance="high" />
-    </Target>
-
-    <!-- 复制 RitsuLib 文件（版本号自动探测） -->
-    <Target Name="CopyRitsuLibToModsFolder" AfterTargets="CopyToModsFolderOnBuild">
-        <PropertyGroup>
-            <RitsuLibModDest>$(ModsPath)STS2-RitsuLib</RitsuLibModDest>
-            <RitsuLibPackageBase>$(MSBuildProjectDirectory)\packages\sts2.ritsulib\$(RitsuLibPackageVersion)\</RitsuLibPackageBase>
-            <RitsuLibContentSource>$(RitsuLibPackageBase)contentFiles\any\any\</RitsuLibContentSource>
-        </PropertyGroup>
-
-        <Message Importance="high" Text="Copying RitsuLib mod files (v$(RitsuLibPackageVersion)) to $(RitsuLibModDest)"/>
-        <MakeDir Directories="$(RitsuLibModDest)" Condition="!Exists('$(RitsuLibModDest)')"/>
-
-        <ItemGroup>
-            <RitsuContentFiles Include="$(RitsuLibContentSource)**\*" />
-        </ItemGroup>
-
-        <Copy SourceFiles="@(RitsuContentFiles)"
-              DestinationFolder="$(RitsuLibModDest)\%(RecursiveDir)"
-              SkipUnchangedFiles="true"
-              Condition="Exists('$(RitsuLibContentSource)')"/>
-
-        <Copy SourceFiles="$(RitsuLibPackageBase)lib\net9.0\STS2-RitsuLib.dll"
-              DestinationFolder="$(RitsuLibModDest)"
-              SkipUnchangedFiles="true"/>
     </Target>
 
     <!-- 把 audio 目录下的文件原样复制到模组文件夹 -->

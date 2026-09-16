@@ -462,15 +462,15 @@ script = ExtResource("1_nyguk")
 
 [node name="IntentPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(18.330566, -345.46277)
+position = Vector2(-1, -293)
 
 [node name="CenterPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(15.851257, -185.95863)
+position = Vector2(-1, -97)
 
 [node name="TalkPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(-148.81815, -252.72728)
+position = Vector2(-158, -234)
 
 [node name="Bounds" type="Control" parent="."]
 unique_name_in_owner = true

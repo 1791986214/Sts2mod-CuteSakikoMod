@@ -12,5 +12,9 @@
   "CUTE_SAKIKO_MOD_ENCOUNTER_JENNIFER_ENCOUNTER.title": "小珍妮弗?",
   "CUTE_SAKIKO_MOD_ENCOUNTER_JENNIFER_ENCOUNTER.loss": "{character}被[gold]{encounter}[/gold]用不知名方法吓得晕死过去。",
   "CUTE_SAKIKO_MOD_ENCOUNTER_GIANT_CHOCOLATE_SNAIL_ENCOUNTER.title": "巨型巧克力螺",
-  "CUTE_SAKIKO_MOD_ENCOUNTER_GIANT_CHOCOLATE_SNAIL_ENCOUNTER.loss": "{character}被[gold]{encounter}[/gold]甜倒了。"
+  "CUTE_SAKIKO_MOD_ENCOUNTER_GIANT_CHOCOLATE_SNAIL_ENCOUNTER.loss": "{character}被[gold]{encounter}[/gold]甜倒了。",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_ARALUO_ENCOUNTER.title": "阿拉罗",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_ARALUO_ENCOUNTER.loss": "{character}被[gold]{encounter}[/gold]的卖萌可爱死了。",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_LUO_ENCOUNTER.title": "一群炸虾",
+  "CUTE_SAKIKO_MOD_ENCOUNTER_LUO_ENCOUNTER.loss": "{character}被[gold]{encounter}[/gold]的卖萌可爱死了。"
 }

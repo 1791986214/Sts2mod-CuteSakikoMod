@@ -35,12 +35,12 @@ public class AnotherSelf : CuteSakikoAncientEvent
     private IReadOnlyList<EventOption> Pool2 => new[]
     {
         CreateModRelicOption<AutoDrinkMachine>(),
+        CreateModRelicOption<Maracas>(),
     };
 
     private WeightedList<EventOption> Pool3 => new()
     {
-        { CreateModRelicOption<YummyCookie>(), 2 },
-        { CreateModRelicOption<WingCharm>(), 1 }
+        CreateModRelicOption<SandCastle>(),
     };
 
     // 所有可能的选项（用于调试/历史）

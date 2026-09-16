@@ -28,7 +28,7 @@ public class TianSuLuo : ModMonsterTemplate
 
     // 高进阶时伤害和格挡 +1
     private int OhYeahDamage => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 4);
-    private int OhYeahBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 5, 3);
+    private int OhYeahBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 5, 3);
     private int ActingCuteBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 4, 3);
     private int HappyBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
 

@@ -14,11 +14,11 @@ public class CrychicSakiko : CuteSakikoEventRelic
 
     public override async Task AfterObtained()
     {
-        // 1组普通、1组罕见、2组稀有
+        //1组罕见、3组稀有
         var rewards = new List<Reward>
         {
-            CreateCardReward(CardRarity.Common),
             CreateCardReward(CardRarity.Uncommon),
+            CreateCardReward(CardRarity.Rare),
             CreateCardReward(CardRarity.Rare),
             CreateCardReward(CardRarity.Rare)
         };

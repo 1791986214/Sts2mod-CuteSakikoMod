@@ -18,7 +18,6 @@ public class AvemujicaSakiko : CuteSakikoEventRelic
         for (var i = 0; i < 3; i++)
         {
             rewards.Add(CreateCardReward(CardRarity.Common));
-            rewards.Add(CreateCardReward(CardRarity.Uncommon));
         }
 
         await RewardsCmd.OfferCustom(Owner, rewards);

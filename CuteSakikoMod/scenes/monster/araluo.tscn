@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://1mnuw0oxhq0"]
+[gd_scene load_steps=11 format=3 uid="uid://bnqp1ykxyxgx4"]
 
-[ext_resource type="Script" uid="uid://de8s6060xsbgv" path="res://CuteSakikoModCode/Nodes/SakiCreatureVisuals.cs" id="1_ftx7x"]
-[ext_resource type="Texture2D" uid="uid://b40prqhmwjf4x" path="res://CuteSakikoMod/images/char/chocolatesnail/small_chocolate_snail.png" id="2_3s07n"]
+[ext_resource type="Script" uid="uid://de8s6060xsbgv" path="res://CuteSakikoModCode/Nodes/SakiCreatureVisuals.cs" id="1_d6d0j"]
+[ext_resource type="Texture2D" uid="uid://cem0by1mwqq00" path="res://CuteSakikoMod/images/char/araluo/araluo1.png" id="2_5r3ok"]
+[ext_resource type="Texture2D" uid="uid://dsyn2qo8ldj4n" path="res://CuteSakikoMod/images/char/araluo/araluo2.png" id="3_c3ljp"]
 
 [sub_resource type="Animation" id="Animation_tfnbe"]
 length = 0.001
@@ -15,7 +16,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_3s07n")]
+"values": [ExtResource("2_5r3ok")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -79,7 +80,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_3s07n")]
+"values": [ExtResource("2_5r3ok")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -155,7 +156,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_3s07n")]
+"values": [ExtResource("2_5r3ok")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -228,10 +229,10 @@ tracks/0/path = NodePath(".:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.6666667),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [ExtResource("2_3s07n")]
+"values": [ExtResource("2_5r3ok"), ExtResource("3_c3ljp")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -304,10 +305,10 @@ tracks/0/path = NodePath(".:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.26666668, 1.6333333),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [ExtResource("2_3s07n")]
+"values": [ExtResource("2_5r3ok"), ExtResource("3_c3ljp"), ExtResource("2_5r3ok")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -384,7 +385,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_3s07n")]
+"values": [ExtResource("2_5r3ok")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -457,29 +458,29 @@ _data = {
 &"idle_loop": SubResource("Animation_dn2tn")
 }
 
-[node name="small_chocolate_snail" type="Node2D"]
-script = ExtResource("1_ftx7x")
+[node name="araluo" type="Node2D"]
+script = ExtResource("1_d6d0j")
 
 [node name="IntentPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(-0.5942993, -151.84)
+position = Vector2(-1, -266)
 
 [node name="CenterPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(0.9083252, -45.904633)
+position = Vector2(-0.23583984, -73.77234)
 
 [node name="TalkPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(-93.00601, -110.517685)
+position = Vector2(-142, -194)
 
 [node name="Bounds" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
-offset_left = -106.0
-offset_top = -117.0
-offset_right = 101.0
-offset_bottom = 3.0
+offset_left = -113.0
+offset_top = -220.0
+offset_right = 108.0
+offset_bottom = 2.0
 
 [node name="Visuals" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -487,17 +488,17 @@ unique_name_in_owner = true
 [node name="Node2D" type="Node2D" parent="Visuals"]
 position = Vector2(0.7077637, -2.664978)
 
-[node name="small_chocolate_snail" type="Sprite2D" parent="Visuals/Node2D"]
+[node name="araluo" type="Sprite2D" parent="Visuals/Node2D"]
 position = Vector2(8, -153)
-texture = ExtResource("2_3s07n")
+texture = ExtResource("2_5r3ok")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Visuals/Node2D"]
-root_node = NodePath("../small_chocolate_snail")
+root_node = NodePath("../araluo")
 libraries = {
 &"": SubResource("AnimationLibrary_esqhf")
 }
 autoplay = "idle_loop"
-speed_scale = 2.6993537
+speed_scale = 5.0
 next/attack = &"idle_loop"
 next/cast = &"idle_loop"
 next/hurt = &"idle_loop"

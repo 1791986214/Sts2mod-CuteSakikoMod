@@ -11,7 +11,6 @@ using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
 
-
 public class BuyParfait() : CuteRanaCard(0, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
@@ -23,11 +22,14 @@ public class BuyParfait() : CuteRanaCard(0, CardType.Skill, CardRarity.Common, T
             yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Parfait.GetModCardKeyword());
         }
     }
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new GoldVar(10)
     ];
+
+    // 金币不足时无法打出
+    protected override bool IsPlayable => Owner.Gold >= DynamicVars.Gold.IntValue;
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
