@@ -46,25 +46,21 @@ public class Araluo : ModMonsterTemplate
         return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(AssetProfile.VisualsScenePath!);
     }
 
+    public int InitialIntentIndex { get; set; } = 0;
+
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
-        var heavy = new MoveState("HEAVY_ATTACK", HeavyMove,
-            new SingleAttackIntent(HeavyDamage));
-        var buff = new MoveState("POWER_UP", BuffMove,
-            new BuffIntent());
-        var light = new MoveState("LIGHT_ATTACK", LightMove,
-            new MultiAttackIntent(1, LightHitCount));
+        var heavy = new MoveState("HEAVY_ATTACK", HeavyMove, new SingleAttackIntent(HeavyDamage));
+        var buff = new MoveState("POWER_UP", BuffMove, new BuffIntent());
+        var light = new MoveState("LIGHT_ATTACK", LightMove, new MultiAttackIntent(1, LightHitCount));
 
-        // 循环：1 → 2 → 3 → 2 → 1 → 2 → 3 → 2 → ...
-        // 即 [heavy, buff, light, buff] 循环
         heavy.FollowUpState = buff;
         buff.FollowUpState = light;
         light.FollowUpState = buff;
-        buff.FollowUpState = heavy;   // 覆盖上面，让它以 heavy 为目标
-        // 但这样会形成 heavy → buff → light → buff → heavy，正是我们想要的
 
         var states = new List<MonsterState> { heavy, buff, light };
-        return new MonsterMoveStateMachine(states, heavy);
+        int idx = Math.Clamp(InitialIntentIndex, 0, states.Count - 1);
+        return new MonsterMoveStateMachine(states, states[idx]);
     }
 
     private async Task HeavyMove(IReadOnlyList<Creature> targets)

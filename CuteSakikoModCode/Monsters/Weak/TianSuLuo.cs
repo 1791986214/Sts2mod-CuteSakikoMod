@@ -37,6 +37,9 @@ public class TianSuLuo : ModMonsterTemplate
         return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(AssetProfile.VisualsScenePath!);
     }
 
+    // ★ 新增：开局意图索引（0=哦耶, 1=卖萌, 2=高兴）
+    public int InitialIntentIndex { get; set; } = 0;
+
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
         var ohYeah = new MoveState("OH_YEAH", OhYeahMove,
@@ -46,13 +49,13 @@ public class TianSuLuo : ModMonsterTemplate
         var happy = new MoveState("HAPPY", HappyMove,
             new BuffIntent(), new DefendIntent());
 
-        // 按顺序循环：哦耶 → 卖萌 → 高兴 → 哦耶 ...
         ohYeah.FollowUpState = actingCute;
         actingCute.FollowUpState = happy;
         happy.FollowUpState = ohYeah;
 
         var states = new List<MonsterState> { ohYeah, actingCute, happy };
-        return new MonsterMoveStateMachine(states, ohYeah);
+        int idx = Math.Clamp(InitialIntentIndex, 0, states.Count - 1);
+        return new MonsterMoveStateMachine(states, states[idx]);
     }
 
     private async Task OhYeahMove(IReadOnlyList<Creature> targets)

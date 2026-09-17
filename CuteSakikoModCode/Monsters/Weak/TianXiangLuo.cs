@@ -32,10 +32,14 @@ public class TianXiangLuo : ModMonsterTemplate
     private int ActingCuteBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
     private int HappyBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 2, 1);
 
+    
+    
     protected override NCreatureVisuals? TryCreateCreatureVisuals()
     {
         return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(AssetProfile.VisualsScenePath!);
     }
+
+    public int InitialIntentIndex { get; set; } = 0;
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
@@ -45,13 +49,14 @@ public class TianXiangLuo : ModMonsterTemplate
             new DefendIntent(), new DebuffIntent());
         var happy = new MoveState("HAPPY", HappyMove,
             new BuffIntent(), new DefendIntent());
-        
+
         desuwa.FollowUpState = actingCute;
         actingCute.FollowUpState = happy;
         happy.FollowUpState = desuwa;
 
         var states = new List<MonsterState> { desuwa, actingCute, happy };
-        return new MonsterMoveStateMachine(states, desuwa);
+        int idx = Math.Clamp(InitialIntentIndex, 0, states.Count - 1);
+        return new MonsterMoveStateMachine(states, states[idx]);
     }
 
     private async Task DesuwaMove(IReadOnlyList<Creature> targets)
