@@ -50,29 +50,16 @@ public sealed class BeGodPower : CuteSakikoModPower
             var customPrompt = new LocString("powers", "CUTE_SAKIKO_MOD_TO_FORGET");
             var prefs = new CardSelectorPrefs(customPrompt, toSelect);
 
-            //自定义牌堆的补丁喵~
-            var selected = await CardSelectCmd.FromCombatPile(
-                choiceContext,
-                forgetPile,
-                Owner.Player,
-                prefs,
-                _ => true
-            );
-            // 同上：自定义牌堆不要走 FromCombatPile（联机下对端会抛异常）
+            // 同 RegainMemory：改用 FromSimpleGrid 取代 FromCombatPile。
+            // 遗忘堆是自定义牌堆，FromCombatPile 的牌堆类型校验路径会被"选牌抓取"类
+            // 联机补丁（如 Multiplayer Desync Fix）改写，导致非出牌方抛
+            // InvalidOperationException: Cannot perform on a non combat pile → 两端分叉卡死。
             var candidates = forgetPile.Cards.ToList();
             var selected = await CardSelectCmd.FromSimpleGrid(
                 choiceContext,
                 candidates,
                 Owner.Player,
                 prefs
-            );
-
-            var selected = await CardSelectCmd.FromCombatPile(
-                choiceContext,
-                forgetPile,
-                Owner.Player,
-                prefs,
-                _ => true
             );
 
             var selectedList = selected.ToList();
