@@ -10,7 +10,6 @@ using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Basic;
 
-[RegisterCharacterStarterCard(typeof(CuteRana), 4, Order = 0)]
 public class RanaStrike() : CuteRanaCard(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => new() { CardTag.Strike };

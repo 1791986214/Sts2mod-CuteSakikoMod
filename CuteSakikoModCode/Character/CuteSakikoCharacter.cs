@@ -1,14 +1,13 @@
 ﻿using MegaCrit.Sts2.Core.Models;
-using STS2RitsuLib.Scaffolding.Characters;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Character;
 
-// 泛型参数与 ModCharacterTemplate 一致
 public abstract class CuteSakikoCharacter<TCardPool, TRelicPool, TPotionPool>
-    : ModCharacterTemplate<TCardPool, TRelicPool, TPotionPool>
+    : SkinAwareModCharacter<TCardPool, TRelicPool, TPotionPool>
     where TCardPool : CardPoolModel
     where TRelicPool : RelicPoolModel
     where TPotionPool : PotionPoolModel
 {
-    // 这里可以放置你的角色共有的自定义逻辑
+    // 该模组所有角色的共享逻辑
 }

@@ -6,28 +6,32 @@ using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Others.Config;
 using CuteSakikoMod.CuteSakikoModCode.Others.Telemetry;
 using CuteSakikoMod.CuteSakikoModCode.Patches;
-using CuteSakikoMod.CuteSakikoModCode.Patches.Skin;
 using CuteSakikoMod.CuteSakikoModCode.Pools;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 using CuteSakikoMod.CuteSakikoModCode.Singletons;
 using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Definitions;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Networking;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Ui;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Multiplayer;
 using MegaCrit.Sts2.Core.Multiplayer.Game;
+using MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect;
 using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib;
 using STS2RitsuLib.Content;
 using STS2RitsuLib.Interop;
 using STS2RitsuLib.RunData;
+using STS2RitsuLib.Scaffolding.Godot.NodeAttachments;
 using STS2RitsuLib.Settings;
 using STS2RitsuLib.Utils;
 using STS2RitsuLib.Utils.Persistence;
@@ -70,8 +74,6 @@ public class Entry
         }
 
         // 2. 创建绑定
-        // 游戏性开关：只有"联机 + 客户端 + 跑局中"才锁定
-        // 音频 / 表情贴纸：永远本地可改
         var eggBinding = ModSettingsBindings.Global<CuteSakikoModConfigData, bool>(
             ModId, "config",
             model => model.EggsCard,
@@ -128,7 +130,6 @@ public class Entry
             (model, value) => model.EnableAudio = value
         );
 
-        // ⭐ 表情贴纸相关绑定（本地视觉设置，不参与联机同步）
         var reactionBinding = ModSettingsBindings.Global<CuteSakikoModConfigData, bool>(
             ModId, "config",
             model => model.EnableReactionReplacement,
@@ -153,7 +154,6 @@ public class Entry
             .WithTitle(ModSettingsText.I18N(i18n, "MOD_SETTINGS.TITLE", "Cute Sakiko Mod Settings"))
             .WithDescription(ModSettingsText.I18N(i18n, "MOD_SETTINGS.DESCRIPTION", "Cute Sakiko Mod Settings"))
 
-            // 游戏内容 Section
             .AddSection("game_content", section => section
                 .WithTitle(ModSettingsText.I18N(i18n, "MOD_SETTINGS.SECTION.GAME_CONTENT", "Game Content"))
                 .AddToggle("egg_toggle",
@@ -178,7 +178,6 @@ public class Entry
                 .WithEntryEnabledWhen("custom_event_toggle", () => !GameplayConfigSync.ShouldLockGameplaySettings)
             )
 
-            // ⭐ 表情贴纸 Section（独立分类，永远本地可改）
             .AddSection("reaction", section => section
                 .WithTitle(ModSettingsText.I18N(i18n, "MOD_SETTINGS.SECTION.REACTION", "Reaction Stickers"))
                 .AddToggle("reaction_replacement_toggle",
@@ -201,7 +200,6 @@ public class Entry
                 .WithEntryEnabledWhen("reaction_emote_scale_slider", () => ModConfig.EnableReactionReplacement)
             )
 
-            // 音频 Section
             .AddSection("audio", section => section
                 .WithTitle(ModSettingsText.I18N(i18n, "MOD_SETTINGS.SECTION.AUDIO", "Audio"))
                 .AddToggle("audio_toggle",
@@ -275,12 +273,60 @@ public class Entry
         // 8. 预加载 VFX
         VfxUtil.PreloadScenes(new List<string> { "res://CuteSakikoMod/scenes/vfx/tokyo_tower.tscn" });
 
+        // ===== 皮肤系统 =====
+        // 8.1 数据槽 + 同步服务
+        SkinDataStore.Register(ModId);
+        SkinSyncService.Init();
+
+        // 8.2 注册皮肤表
+        CharacterSkinRegistry.Register(new SakiSkinRegistry());
+        CharacterSkinRegistry.Register(new AnonSkinRegistry());
+        CharacterSkinRegistry.Register(new RanaSkinRegistry());
+
+        // 8.3 挂三个 UI 面板
+        var skinReg = ModNodeAttachmentRegistry.For(ModId);
+
+        skinReg.RegisterReadyChild<NCharacterSelectScreen, SkinPreviewPanel>(
+            "skin_preview",
+            static _ => new SkinPreviewPanel(),
+            static (parent, node) => { },
+            new NodeAttachmentOptions { Name = "SkinPreview", DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName, Order = 20 });
+
+        skinReg.RegisterReadyChild<NCharacterSelectScreen, DeckPresetPanel>(
+            "deck_preset",
+            static _ => new DeckPresetPanel(),
+            static (parent, node) => { },
+            new NodeAttachmentOptions { Name = "DeckPreset", DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName, Order = 21 });
+
+        skinReg.RegisterReadyChild<NCharacterSelectScreen, RelicSwitchPanel>(
+            "relic_switch",
+            static _ => new RelicSwitchPanel(),
+            static (parent, node) => { },
+            new NodeAttachmentOptions { Name = "RelicSwitch", DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName, Order = 22 });
+
+        // 8.4 生命周期：大厅贡献合并后刷新
+        // 8.4 生命周期：大厅贡献合并后刷新
+        RitsuLibFramework.SubscribeLifecycle<RunSavedDataLobbyStagingEvent>(evt =>
+        {
+            if (evt.Reason == RunSavedDataLobbyStagingReason.ContributionMerged
+                || evt.Reason == RunSavedDataLobbyStagingReason.PlayerJoined)
+            {
+                // ★ 不 forceReset：只更新远端缓存，不动本机已有选择
+                SkinResolver.SyncFromLobby(evt.Lobby, forceResetLocal: false);
+                SkinSystemEvents.RaiseCurrentCharacterChanged(SkinUiContext.CurrentCharacterType);
+            }
+        });
+
         // 9. 网络消息处理器 + 房主权威配置同步
         if (RunManager.Instance != null)
         {
-            RunManager.Instance.RunStarted += _ =>
+            RunManager.Instance.RunStarted += runState =>
             {
                 var netService = RunManager.Instance.NetService;
+
+                // ★ 直接传 netService.NetId，避免依赖先前 SetLocalNetId 是否成功
+                if (netService != null && runState != null)
+                    SkinResolver.SyncFromRun(runState, netService.NetId);
 
                 GameplayConfigSync.OnNetServiceReady(netService);
 
@@ -315,6 +361,11 @@ public class Entry
 
                         guitar.RestoreChordData(msg.ChordsData, msg.BonusChordsData, "");
                         guitar.SetLearnedChordsFromString(msg.LearnedChordsData);
+                    }));
+
+                    netService.RegisterMessageHandler(new MessageHandlerDelegate<SkinSyncMessage>((msg, senderId) =>
+                    {
+                        SkinSyncService.OnMessageReceived(msg, senderId);
                     }));
 
                     netService.RegisterMessageHandler(new MessageHandlerDelegate<EggsGrantMessage>(async (msg, senderId) =>
@@ -431,7 +482,6 @@ public class Entry
                     CombatManager.Instance.CombatEnded += _ => AudioManager.StopMusic();
             };
         }
-        ObPopupHelper.PreloadButtonScene();
 
         _ = ChordNoteSystem.MaxStoredChords;
     }

@@ -8,7 +8,6 @@ using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Basic;
 
-[RegisterCharacterStarterCard(typeof(CuteRana), 4, Order = 1)]
 public class RanaDefend() : CuteRanaCard(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
 {
     public override bool GainsBlock => true;

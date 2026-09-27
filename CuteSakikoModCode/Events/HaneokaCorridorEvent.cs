@@ -65,7 +65,7 @@ public sealed class HaneokaCorridorEvent : CuteSakikoEvent
     private bool HasSakiOrOb()
     {
         if (Owner?.RunState == null) return false;
-        return Owner.RunState.Players.Any(p => p.Character is CuteSaki || p.Character is CuteOb);
+        return Owner.RunState.Players.Any(p => p.Character is CuteSaki );
     }
 
     private bool HasSakiOrObAndAnon()

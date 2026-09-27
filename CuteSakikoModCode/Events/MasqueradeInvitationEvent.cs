@@ -60,7 +60,7 @@ public sealed class MasqueradeInvitationEvent : CuteSakikoEvent
     private bool HasOblivionisPlayer()
     {
         if (Owner?.RunState == null) return false;
-        return Owner.RunState.Players.Any(p => p.Character is CuteOb || p.Character is CuteSaki);
+        return Owner.RunState.Players.Any(p =>  p.Character is CuteSaki);
     }
 
     private async Task Accept()

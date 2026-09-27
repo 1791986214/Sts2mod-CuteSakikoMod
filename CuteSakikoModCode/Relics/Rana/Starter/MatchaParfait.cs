@@ -20,7 +20,6 @@ using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Relics.Rana.Starter;
 
-[RegisterCharacterStarterRelic(typeof(CuteRana), Order = 0)]
 [RegisterTouchOfOrobasRefinement(typeof(BigMatchaParfait))]
 public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
     IRelicExtraIconAmountLabelSpecsProvider, IRelicExtraIconAmountLabelsChangeSource

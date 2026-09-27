@@ -24,7 +24,6 @@ using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 
-[RegisterCharacterStarterRelic(typeof(CuteAnon))]
 [RegisterTouchOfOrobasRefinement(typeof(FlashAnonGuitar))]
 public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
 {
