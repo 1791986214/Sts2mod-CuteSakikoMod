@@ -66,7 +66,7 @@ public sealed class EmoDuetEvent : CuteSakikoEvent
     private bool HasSakiOrObAndAnon()
     {
         if (Owner?.RunState == null) return false;
-        var hasSakiOrOb = Owner.RunState.Players.Any(p => p.Character is CuteSaki || p.Character is CuteOb);
+        var hasSakiOrOb = Owner.RunState.Players.Any(p => p.Character is CuteSaki);
         var hasAnon = Owner.RunState.Players.Any(p => p.Character is CuteAnon);
         return hasSakiOrOb && hasAnon;
     }

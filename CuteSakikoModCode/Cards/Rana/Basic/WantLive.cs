@@ -12,7 +12,6 @@ using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Basic;
 
-[RegisterCharacterStarterCard(typeof(CuteRana), 1, Order = 3)]
 public class WantLive() : CuteRanaCard(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords =>

@@ -78,7 +78,7 @@ public sealed class ScholarshipEvent : CuteSakikoEvent
     {
         if (Owner?.RunState == null) return false;
         var hasAnon = Owner.RunState.Players.Any(p => p.Character is CuteAnon);
-        var hasSakiOrOb = Owner.RunState.Players.Any(p => p.Character is CuteSaki || p.Character is CuteOb);
+        var hasSakiOrOb = Owner.RunState.Players.Any(p => p.Character is CuteSaki );
         return hasAnon && hasSakiOrOb;
     }
 

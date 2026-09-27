@@ -13,8 +13,6 @@ using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Basic;
 
-[RegisterCharacterStarterCard(typeof(CuteOb), 4, Order = 0)]
-[RegisterCharacterStarterCard(typeof(CuteSaki), 4, Order = 0)]
 
 public class PianoStrike() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {

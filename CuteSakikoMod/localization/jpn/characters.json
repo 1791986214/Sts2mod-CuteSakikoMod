@@ -1,4 +1,24 @@
 {
+  "SKIN_VIEW_DECK": "デッキを見る",
+  "SKIN_CLOSE": "閉じる",
+  
+  "SAKI_SKIN_DEFAULT": "羽丘",
+  "SAKI_SKIN_OB": "衣装",
+  "SAKI_DECK_DEFAULT": "デフォルトデッキ",
+  "SAKI_DECK_OB": "忘却デッキ",
+  "SAKI_RELIC_DEFAULT": "カブトムシのノート",
+  "SAKI_RELIC_OB": "人形の仮面",
+
+  "ANON_SKIN_DEFAULT": "羽丘",
+  "ANON_SKIN_TENDAY": "余命十日",
+  "ANON_DECK_DEFAULT": "デフォルトデッキ",
+  "ANON_RELIC_DEFAULT": "デフォルトレリック",
+
+  "RANA_SKIN_DEFAULT": "花咲川楽奈",
+  "RANA_SKIN_TENDAY": "余命十日",
+  "RANA_DECK_DEFAULT": "デフォルトデッキ",
+  "RANA_RELIC_DEFAULT": "デフォルトレリック",
+  
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.aromaPrinciple": "[sine][blue]...ですわ！？[/blue][/sine]",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.banter.alive.endTurnPing": "早くしてくれませんか？",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.banter.dead.endTurnPing": "忘却...",

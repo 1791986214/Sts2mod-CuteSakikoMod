@@ -13,7 +13,6 @@ using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Relics.Saki.Oblivionis
 {
-    [RegisterCharacterStarterRelic(typeof(CuteOb))]
     [RegisterTouchOfOrobasRefinement(typeof(ObHairBand))]
     public class ObMask : CuteSakiRelic, IForgetHookHandler   // 实现接口
     {

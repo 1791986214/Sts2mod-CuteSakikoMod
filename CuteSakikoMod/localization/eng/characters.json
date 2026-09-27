@@ -1,4 +1,24 @@
 {
+  "SKIN_VIEW_DECK": "View Deck",
+  "SKIN_CLOSE": "Close",
+  
+  "SAKI_SKIN_DEFAULT": "Haneoka",
+  "SAKI_SKIN_OB": "Costume",
+  "SAKI_DECK_DEFAULT": "Default Deck",
+  "SAKI_DECK_OB": "Oblivion Deck",
+  "SAKI_RELIC_DEFAULT": "Rhinoceros Beetle Notebook",
+  "SAKI_RELIC_OB": "Puppet Mask",
+
+  "ANON_SKIN_DEFAULT": "Haneoka",
+  "ANON_SKIN_TENDAY": "Ten Days Left",
+  "ANON_DECK_DEFAULT": "Default Deck",
+  "ANON_RELIC_DEFAULT": "Default Relic",
+
+  "RANA_SKIN_DEFAULT": "Hanasakigawa Rana",
+  "RANA_SKIN_TENDAY": "Ten Days Left",
+  "RANA_DECK_DEFAULT": "Default Deck",
+  "RANA_RELIC_DEFAULT": "Default Relic",
+  
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.aromaPrinciple": "[sine][blue]...Desuwa!?[/blue][/sine]",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.banter.alive.endTurnPing": "Can you hurry up?",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.banter.dead.endTurnPing": "Forget...",

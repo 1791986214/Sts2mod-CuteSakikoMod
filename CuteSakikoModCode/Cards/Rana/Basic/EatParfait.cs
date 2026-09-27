@@ -14,7 +14,6 @@ using STS2RitsuLib.Keywords;
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Basic;
 
 [RegisterArchaicToothTranscendence(typeof(StormInhale))]
-[RegisterCharacterStarterCard(typeof(CuteRana), 1, Order = 2)]
 public class EatParfait() : CuteRanaCard(0, CardType.Skill, CardRarity.Basic, TargetType.Self), CuteRanaCard.IEatParfaitCard
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
