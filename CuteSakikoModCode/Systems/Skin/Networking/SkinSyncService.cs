@@ -31,7 +31,7 @@ public static class SkinSyncService
             CharacterTypeName = characterType.FullName ?? characterType.Name,
             ArtSkinIndex = choice.ArtSkinIndex,
             DeckPresetIndex = choice.DeckPresetIndex,
-            RelicPresetIndex = choice.RelicPresetIndex,
+            RelicPresetIndex = choice.RelicPresetIndex
         };
 
         if (net.Type == NetGameType.Client)
@@ -55,7 +55,7 @@ public static class SkinSyncService
         {
             ArtSkinIndex = msg.ArtSkinIndex,
             DeckPresetIndex = msg.DeckPresetIndex,
-            RelicPresetIndex = msg.RelicPresetIndex,
+            RelicPresetIndex = msg.RelicPresetIndex
         });
 
         SkinSystemEvents.RaiseArtSkinChanged(type);
@@ -68,9 +68,10 @@ public static class SkinSyncService
             var t = reg.CharacterType;
             if ((t.FullName ?? t.Name) == fullName) return t;
         }
+
         return null;
     }
-    
+
     // SkinSyncService 里加
     public static void PrimeRemoteFromLobby(StartRunLobby lobby)
     {
@@ -78,7 +79,7 @@ public static class SkinSyncService
         var localId = lobby.NetService.NetId;
         foreach (var p in lobby.Players)
         {
-            if (p.id == localId) continue;          // 跳过本机
+            if (p.id == localId) continue; // 跳过本机
             if (p.character == null) continue;
             var charType = p.character.GetType();
             if (!CharacterSkinRegistry.HasSkins(charType)) continue;

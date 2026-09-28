@@ -1,45 +1,15 @@
-﻿using MegaCrit.Sts2.Core.Models;
+﻿using CuteSakikoMod.CuteSakikoModCode.Monsters.Boss.ChocolateSnail;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Monsters;
 using MegaCrit.Sts2.Core.Rooms;
-using STS2RitsuLib.Scaffolding.Content;
-using System.Collections.Generic;
-using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.Monsters.Boss.ChocolateSnail;
-using MegaCrit.Sts2.Core.Models.Acts;
 using STS2RitsuLib.Interop.AutoRegistration;
+using STS2RitsuLib.Scaffolding.Content;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Encounters.Event;
 
 [RegisterGlobalEncounter]
 public class Act1DoubleBossEncounter : ModEncounterTemplate
 {
-    public override bool IsValidForAct(ActModel act) => false;
-    
-    private static IReadOnlyList<EncounterModel> GetAllAct1BossEncounters()
-    {
-        if (ModelDb.ActsByIndex == null || ModelDb.ActsByIndex.Count == 0)
-            return new List<EncounterModel>();
-
-        return ModelDb.ActsByIndex[0]
-            .SelectMany(act => act.AllBossEncounters)
-            .Distinct()
-            .ToList();
-    }
-
-    /// <summary>
-    /// 判断怪物是否为爪牙（拥有 MinionPower 的怪物）
-    /// 目前第一幕唯一的爪牙是 KinFollower，如有新增可在此添加
-    /// </summary>
-    private static bool IsMinionMonster(MonsterModel monster)
-    {
-        // 爪牙怪物，不能作为 Boss 参与双 Boss 事件
-        if (monster is KinFollower) return true;
-        if (monster is SmallChocolateSnail) return true;
-
-        // 未来如有其他爪牙，继续添加
-        return false;
-    }
-
     public override IEnumerable<MonsterModel> AllPossibleMonsters =>
         GetAllAct1BossEncounters()
             .SelectMany(encounter => encounter.AllPossibleMonsters)
@@ -54,10 +24,43 @@ public class Act1DoubleBossEncounter : ModEncounterTemplate
 
     // 指定自定义遭遇场景路径
     public override EncounterAssetProfile AssetProfile => new(
-        EncounterScenePath: "res://CuteSakikoMod/scenes/encounter/act1_double_boss.tscn"
+        "res://CuteSakikoMod/scenes/encounter/act1_double_boss.tscn"
     );
 
-    public override float GetCameraScaling() => 0.8f;
+    public override bool IsValidForAct(ActModel act)
+    {
+        return false;
+    }
+
+    private static IReadOnlyList<EncounterModel> GetAllAct1BossEncounters()
+    {
+        if (ModelDb.ActsByIndex == null || ModelDb.ActsByIndex.Count == 0)
+            return new List<EncounterModel>();
+
+        return ModelDb.ActsByIndex[0]
+            .SelectMany(act => act.AllBossEncounters)
+            .Distinct()
+            .ToList();
+    }
+
+    /// <summary>
+    ///     判断怪物是否为爪牙（拥有 MinionPower 的怪物）
+    ///     目前第一幕唯一的爪牙是 KinFollower，如有新增可在此添加
+    /// </summary>
+    private static bool IsMinionMonster(MonsterModel monster)
+    {
+        // 爪牙怪物，不能作为 Boss 参与双 Boss 事件
+        if (monster is KinFollower) return true;
+        if (monster is SmallChocolateSnail) return true;
+
+        // 未来如有其他爪牙，继续添加
+        return false;
+    }
+
+    public override float GetCameraScaling()
+    {
+        return 0.8f;
+    }
 
     protected override IReadOnlyList<(MonsterModel, string?)> GenerateMonsters()
     {
@@ -75,10 +78,10 @@ public class Act1DoubleBossEncounter : ModEncounterTemplate
             .ToList();
 
         var monsters = new List<(MonsterModel, string?)>();
-        for (int i = 0; i < selectedBosses.Count; i++)
+        for (var i = 0; i < selectedBosses.Count; i++)
         {
             var boss = selectedBosses[i].ToMutable();
-            string slot = Slots[i % Slots.Count];
+            var slot = Slots[i % Slots.Count];
             monsters.Add((boss, slot));
         }
 

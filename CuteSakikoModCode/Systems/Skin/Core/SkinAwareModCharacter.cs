@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Models;
+﻿using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Scaffolding.Characters;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
@@ -20,7 +17,7 @@ public abstract class SkinAwareModCharacter<TCardPool, TRelicPool, TPotionPool>
             if (reg == null || reg.AllSkins.Count == 0) return null;
 
             var choice = SkinResolver.GetLocalChoice(GetType());
-            var idx = System.Math.Clamp(choice.ArtSkinIndex, 0, reg.AllSkins.Count - 1);
+            var idx = Math.Clamp(choice.ArtSkinIndex, 0, reg.AllSkins.Count - 1);
             return reg.AllSkins[idx];
         }
     }
@@ -34,12 +31,6 @@ public abstract class SkinAwareModCharacter<TCardPool, TRelicPool, TPotionPool>
                 CharacterSelectLockedIconPath,
                 MapMarkerPath)
             : base.AssetProfile;
-
-    private int ResolveRelicIndex(CharacterSkinDefinition skin)
-    {
-        var choice = SkinResolver.GetLocalChoice(GetType());
-        return System.Math.Clamp(choice.RelicPresetIndex, 0, skin.RelicPresets.Count - 1);
-    }
 
     public override int StartingHp
     {
@@ -73,12 +64,12 @@ public abstract class SkinAwareModCharacter<TCardPool, TRelicPool, TPotionPool>
                 yield break;
 
             var choice = SkinResolver.GetLocalChoice(GetType());
-            var idx = System.Math.Clamp(choice.DeckPresetIndex, 0, skin.DeckPresets.Count - 1);
+            var idx = Math.Clamp(choice.DeckPresetIndex, 0, skin.DeckPresets.Count - 1);
 
             foreach (var (cardType, count) in skin.DeckPresets[idx].Cards)
             {
                 var model = ModelDb.GetById<CardModel>(ModelDb.GetId(cardType));
-                for (int i = 0; i < System.Math.Max(count, 0); i++)
+                for (var i = 0; i < Math.Max(count, 0); i++)
                     yield return model;
             }
         }
@@ -92,10 +83,16 @@ public abstract class SkinAwareModCharacter<TCardPool, TRelicPool, TPotionPool>
                 yield break;
 
             var choice = SkinResolver.GetLocalChoice(GetType());
-            var idx = System.Math.Clamp(choice.RelicPresetIndex, 0, skin.RelicPresets.Count - 1);
+            var idx = Math.Clamp(choice.RelicPresetIndex, 0, skin.RelicPresets.Count - 1);
 
             foreach (var relicType in skin.RelicPresets[idx].RelicTypes)
                 yield return ModelDb.GetById<RelicModel>(ModelDb.GetId(relicType));
         }
+    }
+
+    private int ResolveRelicIndex(CharacterSkinDefinition skin)
+    {
+        var choice = SkinResolver.GetLocalChoice(GetType());
+        return Math.Clamp(choice.RelicPresetIndex, 0, skin.RelicPresets.Count - 1);
     }
 }

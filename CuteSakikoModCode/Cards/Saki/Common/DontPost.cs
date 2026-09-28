@@ -31,7 +31,7 @@ public class DontPost() : CuteSakikoModCard(2, CardType.Skill, CardRarity.Common
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-        int pressureAmount = (int)DynamicVars["PressurePower"].BaseValue;
+        var pressureAmount = (int)DynamicVars["PressurePower"].BaseValue;
         await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
     }
 

@@ -27,7 +27,7 @@ public class BrainFreeze : ModStatusCard
     {
         if (card != this) return;
         await Cmd.Wait(0.25f);
-        int damage = DynamicVars.Damage.IntValue;
+        var damage = DynamicVars.Damage.IntValue;
         await CreatureCmd.Damage(
             choiceContext,
             Owner.Creature,

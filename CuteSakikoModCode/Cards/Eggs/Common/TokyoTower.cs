@@ -63,7 +63,6 @@ public class TokyoTower() : CuteSakikoModEggCard(3, CardType.Attack, CardRarity.
                 .ToList();
 
             if (otherEnemies.Count > 0)
-            {
                 await CreatureCmd.Damage(
                     choiceContext,
                     otherEnemies,
@@ -72,7 +71,6 @@ public class TokyoTower() : CuteSakikoModEggCard(3, CardType.Attack, CardRarity.
                     this,
                     null
                 );
-            }
         }
     }
 

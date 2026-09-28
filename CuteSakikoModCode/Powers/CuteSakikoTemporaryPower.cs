@@ -8,8 +8,8 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace CuteSakikoMod.CuteSakikoModCode.Powers;
 
 /// <summary>
-/// 拥有统一图标分辨逻辑的临时力量基类。
-/// 继承自 RitsuLib 的 ModTemporaryPowerTemplate，同时使用 CuteSakikoMod 的 PowerAssetProfile 扩展。
+///     拥有统一图标分辨逻辑的临时力量基类。
+///     继承自 RitsuLib 的 ModTemporaryPowerTemplate，同时使用 CuteSakikoMod 的 PowerAssetProfile 扩展。
 /// </summary>
 [RegisterPower(Inherit = true)]
 public abstract class CuteSakikoTemporaryPower : ModTemporaryPowerTemplate

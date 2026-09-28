@@ -9,16 +9,17 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
 
 public class UninvitedGuest : CuteRanaCard
 {
-    [SavedProperty]
-    private bool HasIncreasedCost { get; set; }  // 改为属性
+    public UninvitedGuest() : base(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+    {
+    }
 
-    public UninvitedGuest() : base(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy) { }
+    [SavedProperty] private bool HasIncreasedCost { get; set; } // 改为属性
 
     protected override IEnumerable<DynamicVar> CanonicalVars => new[]
     {
         new DamageVar(10m, ValueProp.Move)
     };
-    
+
     // 如果基类有 ShouldGlowGold，用这个；否则删除
     protected override bool ShouldGlowGoldInternal => !HasIncreasedCost;
 
@@ -33,7 +34,7 @@ public class UninvitedGuest : CuteRanaCard
 
         if (cardPlay.Target != null)
         {
-            int damage = (int)DynamicVars.Damage.BaseValue;
+            var damage = (int)DynamicVars.Damage.BaseValue;
             await DamageCmd.Attack(damage)
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target)

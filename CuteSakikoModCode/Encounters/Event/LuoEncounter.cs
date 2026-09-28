@@ -1,17 +1,14 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Monsters.Weak;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
-using STS2RitsuLib.Scaffolding.Content;
 using STS2RitsuLib.Interop.AutoRegistration;
-using System.Collections.Generic;
+using STS2RitsuLib.Scaffolding.Content;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Encounters.Event;
 
 [RegisterGlobalEncounter]
 public class LuoEncounter : ModEncounterTemplate
 {
-    public override bool IsValidForAct(ActModel act) => false;
-    
     public override RoomType RoomType => RoomType.Monster;
     public override bool IsWeak => false;
 
@@ -22,10 +19,8 @@ public class LuoEncounter : ModEncounterTemplate
     };
 
     public override EncounterAssetProfile AssetProfile => new(
-        EncounterScenePath: "res://CuteSakikoMod/scenes/encounter/luo_encounter.tscn"
+        "res://CuteSakikoMod/scenes/encounter/luo_encounter.tscn"
     );
-
-    public override float GetCameraScaling() => 0.9f;
 
     public override IEnumerable<MonsterModel> AllPossibleMonsters => new MonsterModel[]
     {
@@ -33,6 +28,16 @@ public class LuoEncounter : ModEncounterTemplate
         ModelDb.Monster<TianXiangLuo>(),
         ModelDb.Monster<Araluo>()
     };
+
+    public override bool IsValidForAct(ActModel act)
+    {
+        return false;
+    }
+
+    public override float GetCameraScaling()
+    {
+        return 0.9f;
+    }
 
     protected override IReadOnlyList<(MonsterModel, string?)> GenerateMonsters()
     {
@@ -49,7 +54,7 @@ public class LuoEncounter : ModEncounterTemplate
             var pick = pool[Rng.NextInt(pool.Count)];
             var mutable = pick.ToMutable();
 
-            int initialIdx = Rng.NextInt(3);
+            var initialIdx = Rng.NextInt(3);
             switch (mutable)
             {
                 case TianSuLuo ts: ts.InitialIntentIndex = initialIdx; break;

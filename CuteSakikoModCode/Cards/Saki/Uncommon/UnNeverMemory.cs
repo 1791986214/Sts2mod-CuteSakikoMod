@@ -35,8 +35,8 @@ public class UnNeverMemory() : CuteSakikoModCard(1, CardType.Skill, CardRarity.U
         await MemoryCmd.Recall(
             choiceContext,
             Owner,
-            allowChoose: false,
-            count: DynamicVars.Cards.IntValue,
+            false,
+            DynamicVars.Cards.IntValue,
             upgraded: false,
             source: this,
             allowDuplicates: true);

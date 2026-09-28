@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
+﻿using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
 using CuteSakikoMod.CuteSakikoModCode.Enchantments;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 using MegaCrit.Sts2.Core.Commands;
@@ -32,7 +30,10 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
         new CardsVar(4)
     ];
 
-    protected override bool IsAllowedInternal(IRunState runState) => true;
+    protected override bool IsAllowedInternal(IRunState runState)
+    {
+        return true;
+    }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
@@ -47,15 +48,11 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
         var options = new List<EventOption>();
 
         if (HasRanaPlayer())
-        {
-            options.Add(new(this, CheckPillar, ModOptionKey("INSIDE", "CHECK_PILLAR")));
-        }
+            options.Add(new EventOption(this, CheckPillar, ModOptionKey("INSIDE", "CHECK_PILLAR")));
         else
-        {
             options.Add(new EventOption(this, null, ModOptionKey("INSIDE", "CHECK_PILLAR_LOCKED")));
-        }
 
-        options.Add(new(this, FindExit, ModOptionKey("INSIDE", "FIND_EXIT")));
+        options.Add(new EventOption(this, FindExit, ModOptionKey("INSIDE", "FIND_EXIT")));
 
         SetEventState(PageDescription("INSIDE"), options);
         return Task.CompletedTask;
@@ -106,26 +103,26 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
     private async Task CheckSelf()
     {
         var enchantment = ModelDb.Enchantment<MyGoEnchantment>();
-        int count = DynamicVars.Cards.IntValue;
+        var count = DynamicVars.Cards.IntValue;
 
         var deck = PileType.Deck.GetPile(Owner!);
         var candidates = deck.Cards.Where(c => c.Enchantment == null).ToList();
 
         var chosen = new List<CardModel>();
-        for (int i = 0; i < count && candidates.Count > 0; i++)
+        for (var i = 0; i < count && candidates.Count > 0; i++)
         {
             var idx = Rng.NextInt(candidates.Count);
             chosen.Add(candidates[idx]);
             candidates.RemoveAt(idx);
         }
 
-        foreach (var card in chosen)
-        {
-            CardCmd.Enchant(enchantment.ToMutable(), card, 1);
-        }
+        foreach (var card in chosen) CardCmd.Enchant(enchantment.ToMutable(), card, 1);
 
         SetEventFinished(PageDescription("CHECK_SELF_DESC"));
     }
 
-    private LocString PageDescription(string pageKey) => L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    private LocString PageDescription(string pageKey)
+    {
+        return L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    }
 }

@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -15,7 +14,7 @@ public class NekoLeader : CuteRanaCard
     public NekoLeader() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
     }
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new PowerVar<NekoLeaderPower>(1)

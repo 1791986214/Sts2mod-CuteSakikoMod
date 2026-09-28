@@ -1,13 +1,11 @@
-﻿using MegaCrit.Sts2.Core.Models.Acts;
-using STS2RitsuLib.Scaffolding.Content;
-using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Others.Config;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others.Config;
 using MegaCrit.Sts2.Core.Models;
+using STS2RitsuLib.Scaffolding.Content;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Events.Ancient;
 
 /// <summary>
-/// 所有自定义远古事件的抽象基类，受设置“自定义远古事件”开关控制。
+///     所有自定义远古事件的抽象基类，受设置“自定义远古事件”开关控制。
 /// </summary>
 public abstract class CuteSakikoAncientEvent : ModAncientEventTemplate
 {

@@ -28,10 +28,10 @@ public class RegainMemory : CuteSakikoModCard
 
         // 手牌上限保护
         var hand = PileType.Hand.GetPile(Owner);
-        int handSpace = 10 - (hand?.Cards.Count ?? 0);
+        var handSpace = 10 - (hand?.Cards.Count ?? 0);
         if (handSpace <= 0) return;
 
-        int maxSelect = Math.Min(DynamicVars.Cards.IntValue, forgetPile.Cards.Count);
+        var maxSelect = Math.Min(DynamicVars.Cards.IntValue, forgetPile.Cards.Count);
         maxSelect = Math.Min(maxSelect, handSpace);
         if (maxSelect <= 0) return;
 
@@ -47,7 +47,6 @@ public class RegainMemory : CuteSakikoModCard
             candidates,
             Owner,
             prefs
-
         );
 
         // 快照，避免遍历时修改源集合

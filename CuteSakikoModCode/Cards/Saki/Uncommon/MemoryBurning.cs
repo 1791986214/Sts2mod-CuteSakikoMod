@@ -1,15 +1,12 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.CardPiles;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
-using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
-using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Uncommon;
@@ -41,7 +38,7 @@ public class MemoryBurning : CuteSakikoModCard
         if (forgetPile == null || forgetPile.Cards.Count == 0) return;
 
         var memoryKeyword = CutesakiKeywords.Memory.GetModCardKeyword();
-        
+
         var memoryCards = forgetPile.Cards
             .Where(c => c.Keywords.Contains(memoryKeyword))
             .ToList();

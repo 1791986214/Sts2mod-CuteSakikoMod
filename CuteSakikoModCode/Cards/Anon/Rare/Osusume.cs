@@ -1,6 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -40,7 +39,7 @@ public class Osusume() : CuteAnonCard(2, CardType.Skill, CardRarity.Rare, Target
 
         var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
         if (guitar == null) return;
-        
+
         const string chordId = "AnonDChord";
         // 若临时槽中还未拥有该和弦，则添加临时槽位；否则直接储存一个和弦
         var temporaryChords = guitar.GetTemporaryChords(); // 需公开此方法，见下方说明

@@ -1,13 +1,9 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
-
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Rare;
 
@@ -19,10 +15,7 @@ public class Wink : CuteAnonCard
 
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
-        get
-        {
-            yield return new DamageVar(10m, ValueProp.Move);
-        }
+        get { yield return new DamageVar(10m, ValueProp.Move); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -40,11 +33,11 @@ public class Wink : CuteAnonCard
         await ChordNoteSystem.PlayAllStoredChordsAsync(Owner, choiceContext);
 
         // 基础 1 次 + 每演奏一个和弦额外 1 次
-        int totalHits = 1 + storedCount;
+        var totalHits = 1 + storedCount;
         var damage = DynamicVars.Damage.IntValue;
 
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .WithHitCount(totalHits)
             .TargetingAllOpponents(combat)
             .WithHitFx("vfx/vfx_attack_slash")

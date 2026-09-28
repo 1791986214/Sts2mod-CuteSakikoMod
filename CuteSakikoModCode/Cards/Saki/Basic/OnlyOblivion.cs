@@ -2,7 +2,6 @@
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
@@ -21,7 +20,7 @@ public class OnlyOblivion : CuteSakikoModCard
     public OnlyOblivion() : base(1, CardType.Skill, CardRarity.Ancient, TargetType.None)
     {
     }
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get
@@ -31,7 +30,7 @@ public class OnlyOblivion : CuteSakikoModCard
             yield return HoverTipFactory.FromPower<BreakDownPower>();
         }
     }
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new CardsVar(1)

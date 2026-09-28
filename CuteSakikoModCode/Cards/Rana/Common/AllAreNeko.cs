@@ -9,7 +9,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Keywords;
 
-
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
 
 public class AllAreNeko : CuteRanaCard
@@ -20,26 +19,17 @@ public class AllAreNeko : CuteRanaCard
 
     public override IEnumerable<CardKeyword> CanonicalKeywords
     {
-        get
-        {
-            yield return CardKeyword.Exhaust;
-        }
+        get { yield return CardKeyword.Exhaust; }
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
-        get
-        {
-            yield return new CatsVar();
-        }
+        get { yield return new CatsVar(); }
     }
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -55,18 +45,19 @@ public class AllAreNeko : CuteRanaCard
         var rng = Owner.RunState.Rng.CombatCardGeneration;
 
         // 计算场上存活生物总数（敌人 + 玩家生物）
-        int aliveEnemies = combatState.Enemies.Count(e => e.IsAlive);
-        int alivePlayers = combatState.Players.Select(p => p.Creature).Count(c => c.IsAlive);
-        int totalCreatures = aliveEnemies + alivePlayers;
+        var aliveEnemies = combatState.Enemies.Count(e => e.IsAlive);
+        var alivePlayers = combatState.Players.Select(p => p.Creature).Count(c => c.IsAlive);
+        var totalCreatures = aliveEnemies + alivePlayers;
 
         var results = new List<CardPileAddResult>();
 
-        for (int i = 0; i < totalCreatures; i++)
+        for (var i = 0; i < totalCreatures; i++)
         {
             var template = rng.NextItem(allNekoCards);
             var newCard = combatState.CreateCard(template, Owner);
             // 添加的猫咪不升级
-            var result = await CardPileCmd.AddGeneratedCardToCombat(newCard, PileType.Draw, Owner,CardPilePosition.Random);
+            var result =
+                await CardPileCmd.AddGeneratedCardToCombat(newCard, PileType.Draw, Owner, CardPilePosition.Random);
             results.Add(result);
         }
 
@@ -82,7 +73,7 @@ public class AllAreNeko : CuteRanaCard
     }
 
     /// <summary>
-    /// 动态变量：实时显示场上存活生物数
+    ///     动态变量：实时显示场上存活生物数
     /// </summary>
     private class CatsVar : DynamicVar
     {
@@ -97,8 +88,8 @@ public class AllAreNeko : CuteRanaCard
             var combat = card.CombatState;
             if (combat != null)
             {
-                int aliveEnemies = combat.Enemies.Count(e => e.IsAlive);
-                int alivePlayers = combat.Players.Select(p => p.Creature).Count(c => c.IsAlive);
+                var aliveEnemies = combat.Enemies.Count(e => e.IsAlive);
+                var alivePlayers = combat.Players.Select(p => p.Creature).Count(c => c.IsAlive);
                 BaseValue = aliveEnemies + alivePlayers;
             }
             else

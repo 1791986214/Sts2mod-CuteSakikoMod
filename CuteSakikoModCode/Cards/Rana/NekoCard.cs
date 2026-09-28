@@ -11,7 +11,8 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana;
 public abstract class NekoCard(int cost, CardType type, CardRarity rarity, TargetType target) :
     ModCardTemplate(cost, type, rarity, target)
 {
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.Neko.GetModCardKeyword(),CardKeyword.Exhaust];
-    
+    public override IEnumerable<CardKeyword> CanonicalKeywords =>
+        [CutesakiKeywords.Neko.GetModCardKeyword(), CardKeyword.Exhaust];
+
     public override CardAssetProfile AssetProfile => this.CardAssetProfile();
 }

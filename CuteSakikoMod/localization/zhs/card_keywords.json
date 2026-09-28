@@ -41,7 +41,6 @@
   "CUTE_SAKIKO_MOD_KEYWORD_RANA_LIVE.description": "打出后获得1层[gold]莱芜[/gold]",
   "CUTE_SAKIKO_MOD_KEYWORD_PANCAKE.title": "煎饼打击",
   "CUTE_SAKIKO_MOD_KEYWORD_PANCAKE.description": "敌人造成9点伤害，该伤害可以被[gold]格挡[/gold]所阻挡，若[gold]格挡[/gold]大于伤害值则不对生命值造成任何效果，只对[gold]格挡[/gold]值造成减法效果；若[gold]格挡[/gold]值小于伤害值，则对生命值造成伤害值与[gold]格挡[/gold]值二者差值的伤害，然后此牌进入弃牌区。若为升级版本则对指定敌人造成10点伤害，该伤害可以被[gold]格挡[/gold]所阻挡，若[gold]格挡[/gold]大于伤害值则不对生命值造成任何效果，只对[gold]格挡[/gold]值造成减法效果；若[gold]格挡[/gold]值小于伤害值，则对生命值造成伤害值与[gold]格挡[/gold]值二者差值的伤害。接着若没有无法抽牌相关的debuff，则从抽牌堆中随机抽取2张牌放入[gold]手牌[/gold]，然后此牌进入弃牌区。若有无法抽牌相关的debuff则只对指定敌人造成10点伤害，该伤害可以被[gold]格挡[/gold]所阻挡，若[gold]格挡[/gold]大于伤害值则不对生命值造成任何效果，只对[gold]格挡[/gold]值造成减法效果；若[gold]格挡[/gold]值小于伤害值，则对生命值造成伤害值与[gold]格挡[/gold]值二者差值的伤害，然后此牌进入弃牌区。",
-
   "CUTE_SAKIKO_MOD_CCHORD.title": "C和弦",
   "CUTE_SAKIKO_MOD_CCHORD.description": "对随机敌人造成[blue]{0}[/blue]点伤害。",
   "CUTE_SAKIKO_MOD_DCHORD.title": "D和弦",
@@ -70,7 +69,6 @@
   "CUTE_SAKIKO_MOD_A#CHORD.description": "所有友方下[blue]{0}[/blue]张攻击牌的费用减少1点。",
   "CUTE_SAKIKO_MOD_B#CHORD.title": "#B和弦",
   "CUTE_SAKIKO_MOD_B#CHORD.description": "所有友方获得[blue]{0}[/blue]层[gold]活力[/gold]。",
-  
   "CUTE_SAKIKO_MOD_CMCHORD.title": "Cm和弦",
   "CUTE_SAKIKO_MOD_CMCHORD.description": "所有友方获得[blue]{0}[/blue]点[gold]格挡[/gold]。",
   "CUTE_SAKIKO_MOD_DMCHORD.title": "Dm和弦",
@@ -99,7 +97,6 @@
   "CUTE_SAKIKO_MOD_A#MCHORD.description": "所有友方下[blue]{0}[/blue]张技能牌的费用减少1点。",
   "CUTE_SAKIKO_MOD_B#MCHORD.title": "#Bm和弦",
   "CUTE_SAKIKO_MOD_B#MCHORD.description": "所有友方获得[blue]{0}[/blue]层[gold]覆甲[/gold]。",
-
   "CUTE_SAKIKO_MOD_C7CHORD.title": "C7和弦",
   "CUTE_SAKIKO_MOD_C7CHORD.description": "所有敌人本回合减少[blue]{0}[/blue][img]CuteSakikoMod/images/ui/text/text_strength.png[/img]。",
   "CUTE_SAKIKO_MOD_D7CHORD.title": "D7和弦",
@@ -128,7 +125,6 @@
   "CUTE_SAKIKO_MOD_A#7CHORD.description": "所有友方获得[blue]{0}[/blue]点能量。",
   "CUTE_SAKIKO_MOD_B#7CHORD.title": "#B7和弦",
   "CUTE_SAKIKO_MOD_B#7CHORD.description": "下[blue]{0}[/blue]个[gold]和弦[/gold]演奏的数值增加1点。",
-
   "CUTE_SAKIKO_MOD_ANONCCHORD.title": "爱音C和弦",
   "CUTE_SAKIKO_MOD_ANONCCHORD.description": "在本场战斗中升级所有友方牌堆中的[blue]{0}[/blue]张牌。",
   "CUTE_SAKIKO_MOD_ANONDCHORD.title": "爱音D和弦",

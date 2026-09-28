@@ -21,8 +21,7 @@ public class KnightSword : ModTokenCard
     {
     }
 
-    [SavedProperty]
-    private int ExtraDamage { get; set; }
+    [SavedProperty] private int ExtraDamage { get; set; }
 
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
         [CardKeyword.Retain];

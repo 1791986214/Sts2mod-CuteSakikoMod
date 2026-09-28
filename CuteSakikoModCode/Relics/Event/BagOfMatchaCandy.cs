@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using CuteSakikoMod.CuteSakikoModCode.Enchantments;
+﻿using CuteSakikoMod.CuteSakikoModCode.Enchantments;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Relics;
@@ -37,9 +35,6 @@ public class BagOfMatchaCandy : CuteSakikoEventRelic
         var selected = await CardSelectCmd.FromDeckForEnchantment(
             Owner, enchantment, 1, null, prefs);
 
-        foreach (var card in selected)
-        {
-            CardCmd.Enchant(enchantment.ToMutable(), card, 1);
-        }
+        foreach (var card in selected) CardCmd.Enchant(enchantment.ToMutable(), card, 1);
     }
 }

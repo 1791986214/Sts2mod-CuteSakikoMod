@@ -32,7 +32,7 @@ public class CommunicateProperly() : CuteAnonCard(2, CardType.Skill, CardRarity.
         if (monster == null) return;
 
         // 获取怪物的真正后续动作，避免将 STUNNED 等临时状态作为 FollowUp
-        string? originalMoveId = MonsterMoveHelper.GetEffectiveFollowUpId(monster);
+        var originalMoveId = MonsterMoveHelper.GetEffectiveFollowUpId(monster);
 
         var defendIntent = new DefendIntent();
         var customMove = new MoveState(

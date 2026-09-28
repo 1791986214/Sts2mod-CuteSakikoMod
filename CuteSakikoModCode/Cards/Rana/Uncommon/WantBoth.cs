@@ -6,13 +6,14 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using STS2RitsuLib.Keywords;
 
-
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 
 public class WantBoth : CuteRanaCard
 {
-    public WantBoth() : base(2, CardType.Power, CardRarity.Uncommon, TargetType.Self) { }
-    
+    public WantBoth() : base(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+    {
+    }
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get
@@ -21,7 +22,7 @@ public class WantBoth : CuteRanaCard
             yield return HoverTipFactory.FromPower<WantBothPower>();
         }
     }
-    
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await PowerCmd.Apply<WantBothPower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);

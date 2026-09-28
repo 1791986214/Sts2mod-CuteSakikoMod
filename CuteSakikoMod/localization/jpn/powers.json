@@ -11,7 +11,6 @@
   "CUTE_SAKIKO_MOD_POWER_EVE_LIVE_POWER.title": "ライブ前夜",
   "CUTE_SAKIKO_MOD_POWER_EVE_LIVE_POWER.description": "このターン、カードを1枚プレイするたび、層数に等しい[gold]ライブ[/gold]を得る。",
   "CUTE_SAKIKO_MOD_POWER_EVE_LIVE_POWER.smartDescription": "カードを1枚プレイするたび、{Amount}層の[gold]ライブ[/gold]を得る。",
-
   "CUTE_SAKIKO_MOD_POWER_VOCAL_HARMONY_POWER.title": "ハーモニー",
   "CUTE_SAKIKO_MOD_POWER_VOCAL_HARMONY_POWER.description": "[gold]ライブ[/gold]カードをプレイするたび、層数に等しいダメージをすべての敵に与える。",
   "CUTE_SAKIKO_MOD_POWER_VOCAL_HARMONY_POWER.smartDescription": "[gold]ライブ[/gold]カードをプレイするたび、すべての敵に[blue]{Amount}[/blue]ダメージを与える。",
@@ -54,7 +53,6 @@
   "CUTE_SAKIKO_MOD_POWER_MAKE_SIMPLER_POWER.title": "簡単にしようよ",
   "CUTE_SAKIKO_MOD_POWER_MAKE_SIMPLER_POWER.description": "[pink]記憶済みコード[/pink]のランダムな[img]CuteSakikoMod/images/ui/text/text_note.png[/img]を[img]CuteSakikoMod/images/ui/text/text_anon.png[/img]に変える。",
   "CUTE_SAKIKO_MOD_POWER_MAKE_SIMPLER_POWER.smartDescription": "[pink]記憶済みコード[/pink]のランダムな[img]CuteSakikoMod/images/ui/text/text_note.png[/img][blue]{Amount}[/blue]つを[img]CuteSakikoMod/images/ui/text/text_anon.png[/img]に変える。",
-  
   "CUTE_SAKIKO_MOD_POWER_PRESSURE_POWER.title": "重圧",
   "CUTE_SAKIKO_MOD_POWER_PRESSURE_POWER.description": "[gold]重圧[/gold]1層につき、受けるダメージが1%増加する。\n層数が現在のHPに達すると、すべての[gold]重圧[/gold]を除去し、[gold]崩壊[/gold]を1付与する。",
   "CUTE_SAKIKO_MOD_POWER_PRESSURE_POWER.smartDescription": "受けるダメージが{Amount}%増加する。\n層数が現在のHPに達すると、すべての[gold]重圧[/gold]を除去し、[gold]崩壊[/gold]を1付与する。",
@@ -73,7 +71,6 @@
   "CUTE_SAKIKO_MOD_POWER_TIME_WATCH_POWER.title": "銀の腕時計",
   "CUTE_SAKIKO_MOD_POWER_TIME_WATCH_POWER.description": "毎ターン開始時、前のターンに受けた総ダメージの20% +（[pink]フライバック[/pink]プレイ回数% × リロード回数*2）%のHPを[pink]遡行[/pink]する。",
   "CUTE_SAKIKO_MOD_POWER_TIME_WATCH_POWER.smartDescription": "毎ターン開始時、[pink]遡行[/pink]する割合：20% + [blue]{HealPercent}%[/blue]\n（[pink]フライバック[/pink]プレイ回数% × リロード回数*2）%\n回復予定のHP：[blue]{HealAmount}[/blue]\nフライバックプレイ回数：[blue]{FlybackPlayCount}[/blue]\nリロード回数：[blue]{ReloadCount}[/blue]",
-
   "CUTE_SAKIKO_MOD_POWER_WHEN_PERFORM_POWER.title": "いつ演奏するの？",
   "CUTE_SAKIKO_MOD_POWER_WHEN_PERFORM_POWER.description": "毎ターン引く最初のカードに[gold]エンチャント[/gold]:[purple]演奏[/purple]を付与する。",
   "CUTE_SAKIKO_MOD_POWER_WHEN_PERFORM_POWER.smartDescription": "毎ターン引く最初のカードに[gold]エンチャント[/gold]:[purple]演奏[/purple]を付与する。",
@@ -214,7 +211,6 @@
   "HBK_BANK_POWER.chooseToken": "金取引を一種類選ぶ",
   "CUTE_SAKIKO_MOD_POWER_HBK_BANK_POWER.description": "毎ターン開始時、金取引を一種類選ぶ。",
   "CUTE_SAKIKO_MOD_POWER_HBK_BANK_POWER.smartDescription": "毎ターン開始時、金取引を一種類選ぶ。\n現在の金価格：[blue]{GoldPrice}[/blue]。",
-  
   "CUTE_SAKIKO_MOD_POWER_NEKO_TRANCE_POWER.title": "猫とぼんやり",
   "CUTE_SAKIKO_MOD_POWER_NEKO_TRANCE_POWER.description": "自分の[gold]猫[/gold]が[gold]保留[/gold]を得る。",
   "CUTE_SAKIKO_MOD_POWER_NEKO_TRANCE_POWER.smartDescription": "自分の[gold]猫[/gold]が[gold]保留[/gold]を得る。",

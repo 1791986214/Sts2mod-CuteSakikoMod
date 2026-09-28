@@ -4,13 +4,12 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 
-
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
 
 public class GotCaught() : CuteRanaCard(1, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     public override bool GainsBlock => true;
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[]
     {
         new BlockVar("BaseBlock", 2m, ValueProp.Move),
@@ -31,7 +30,7 @@ public class GotCaught() : CuteRanaCard(1, CardType.Skill, CardRarity.Common, Ta
         var baseBlock = DynamicVars["BaseBlock"].BaseValue;
         await CreatureCmd.GainBlock(Owner.Creature, baseBlock, ValueProp.Move, cardPlay);
 
-        bool anyEnemyIntendsToAttack = CombatState?.HittableEnemies
+        var anyEnemyIntendsToAttack = CombatState?.HittableEnemies
             .Any(e => e.Monster != null && e.Monster.IntendsToAttack) ?? false;
 
         if (anyEnemyIntendsToAttack)

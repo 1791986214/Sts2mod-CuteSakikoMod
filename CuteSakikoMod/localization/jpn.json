@@ -29,6 +29,5 @@
   "TELEMETRY.BASIC_USAGE.DESC": "バージョン、プラットフォーム、言語、匿名インストール ID を送信し、互換性問題の範囲を把握するために使用します。",
   "TELEMETRY.BALANCE.DESC": "本 mod のバランス関連イベント（キャラクター選択、カードプレイなど）を送信し、バランス分析に使用します。",
   "TELEMETRY.DIAGNOSTICS.DESC": "例外と診断コンテキストを送信し、クラッシュの特定に使用します。",
-  "TELEMETRY.RUN_HISTORY.DESC": "終了したランのバニラデータを送信し、バランス分析に使用します。",
-  
+  "TELEMETRY.RUN_HISTORY.DESC": "終了したランのバニラデータを送信し、バランス分析に使用します。"
 }

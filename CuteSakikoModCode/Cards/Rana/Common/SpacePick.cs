@@ -40,6 +40,6 @@ public class SpacePick() : CuteRanaCard(2, CardType.Skill, CardRarity.Common, Ta
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(4m); 
+        DynamicVars.Block.UpgradeValueBy(4m);
     }
 }

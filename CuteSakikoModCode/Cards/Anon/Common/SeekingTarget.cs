@@ -33,7 +33,7 @@ public class SeekingTarget() : CuteAnonCard(1, CardType.Attack, CardRarity.Commo
 
         var damage = DynamicVars.Damage.IntValue;
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .TargetingAllOpponents(combat)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
@@ -45,6 +45,6 @@ public class SeekingTarget() : CuteAnonCard(1, CardType.Attack, CardRarity.Commo
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2m); 
+        DynamicVars.Damage.UpgradeValueBy(2m);
     }
 }

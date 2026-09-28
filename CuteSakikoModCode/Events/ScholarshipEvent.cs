@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using CuteSakikoMod.CuteSakikoModCode.Character.Mujica;
+﻿using CuteSakikoMod.CuteSakikoModCode.Character.Mujica;
 using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 using MegaCrit.Sts2.Core.CardSelection;
@@ -41,7 +39,10 @@ public sealed class ScholarshipEvent : CuteSakikoEvent
         gold.BaseValue += Rng.NextInt(-10, 11);
     }
 
-    protected override bool IsAllowedInternal(IRunState runState) => true;
+    protected override bool IsAllowedInternal(IRunState runState)
+    {
+        return true;
+    }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
@@ -61,25 +62,21 @@ public sealed class ScholarshipEvent : CuteSakikoEvent
             new(this, Schadenfreude, ModOptionKey("SECOND", "SCHADENFREUDE"))
         };
 
-        if (HasAnonAndSakiOrOb())
-        {
-            options.Add(new(this, AskForTutoring, ModOptionKey("SECOND", "ASK_FOR_TUTORING"), _relicTips));
-        }
+        if (HasAnonAndSaki())
+            options.Add(new EventOption(this, AskForTutoring, ModOptionKey("SECOND", "ASK_FOR_TUTORING"), _relicTips));
         else
-        {
             options.Add(new EventOption(this, null, ModOptionKey("SECOND", "ASK_FOR_TUTORING_LOCKED")));
-        }
 
         SetEventState(PageDescription("SECOND"), options);
         return Task.CompletedTask;
     }
 
-    private bool HasAnonAndSakiOrOb()
+    private bool HasAnonAndSaki()
     {
         if (Owner?.RunState == null) return false;
         var hasAnon = Owner.RunState.Players.Any(p => p.Character is CuteAnon);
-        var hasSakiOrOb = Owner.RunState.Players.Any(p => p.Character is CuteSaki );
-        return hasAnon && hasSakiOrOb;
+        var hasSaki = Owner.RunState.Players.Any(p => p.Character is CuteSaki);
+        return hasAnon && hasSaki;
     }
 
     // 选项1：举起手要签名 → 获得 50~70 金币（由 CalculateVars 随机决定）
@@ -106,10 +103,7 @@ public sealed class ScholarshipEvent : CuteSakikoEvent
             new CardSelectorPrefs(CardSelectorPrefs.RemoveSelectionPrompt, 1)
         );
         var card = selected.FirstOrDefault();
-        if (card != null)
-        {
-            await CardPileCmd.RemoveFromDeck(card);
-        }
+        if (card != null) await CardPileCmd.RemoveFromDeck(card);
 
         SetEventFinished(PageDescription("SCHADENFREUDE_DESC"));
     }
@@ -131,5 +125,8 @@ public sealed class ScholarshipEvent : CuteSakikoEvent
         return Task.CompletedTask;
     }
 
-    private LocString PageDescription(string pageKey) => L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    private LocString PageDescription(string pageKey)
+    {
+        return L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    }
 }

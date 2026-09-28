@@ -19,8 +19,8 @@ public sealed class EtherPower : CuteSakikoModPower
         if (side != Owner.Side) return;
         if (Owner?.Player == null) return;
 
-        int playCount = Amount; // 层数决定打出次数
-        for (int i = 0; i < playCount; i++)
+        var playCount = Amount; // 层数决定打出次数
+        for (var i = 0; i < playCount; i++)
         {
             // 通过 PlayerCombatState 获取抽牌堆，防止空引用
             var drawPile = Owner.Player.PlayerCombatState?.DrawPile;

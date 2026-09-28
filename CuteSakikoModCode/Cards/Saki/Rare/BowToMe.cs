@@ -15,7 +15,7 @@ public class BowToMe() : CuteSakikoModCard(1, CardType.Power, CardRarity.Rare, T
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
         [CutesakiKeywords.Sword.GetModCardKeyword()];
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get

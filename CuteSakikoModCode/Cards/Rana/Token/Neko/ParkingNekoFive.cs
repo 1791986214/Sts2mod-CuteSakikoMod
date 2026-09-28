@@ -14,7 +14,7 @@ public class ParkingNekoFive : NekoCard
     public ParkingNekoFive() : base(0, CardType.Attack, CardRarity.Token, TargetType.AnyEnemy)
     {
     }
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[]
     {
         new DamageVar(4m, ValueProp.Move),
@@ -25,11 +25,11 @@ public class ParkingNekoFive : NekoCard
     {
         var damage = (int)DynamicVars.Damage.BaseValue;
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        
-        int vulnerablePower = DynamicVars["VulnerablePower"].IntValue;
+
+        var vulnerablePower = DynamicVars["VulnerablePower"].IntValue;
         await PowerCmd.Apply<VulnerablePower>(choiceContext, cardPlay.Target, vulnerablePower, Owner.Creature, this);
     }
 

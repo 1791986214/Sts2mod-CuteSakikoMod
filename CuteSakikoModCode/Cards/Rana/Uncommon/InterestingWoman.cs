@@ -9,16 +9,18 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 
 public class InterestingWoman : CuteRanaCard
 {
-    public InterestingWoman() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy) { }
+    public InterestingWoman() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.AnyEnemy)
+    {
+    }
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[]
     {
-        new PowerVar<WeakPower>(1m),    // 虚弱层数
+        new PowerVar<WeakPower>(1m), // 虚弱层数
         new PowerVar<VulnerablePower>(2m) // 易伤层数
     };
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get
@@ -32,10 +34,10 @@ public class InterestingWoman : CuteRanaCard
     {
         if (cardPlay.Target == null) return;
 
-        int weakAmount= DynamicVars["WeakPower"].IntValue;
-        int vulnerablePower = DynamicVars["VulnerablePower"].IntValue;
+        var weakAmount = DynamicVars["WeakPower"].IntValue;
+        var vulnerablePower = DynamicVars["VulnerablePower"].IntValue;
 
-        
+
         // 给予虚弱
         await PowerCmd.Apply<WeakPower>(choiceContext, cardPlay.Target, weakAmount, Owner.Creature, this);
         // 给予易伤
@@ -44,7 +46,7 @@ public class InterestingWoman : CuteRanaCard
 
     protected override void OnUpgrade()
     {
-       DynamicVars["WeakPower"].UpgradeValueBy(1);
-       DynamicVars["VulnerablePower"].UpgradeValueBy(1);
+        DynamicVars["WeakPower"].UpgradeValueBy(1);
+        DynamicVars["VulnerablePower"].UpgradeValueBy(1);
     }
 }

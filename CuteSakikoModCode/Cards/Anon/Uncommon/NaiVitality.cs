@@ -13,7 +13,7 @@ public class NaiVitality() : CuteAnonCard(3, CardType.Power, CardRarity.Uncommon
     [
         CardKeyword.Ethereal
     ];
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get { yield return HoverTipFactory.FromPower<NaiVitalityPower>(); }

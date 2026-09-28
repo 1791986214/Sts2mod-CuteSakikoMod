@@ -70,3 +70,4 @@ public class VentAngry() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Comm
         DynamicVars.Damage.UpgradeValueBy(3m);
     }
 }*/
+

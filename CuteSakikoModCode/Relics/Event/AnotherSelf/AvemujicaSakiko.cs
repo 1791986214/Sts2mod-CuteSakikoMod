@@ -15,10 +15,7 @@ public class AvemujicaSakiko : CuteSakikoEventRelic
     public override async Task AfterObtained()
     {
         var rewards = new List<Reward>();
-        for (var i = 0; i < 3; i++)
-        {
-            rewards.Add(CreateCardReward(CardRarity.Common));
-        }
+        for (var i = 0; i < 3; i++) rewards.Add(CreateCardReward(CardRarity.Common));
 
         await RewardsCmd.OfferCustom(Owner, rewards);
 
@@ -44,6 +41,6 @@ public class AvemujicaSakiko : CuteSakikoEventRelic
         if (map is ScaledActMap)
             return map;
 
-        return new ScaledActMap((RunState)runState, map, 2.0);  // 或 0.5
+        return new ScaledActMap((RunState)runState, map, 2.0); // 或 0.5
     }
 }

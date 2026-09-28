@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Pools;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 using MegaCrit.Sts2.Core.Commands;
@@ -36,7 +34,7 @@ public class NekoTrance : CuteRanaCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int catCount = DynamicVars.Cards.IntValue; // 升级前1，升级后2
+        var catCount = DynamicVars.Cards.IntValue; // 升级前1，升级后2
 
         // 1. 随机添加猫咪到手牌
         var allNekoCards = ModelDb.CardPool<CuteSakikoTokenCardPool>()
@@ -49,7 +47,7 @@ public class NekoTrance : CuteRanaCard
             var combatState = Owner.Creature.CombatState!;
             var rng = Owner.RunState.Rng.CombatCardGeneration;
 
-            for (int i = 0; i < catCount; i++)
+            for (var i = 0; i < catCount; i++)
             {
                 var template = rng.NextItem(allNekoCards);
                 var catCard = combatState.CreateCard(template, Owner);

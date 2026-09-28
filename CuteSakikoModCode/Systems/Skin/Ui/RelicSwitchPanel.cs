@@ -13,10 +13,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Ui;
 
 public sealed partial class RelicSwitchPanel : Control
 {
-    private NGoldArrowButton _prevBtn = null!;
-    private NGoldArrowButton _nextBtn = null!;
-
     private bool _logicalVisible;
+    private NGoldArrowButton _nextBtn = null!;
+    private NGoldArrowButton _prevBtn = null!;
 
     public override async void _Ready()
     {
@@ -28,7 +27,7 @@ public sealed partial class RelicSwitchPanel : Control
 
         BuildUi();
 
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
         AttachToRelicBox();
@@ -48,7 +47,7 @@ public sealed partial class RelicSwitchPanel : Control
 
     public override void _Process(double delta)
     {
-        bool shouldBeVisible = _logicalVisible && !SkinPanelVisibilityHelper.IsInspectScreenOpen();
+        var shouldBeVisible = _logicalVisible && !SkinPanelVisibilityHelper.IsInspectScreenOpen();
         if (_prevBtn.Visible != shouldBeVisible) _prevBtn.Visible = shouldBeVisible;
         if (_nextBtn.Visible != shouldBeVisible) _nextBtn.Visible = shouldBeVisible;
     }
@@ -56,7 +55,7 @@ public sealed partial class RelicSwitchPanel : Control
     private void SetLogicalVisible(bool visible)
     {
         _logicalVisible = visible;
-        bool effective = visible && !SkinPanelVisibilityHelper.IsInspectScreenOpen();
+        var effective = visible && !SkinPanelVisibilityHelper.IsInspectScreenOpen();
         if (_prevBtn != null) _prevBtn.Visible = effective;
         if (_nextBtn != null) _nextBtn.Visible = effective;
     }
@@ -81,10 +80,18 @@ public sealed partial class RelicSwitchPanel : Control
     private void AttachToRelicBox()
     {
         var screen = FindScreen();
-        if (screen == null) { GD.PrintErr("[RelicSwitchPanel] FindScreen() null"); return; }
+        if (screen == null)
+        {
+            GD.PrintErr("[RelicSwitchPanel] FindScreen() null");
+            return;
+        }
 
         var relicBox = screen.GetNodeOrNull<Control>("InfoPanel/VBoxContainer/Relic");
-        if (relicBox == null) { GD.PrintErr("[RelicSwitchPanel] Relic box not found"); return; }
+        if (relicBox == null)
+        {
+            GD.PrintErr("[RelicSwitchPanel] Relic box not found");
+            return;
+        }
 
         relicBox.ClipContents = false;
         _prevBtn.GetParent()?.RemoveChild(_prevBtn);
@@ -110,7 +117,7 @@ public sealed partial class RelicSwitchPanel : Control
 
         // ★ 用 relicBox 的垂直中心当统一基准，两个箭头同高
         const float btnH = 64f;
-        float centerY = relicBox.Size.Y / 2f - btnH / 2f;
+        var centerY = relicBox.Size.Y / 2f - btnH / 2f;
 
         _prevBtn.Position = new Vector2(
             iconRect.Position.X - 8 - 48,
@@ -127,13 +134,20 @@ public sealed partial class RelicSwitchPanel : Control
         Callable.From(RepositionToRelicBox).CallDeferred();
     }
 
-    private void OnArtSkinChanged(Type _) => RefreshAndToggle();
-    private void OnRelicPresetChanged(Type _) => Refresh();
+    private void OnArtSkinChanged(Type _)
+    {
+        RefreshAndToggle();
+    }
+
+    private void OnRelicPresetChanged(Type _)
+    {
+        Refresh();
+    }
 
     private void RefreshAndToggle()
     {
         var reg = SkinUiContext.CurrentRegistry;
-        bool hasRegistry = reg != null && reg.AllSkins.Count > 0;
+        var hasRegistry = reg != null && reg.AllSkins.Count > 0;
 
         if (!hasRegistry)
         {
@@ -142,7 +156,7 @@ public sealed partial class RelicSwitchPanel : Control
         }
 
         var skin = SkinResolver.GetLocalSkin(SkinUiContext.CurrentCharacterType!);
-        bool canSwitch = skin != null && skin.RelicPresets.Count > 1;
+        var canSwitch = skin != null && skin.RelicPresets.Count > 1;
 
         SetLogicalVisible(canSwitch);
 
@@ -159,14 +173,9 @@ public sealed partial class RelicSwitchPanel : Control
             c.RelicPresetIndex = (c.RelicPresetIndex + delta + skin.RelicPresets.Count) % skin.RelicPresets.Count);
 
         if (SkinUiContext.GetLobby(this) is { } lobby)
-        {
             SkinDataStore.ModifyLobbyChoice(lobby, characterType,
                 c => c.RelicPresetIndex = SkinResolver.GetLocalChoice(characterType).RelicPresetIndex);
-        }
-        else if (RunManager.Instance?.DebugOnlyGetState() != null)
-        {
-            SkinSyncService.Broadcast(characterType);
-        }
+        else if (RunManager.Instance?.DebugOnlyGetState() != null) SkinSyncService.Broadcast(characterType);
 
         SkinSystemEvents.RaiseRelicPresetChanged(characterType);
     }
@@ -187,16 +196,16 @@ public sealed partial class RelicSwitchPanel : Control
 
         var relic = ModelDb.GetById<RelicModel>(ModelDb.GetId(preset.RelicTypes[0]));
 
-        var title   = screen.GetNode<MegaRichTextLabel>("InfoPanel/VBoxContainer/Relic/Name/RichTextLabel");
-        var desc    = screen.GetNode<MegaRichTextLabel>("InfoPanel/VBoxContainer/Relic/Description");
-        var icon    = screen.GetNode<TextureRect>("InfoPanel/VBoxContainer/Relic/Icon");
+        var title = screen.GetNode<MegaRichTextLabel>("InfoPanel/VBoxContainer/Relic/Name/RichTextLabel");
+        var desc = screen.GetNode<MegaRichTextLabel>("InfoPanel/VBoxContainer/Relic/Description");
+        var icon = screen.GetNode<TextureRect>("InfoPanel/VBoxContainer/Relic/Icon");
         var outline = screen.GetNode<TextureRect>("InfoPanel/VBoxContainer/Relic/Icon/Outline");
 
-        title.Text      = relic.Title.GetFormattedText();
-        desc.Text       = relic.DynamicDescription.GetFormattedText();
-        icon.Texture    = relic.Icon;
+        title.Text = relic.Title.GetFormattedText();
+        desc.Text = relic.DynamicDescription.GetFormattedText();
+        icon.Texture = relic.Icon;
         outline.Texture = relic.IconOutline;
-        icon.SelfModulate    = Colors.White;
+        icon.SelfModulate = Colors.White;
         outline.SelfModulate = StsColors.halfTransparentBlack;
 
         Callable.From(RepositionToRelicBox).CallDeferred();

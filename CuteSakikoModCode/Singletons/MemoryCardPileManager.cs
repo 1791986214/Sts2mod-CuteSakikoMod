@@ -21,7 +21,7 @@ public sealed class MemoryCardPileManager : HookedSingletonModel
     private static readonly CardKeyword MemoryKeyword = CutesakiKeywords.Memory.GetModCardKeyword();
 
     // 新版基类构造函数：传入 HookType.Combat 以订阅战斗钩子
-    public MemoryCardPileManager() : base(HookedSingletonModel.HookType.Combat)
+    public MemoryCardPileManager() : base(HookType.Combat)
     {
     }
 

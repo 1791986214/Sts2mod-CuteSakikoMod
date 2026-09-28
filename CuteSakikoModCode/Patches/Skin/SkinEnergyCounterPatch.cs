@@ -1,5 +1,4 @@
-﻿using System;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Assets;
@@ -11,7 +10,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Patches.Skin;
 [HarmonyPatch(typeof(NEnergyCounter), nameof(NEnergyCounter.Create))]
 public static class SkinEnergyCounterPatch
 {
-    static bool Prefix(Player player, ref NEnergyCounter? __result)
+    private static bool Prefix(Player player, ref NEnergyCounter? __result)
     {
         if (player == null) return true;
 
@@ -32,7 +31,7 @@ public static class SkinEnergyCounterPatch
             __result = counter;
             return false;
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             GD.PrintErr($"[SkinPatch] EnergyCounter patch failed: {ex.Message}");
             return true;

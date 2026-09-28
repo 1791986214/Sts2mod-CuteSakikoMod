@@ -10,12 +10,12 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Ui;
 
 public sealed partial class SkinPreviewPanel : Control
 {
-    private SubViewport _viewport = null!;
-    private Label _nameLabel = null!;
     private Node2D? _currentVisuals;
 
     // ★ 逻辑可见性：inspect 打开时这个值不变，Visible 由 _Process 动态计算
     private bool _logicalVisible;
+    private Label _nameLabel = null!;
+    private SubViewport _viewport = null!;
 
     public override void _Ready()
     {
@@ -41,7 +41,7 @@ public sealed partial class SkinPreviewPanel : Control
     // ★ 每帧检查 inspect 是否打开，动态调整自己的可见性
     public override void _Process(double delta)
     {
-        bool shouldBeVisible = _logicalVisible && !SkinPanelVisibilityHelper.IsInspectScreenOpen();
+        var shouldBeVisible = _logicalVisible && !SkinPanelVisibilityHelper.IsInspectScreenOpen();
         if (Visible != shouldBeVisible)
             Visible = shouldBeVisible;
     }
@@ -69,19 +69,19 @@ public sealed partial class SkinPreviewPanel : Control
             Color = new Color(0, 0, 0, 0.55f),
             Position = Vector2.Zero,
             Size = new Vector2(panelW, panelH),
-            MouseFilter = MouseFilterEnum.Ignore,
+            MouseFilter = MouseFilterEnum.Ignore
         };
         AddChild(bg);
 
-        float viewportX = padX + btnW + 8f;
-        float viewportY = padY;
+        var viewportX = padX + btnW + 8f;
+        var viewportY = padY;
 
         var viewportContainer = new SubViewportContainer
         {
             Position = new Vector2(viewportX, viewportY),
             Size = new Vector2(viewportW, viewportH),
             Stretch = true,
-            MouseFilter = MouseFilterEnum.Ignore,
+            MouseFilter = MouseFilterEnum.Ignore
         };
         AddChild(viewportContainer);
 
@@ -89,13 +89,13 @@ public sealed partial class SkinPreviewPanel : Control
         {
             TransparentBg = true,
             Size = new Vector2I((int)viewportW, (int)viewportH),
-            RenderTargetUpdateMode = SubViewport.UpdateMode.Always,
+            RenderTargetUpdateMode = SubViewport.UpdateMode.Always
         };
         viewportContainer.AddChild(_viewport);
 
         _viewport.AddChild(new Camera2D { Position = new Vector2(0, -160) });
 
-        float btnY = viewportY + viewportH / 2 - btnH / 2;
+        var btnY = viewportY + viewportH / 2 - btnH / 2;
 
         var prevBtn = MakeArrowButton("res://images/atlases/ui_atlas.sprites/settings_tiny_left_arrow.tres");
         prevBtn.Position = new Vector2(padX, btnY);
@@ -103,7 +103,7 @@ public sealed partial class SkinPreviewPanel : Control
         AddChild(prevBtn);
         prevBtn.Connect(NClickableControl.SignalName.Released, Callable.From<NClickableControl>(_ => Shift(-1)));
 
-        float nextBtnX = viewportX + viewportW + 8f;
+        var nextBtnX = viewportX + viewportW + 8f;
         var nextBtn = MakeArrowButton("res://images/atlases/ui_atlas.sprites/settings_tiny_right_arrow.tres");
         nextBtn.Position = new Vector2(nextBtnX, btnY);
         nextBtn.Size = new Vector2(btnW, btnH);
@@ -115,7 +115,7 @@ public sealed partial class SkinPreviewPanel : Control
             Position = new Vector2(0, viewportY + viewportH + 8f),
             Size = new Vector2(panelW, nameH),
             HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
         };
         _nameLabel.AddThemeFontSizeOverride("font_size", 20);
         AddChild(_nameLabel);
@@ -139,14 +139,21 @@ public sealed partial class SkinPreviewPanel : Control
             MouseFilter = MouseFilterEnum.Ignore,
             Material = mat,
             Position = new Vector2(0, 8),
-            Size = new Vector2(48, 48),
+            Size = new Vector2(48, 48)
         };
         btn.AddChild(icon);
         return btn;
     }
 
-    private void OnCurrentCharacterChanged(Type? _) => RefreshAndToggle();
-    private void OnArtSkinChanged(Type _) => Refresh();
+    private void OnCurrentCharacterChanged(Type? _)
+    {
+        RefreshAndToggle();
+    }
+
+    private void OnArtSkinChanged(Type _)
+    {
+        Refresh();
+    }
 
     private void RefreshAndToggle()
     {
@@ -166,19 +173,14 @@ public sealed partial class SkinPreviewPanel : Control
             var count = reg.AllSkins.Count;
             c.ArtSkinIndex = (c.ArtSkinIndex + delta + count) % count;
             var newSkin = reg.AllSkins[c.ArtSkinIndex];
-            c.DeckPresetIndex  = Math.Min(c.DeckPresetIndex,  newSkin.DeckPresets.Count - 1);
+            c.DeckPresetIndex = Math.Min(c.DeckPresetIndex, newSkin.DeckPresets.Count - 1);
             c.RelicPresetIndex = Math.Min(c.RelicPresetIndex, newSkin.RelicPresets.Count - 1);
         });
 
         if (SkinUiContext.GetLobby(this) is { } lobby)
-        {
             SkinDataStore.ModifyLobbyChoice(lobby, characterType,
                 c => c.ArtSkinIndex = SkinResolver.GetLocalChoice(characterType).ArtSkinIndex);
-        }
-        else if (RunManager.Instance?.DebugOnlyGetState() != null)
-        {
-            SkinSyncService.Broadcast(characterType);
-        }
+        else if (RunManager.Instance?.DebugOnlyGetState() != null) SkinSyncService.Broadcast(characterType);
 
         Refresh();
         SkinSystemEvents.RaiseArtSkinChanged(characterType);

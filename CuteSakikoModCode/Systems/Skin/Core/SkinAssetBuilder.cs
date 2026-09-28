@@ -21,12 +21,12 @@ public static class SkinAssetBuilder
                     skin.Assets.RestSitePath),
                 new CharacterUiAssetSet(
                     skin.Assets.IconTexturePath,
-                    IconOutlineTexturePath: skin.Assets.IconOutlineTexturePath,
-                    IconPath: skin.Assets.IconPath,
+                    skin.Assets.IconOutlineTexturePath,
+                    skin.Assets.IconPath,
                     // 以下四项为角色固定资源，不随皮肤切换
-                    CharacterSelectBgPath: characterSelectBgPath ?? skin.Assets.VisualsPath,
-                    CharacterSelectIconPath: characterSelectIconPath ?? skin.Assets.VisualsPath,
-                    CharacterSelectLockedIconPath: characterSelectLockedIconPath ?? skin.Assets.VisualsPath,
+                    characterSelectBgPath ?? skin.Assets.VisualsPath,
+                    characterSelectIconPath ?? skin.Assets.VisualsPath,
+                    characterSelectLockedIconPath ?? skin.Assets.VisualsPath,
                     MapMarkerPath: mapMarkerPath ?? skin.Assets.VisualsPath),
                 new CharacterVfxAssetSet(skin.Assets.TrailPath),
                 Multiplayer: new CharacterMultiplayerAssetSet(

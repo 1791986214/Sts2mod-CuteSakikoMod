@@ -31,8 +31,8 @@ public class LiveWithYou() : CuteRanaCard(1, CardType.Skill, CardRarity.Uncommon
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         var targetPlayer = cardPlay.Target.Player;
 
-        int teammateAmount = IsUpgraded ? 3 : 2;
-        int selfAmount = IsUpgraded ? 1 : 0;
+        var teammateAmount = IsUpgraded ? 3 : 2;
+        var selfAmount = IsUpgraded ? 1 : 0;
 
         // 给队友施加莱芜
         await PowerCmd.Apply<RanaLivePower>(choiceContext, targetPlayer.Creature, teammateAmount, Owner.Creature, this);

@@ -1,5 +1,4 @@
-﻿
-using System.Reflection;
+﻿using System.Reflection;
 using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
@@ -19,6 +18,15 @@ namespace CuteSakikoMod.CuteSakikoModCode.Monsters.Weak;
 [RegisterMonster]
 public class Araluo : ModMonsterTemplate
 {
+    // 三个音效文件
+    private static readonly string[] UmePowerFiles =
+    {
+        "umepower1.mp3",
+        "umepower2.mp3",
+        "umepower3.mp3"
+    };
+
+    private static readonly Random _rand = new();
     public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 35, 30);
     public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 45, 40);
 
@@ -31,22 +39,12 @@ public class Araluo : ModMonsterTemplate
     private int StrengthAmount => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
     private int LightHitCount => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
 
-    // 三个音效文件
-    private static readonly string[] UmePowerFiles =
-    {
-        "umepower1.mp3",
-        "umepower2.mp3",
-        "umepower3.mp3"
-    };
-
-    private static readonly Random _rand = new();
+    public int InitialIntentIndex { get; set; } = 0;
 
     protected override NCreatureVisuals? TryCreateCreatureVisuals()
     {
         return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(AssetProfile.VisualsScenePath!);
     }
-
-    public int InitialIntentIndex { get; set; } = 0;
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
@@ -59,7 +57,7 @@ public class Araluo : ModMonsterTemplate
         light.FollowUpState = buff;
 
         var states = new List<MonsterState> { heavy, buff, light };
-        int idx = Math.Clamp(InitialIntentIndex, 0, states.Count - 1);
+        var idx = Math.Clamp(InitialIntentIndex, 0, states.Count - 1);
         return new MonsterMoveStateMachine(states, states[idx]);
     }
 
@@ -95,7 +93,7 @@ public class Araluo : ModMonsterTemplate
 
     private static void PlayRandomUmePower()
     {
-        string file = UmePowerFiles[_rand.Next(UmePowerFiles.Length)];
+        var file = UmePowerFiles[_rand.Next(UmePowerFiles.Length)];
         var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var fullPath = Path.Combine(dir, "audio", file);
         AudioManager.PlaySound(fullPath);

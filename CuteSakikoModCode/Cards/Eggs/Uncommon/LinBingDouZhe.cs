@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Systems;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -28,7 +27,7 @@ public class LinBingDouZhe() : CuteSakikoModEggCard(
                 continue;
 
             // 获取安全的后续状态 ID，避免状态机断裂
-            string? safeFollowUpId = MonsterMoveHelper.GetSafeFollowUpId(monster);
+            var safeFollowUpId = MonsterMoveHelper.GetSafeFollowUpId(monster);
             if (safeFollowUpId == null)
                 continue;
 

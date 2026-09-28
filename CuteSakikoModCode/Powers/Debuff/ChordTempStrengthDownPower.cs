@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.HoverTips;
+﻿using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -9,7 +8,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 [RegisterPower]
 public class ChordTempStrengthDownPower : CuteSakikoTemporaryPower
 {
-
     public override PowerModel InternallyAppliedPower =>
         ModelDb.Power<StrengthPower>().ToMutable();
 

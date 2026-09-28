@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Gold;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Factories;
@@ -14,16 +13,15 @@ public class AutoDrinkMachine : CuteSakikoEventRelic,
     IRelicExtraIconAmountLabelSpecsProvider,
     IRelicExtraIconAmountLabelsChangeSource
 {
-    public override RelicRarity Rarity => RelicRarity.Ancient;
-
     private const int GoldCost = 15;
     private const int SlotThreshold = 75;
 
     private int _accumulatedSpent;
+    public override RelicRarity Rarity => RelicRarity.Ancient;
 
     /// <summary>
-    /// 累计已消费但尚未兑换栏位的金币数，跨战斗保存。
-    /// 注意：[SavedProperty] 只能标注属性，不能标注字段。
+    ///     累计已消费但尚未兑换栏位的金币数，跨战斗保存。
+    ///     注意：[SavedProperty] 只能标注属性，不能标注字段。
     /// </summary>
     [SavedProperty]
     private int AccumulatedSpent
@@ -35,26 +33,6 @@ public class AutoDrinkMachine : CuteSakikoEventRelic,
             _accumulatedSpent = value;
             InvalidateLabels(); // 数值变化 → 刷新角标
         }
-    }
-
-    // —— 角标接口 ——
-
-    public event Action? RelicExtraIconAmountLabelsInvalidated;
-
-    public IReadOnlyList<ExtraIconAmountLabelSpec> GetRelicExtraIconAmountLabelSpecs()
-    {
-        return
-        [
-            ExtraIconAmountLabelSpec.Plain(
-                ExtraIconAmountLabelCorner.BottomRight,
-                $"{AccumulatedSpent}/{SlotThreshold}")
-        ];
-    }
-
-    private void InvalidateLabels()
-    {
-        RelicExtraIconAmountLabelsInvalidated?.Invoke();
-        InvokeDisplayAmountChanged();
     }
 
     // —— 右键交互 ——
@@ -87,5 +65,25 @@ public class AutoDrinkMachine : CuteSakikoEventRelic,
             player.RunState.Rng.CombatPotionGeneration
         ).ToMutable();
         await PotionCmd.TryToProcure(randomPotion, player);
+    }
+
+    // —— 角标接口 ——
+
+    public event Action? RelicExtraIconAmountLabelsInvalidated;
+
+    public IReadOnlyList<ExtraIconAmountLabelSpec> GetRelicExtraIconAmountLabelSpecs()
+    {
+        return
+        [
+            ExtraIconAmountLabelSpec.Plain(
+                ExtraIconAmountLabelCorner.BottomRight,
+                $"{AccumulatedSpent}/{SlotThreshold}")
+        ];
+    }
+
+    private void InvalidateLabels()
+    {
+        RelicExtraIconAmountLabelsInvalidated?.Invoke();
+        InvokeDisplayAmountChanged();
     }
 }

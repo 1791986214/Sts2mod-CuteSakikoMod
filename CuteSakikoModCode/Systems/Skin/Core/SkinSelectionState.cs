@@ -12,10 +12,13 @@ public sealed class CharacterSkinChoice
     public int DeckPresetIndex { get; set; }
     public int RelicPresetIndex { get; set; }
 
-    public CharacterSkinChoice Clone() => new()
+    public CharacterSkinChoice Clone()
     {
-        ArtSkinIndex = ArtSkinIndex,
-        DeckPresetIndex = DeckPresetIndex,
-        RelicPresetIndex = RelicPresetIndex,
-    };
+        return new CharacterSkinChoice
+        {
+            ArtSkinIndex = ArtSkinIndex,
+            DeckPresetIndex = DeckPresetIndex,
+            RelicPresetIndex = RelicPresetIndex
+        };
+    }
 }

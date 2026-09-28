@@ -49,7 +49,6 @@ public class ByMyReign() : CuteSakikoModCard(2, CardType.Skill, CardRarity.Rare,
             var swords = hand.Cards.Where(c => c is KnightSword).ToList();
 
             if (swords.Count > 0)
-            {
                 foreach (var sword in swords)
                 {
                     var target = GetRandomEnemy();
@@ -61,12 +60,9 @@ public class ByMyReign() : CuteSakikoModCard(2, CardType.Skill, CardRarity.Rare,
 
                     if (IsUpgraded) sword.BaseReplayCount -= 1;
                 }
-            }
             else
-            {
                 // 为所有人出鞘：若手牌/抽牌堆/弃牌堆中没有骑士之剑，补一把
                 await SwordManager.EnsureSwordExists(player);
-            }
         }
     }
 

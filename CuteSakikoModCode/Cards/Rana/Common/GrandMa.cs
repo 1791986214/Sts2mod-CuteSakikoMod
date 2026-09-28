@@ -39,10 +39,10 @@ public class GrandMa : CuteRanaCard
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var counts = DynamicVars.Repeat.IntValue;
-        
+
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
-            .WithHitCount(counts)            
+            .FromCard(this, cardPlay)
+            .WithHitCount(counts)
             .TargetingAllOpponents(CombatState)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

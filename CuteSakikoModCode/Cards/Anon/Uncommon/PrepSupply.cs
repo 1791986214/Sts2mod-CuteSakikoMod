@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -11,10 +10,7 @@ public class PrepSupply() : CuteAnonCard(0, CardType.Skill, CardRarity.Uncommon,
 {
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
-        get
-        {
-            yield return new EnergyVar(1);
-        }
+        get { yield return new EnergyVar(1); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -31,6 +27,6 @@ public class PrepSupply() : CuteAnonCard(0, CardType.Skill, CardRarity.Uncommon,
 
     protected override void OnUpgrade()
     {
-      AddKeyword(CardKeyword.Retain);
+        AddKeyword(CardKeyword.Retain);
     }
 }

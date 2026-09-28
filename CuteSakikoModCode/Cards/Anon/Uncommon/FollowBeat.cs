@@ -1,6 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -18,13 +17,10 @@ public class FollowBeat() : CuteAnonCard(2, CardType.Attack, CardRarity.Uncommon
     {
         get { yield return new DamageVar(12m, ValueProp.Move); }
     }
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.EquippedChords.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.EquippedChords.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -34,7 +30,7 @@ public class FollowBeat() : CuteAnonCard(2, CardType.Attack, CardRarity.Uncommon
 
         var damage = DynamicVars.Damage.BaseValue;
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
@@ -47,7 +43,8 @@ public class FollowBeat() : CuteAnonCard(2, CardType.Attack, CardRarity.Uncommon
         var majorChordId = majorChords[0];
 
         for (var i = 0; i < 3; i++)
-            await ChordNoteSystem.AddStoredChordAsync(Owner, majorChordId, 1, choiceContext);;
+            await ChordNoteSystem.AddStoredChordAsync(Owner, majorChordId, 1, choiceContext);
+        ;
 
         ChordNoteUIManager.UpdateStoredChordDisplay(Owner);
     }

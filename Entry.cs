@@ -51,9 +51,10 @@ public class Entry
     public static CardType AnyNote;
 
     private static I18N? _i18n;
+
     private static I18N I18n => _i18n ??= new I18N(
-        instanceName: ModId,
-        fsFolders: new[] { $"res://{ModId}/localization" }
+        ModId,
+        new[] { $"res://{ModId}/localization" }
     );
 
     public static void Init()
@@ -117,12 +118,12 @@ public class Entry
         );
         var volumeBinding = ModSettingsBindings.Global<CuteSakikoModConfigData, double>(
             ModId, "config",
-            model => (double)model.ModBgmVolume,
+            model => model.ModBgmVolume,
             (model, value) => model.ModBgmVolume = (float)value
         );
         var sfxVolumeBinding = ModSettingsBindings.Global<CuteSakikoModConfigData, double>(
             ModId, "config",
-            model => (double)model.ModSfxVolume,
+            model => model.ModSfxVolume,
             (model, value) => model.ModSfxVolume = (float)value
         );
         var audioBinding = ModSettingsBindings.Global<CuteSakikoModConfigData, bool>(
@@ -138,12 +139,12 @@ public class Entry
         );
         var wheelScaleBinding = ModSettingsBindings.Global<CuteSakikoModConfigData, double>(
             ModId, "config",
-            model => (double)model.ReactionWheelScale,
+            model => model.ReactionWheelScale,
             (model, value) => model.ReactionWheelScale = (float)value
         );
         var emoteScaleBinding = ModSettingsBindings.Global<CuteSakikoModConfigData, double>(
             ModId, "config",
-            model => (double)model.ReactionEmoteScale,
+            model => model.ReactionEmoteScale,
             (model, value) => model.ReactionEmoteScale = (float)value
         );
 
@@ -154,7 +155,6 @@ public class Entry
             .WithModDisplayName(ModSettingsText.I18N(i18n, "MOD_SETTINGS.DISPLAY_NAME", "Cute Sakiko Mod"))
             .WithTitle(ModSettingsText.I18N(i18n, "MOD_SETTINGS.TITLE", "Cute Sakiko Mod Settings"))
             .WithDescription(ModSettingsText.I18N(i18n, "MOD_SETTINGS.DESCRIPTION", "Cute Sakiko Mod Settings"))
-
             .AddSection("game_content", section => section
                 .WithTitle(ModSettingsText.I18N(i18n, "MOD_SETTINGS.SECTION.GAME_CONTENT", "Game Content"))
                 .AddToggle("egg_toggle",
@@ -170,37 +170,40 @@ public class Entry
                 .AddToggle("ancient_toggle",
                     ModSettingsText.I18N(i18n, "MOD_SETTINGS.ANCIENT_TOGGLE.LABEL", "Custom Ancient Events"),
                     ancientBinding,
-                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.ANCIENT_TOGGLE.DESC", "Allow custom ancient events to appear naturally."))
+                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.ANCIENT_TOGGLE.DESC",
+                        "Allow custom ancient events to appear naturally."))
                 .WithEntryEnabledWhen("ancient_toggle", () => !GameplayConfigSync.ShouldLockGameplaySettings)
                 .AddToggle("custom_event_toggle",
                     ModSettingsText.I18N(i18n, "MOD_SETTINGS.CUSTOM_EVENT_TOGGLE.LABEL", "Custom Events"),
                     customEventBinding,
-                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.CUSTOM_EVENT_TOGGLE.DESC", "Allow custom events to appear naturally."))
+                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.CUSTOM_EVENT_TOGGLE.DESC",
+                        "Allow custom events to appear naturally."))
                 .WithEntryEnabledWhen("custom_event_toggle", () => !GameplayConfigSync.ShouldLockGameplaySettings)
             )
-
             .AddSection("reaction", section => section
                 .WithTitle(ModSettingsText.I18N(i18n, "MOD_SETTINGS.SECTION.REACTION", "Reaction Stickers"))
                 .AddToggle("reaction_replacement_toggle",
                     ModSettingsText.I18N(i18n, "MOD_SETTINGS.REACTION_REPLACEMENT.LABEL", "Replace Stickers"),
                     reactionBinding,
-                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.REACTION_REPLACEMENT.DESC", "Replace vanilla reaction stickers with mod character portraits."))
+                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.REACTION_REPLACEMENT.DESC",
+                        "Replace vanilla reaction stickers with mod character portraits."))
                 .AddSlider("reaction_wheel_scale_slider",
                     ModSettingsText.I18N(i18n, "MOD_SETTINGS.REACTION_WHEEL_SCALE.LABEL", "Wheel Scale"),
                     wheelScaleBinding,
                     0.5, 3.0, 0.1,
-                    valueFormatter: value => $"{value:F1}x",
-                    description: ModSettingsText.I18N(i18n, "MOD_SETTINGS.REACTION_WHEEL_SCALE.DESC", "Scale of the reaction wheel (1.0 = vanilla size)."))
+                    value => $"{value:F1}x",
+                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.REACTION_WHEEL_SCALE.DESC",
+                        "Scale of the reaction wheel (1.0 = vanilla size)."))
                 .WithEntryEnabledWhen("reaction_wheel_scale_slider", () => ModConfig.EnableReactionReplacement)
                 .AddSlider("reaction_emote_scale_slider",
                     ModSettingsText.I18N(i18n, "MOD_SETTINGS.REACTION_EMOTE_SCALE.LABEL", "Emote Scale"),
                     emoteScaleBinding,
                     1.0, 6.0, 0.5,
-                    valueFormatter: value => $"{value:F1}x",
-                    description: ModSettingsText.I18N(i18n, "MOD_SETTINGS.REACTION_EMOTE_SCALE.DESC", "Scale of the popped-out reaction emote (3.0 = vanilla 3x)."))
+                    value => $"{value:F1}x",
+                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.REACTION_EMOTE_SCALE.DESC",
+                        "Scale of the popped-out reaction emote (3.0 = vanilla 3x)."))
                 .WithEntryEnabledWhen("reaction_emote_scale_slider", () => ModConfig.EnableReactionReplacement)
             )
-
             .AddSection("audio", section => section
                 .WithTitle(ModSettingsText.I18N(i18n, "MOD_SETTINGS.SECTION.AUDIO", "Audio"))
                 .AddToggle("audio_toggle",
@@ -211,14 +214,14 @@ public class Entry
                     ModSettingsText.I18N(i18n, "MOD_SETTINGS.MOD_BGM_VOLUME.LABEL", "Mod BGM Volume"),
                     volumeBinding,
                     0.0, 1.0, 0.01,
-                    valueFormatter: value => $"{value:P0}",
-                    description: ModSettingsText.I18N(i18n, "MOD_SETTINGS.MOD_BGM_VOLUME.DESC", "..."))
+                    value => $"{value:P0}",
+                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.MOD_BGM_VOLUME.DESC", "..."))
                 .AddSlider("mod_sfx_volume_slider",
                     ModSettingsText.I18N(i18n, "MOD_SETTINGS.MOD_SFX_VOLUME.LABEL", "Mod SFX Volume"),
                     sfxVolumeBinding,
                     0.0, 1.0, 0.01,
-                    valueFormatter: value => $"{value:P0}",
-                    description: ModSettingsText.I18N(i18n, "MOD_SETTINGS.MOD_SFX_VOLUME.DESC", "..."))
+                    value => $"{value:P0}",
+                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.MOD_SFX_VOLUME.DESC", "..."))
             )
         );
 
@@ -241,15 +244,15 @@ public class Entry
             });
         FlybackManager.PlayerDataSlot = runDataStore.RegisterPerPlayer<PlayerFlybackData>("FlybackPlayerData",
             options: new RunSavedDataOptions
-            { WritePolicy = RunSavedDataWritePolicy.WhenNonDefault, SyncLobbyOnChange = true });
+                { WritePolicy = RunSavedDataWritePolicy.WhenNonDefault, SyncLobbyOnChange = true });
         Eggs.PlayerEggsSlot = runDataStore.RegisterPerPlayer<PlayerEggsData>("EggsSelected",
             options: new RunSavedDataOptions
-            { WritePolicy = RunSavedDataWritePolicy.WhenNonDefault, SyncLobbyOnChange = true });
+                { WritePolicy = RunSavedDataWritePolicy.WhenNonDefault, SyncLobbyOnChange = true });
 
         ParfaitChargesSlot = runDataStore.RegisterPerPlayer(
             "ParfaitCharges",
-            defaultFactory: () => new PlayerParfaitData(),
-            options: new RunSavedDataOptions
+            () => new PlayerParfaitData(),
+            new RunSavedDataOptions
             {
                 WritePolicy = RunSavedDataWritePolicy.WhenSet,
                 SyncLobbyOnChange = true
@@ -257,13 +260,13 @@ public class Entry
 
         PlayerNameData.Init(runDataStore);
 
-        GameplayConfigSync.RunConfigSlot = runDataStore.Register<RunGameplayConfigData>(
+        GameplayConfigSync.RunConfigSlot = runDataStore.Register(
             "GameplayConfigSnapshot",
-            defaultFactory: () => new RunGameplayConfigData(),
-            options: new RunSavedDataOptions
+            () => new RunGameplayConfigData(),
+            new RunSavedDataOptions
             {
                 WritePolicy = RunSavedDataWritePolicy.AlwaysWhenRegistered,
-                SyncLobbyOnChange = true,
+                SyncLobbyOnChange = true
             });
 
         // 7. 初始化游戏性配置的房主权威同步
@@ -292,19 +295,28 @@ public class Entry
             "skin_preview",
             static _ => new SkinPreviewPanel(),
             static (parent, node) => { },
-            new NodeAttachmentOptions { Name = "SkinPreview", DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName, Order = 20 });
+            new NodeAttachmentOptions
+            {
+                Name = "SkinPreview", DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName, Order = 20
+            });
 
         skinReg.RegisterReadyChild<NCharacterSelectScreen, DeckPresetPanel>(
             "deck_preset",
             static _ => new DeckPresetPanel(),
             static (parent, node) => { },
-            new NodeAttachmentOptions { Name = "DeckPreset", DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName, Order = 21 });
+            new NodeAttachmentOptions
+            {
+                Name = "DeckPreset", DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName, Order = 21
+            });
 
         skinReg.RegisterReadyChild<NCharacterSelectScreen, RelicSwitchPanel>(
             "relic_switch",
             static _ => new RelicSwitchPanel(),
             static (parent, node) => { },
-            new NodeAttachmentOptions { Name = "RelicSwitch", DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName, Order = 22 });
+            new NodeAttachmentOptions
+            {
+                Name = "RelicSwitch", DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName, Order = 22
+            });
 
         // 8.4 生命周期：大厅贡献合并后刷新
         // 8.4 生命周期：大厅贡献合并后刷新
@@ -314,18 +326,18 @@ public class Entry
                 || evt.Reason == RunSavedDataLobbyStagingReason.PlayerJoined)
             {
                 // ★ 不 forceReset：只更新远端缓存，不动本机已有选择
-                SkinResolver.SyncFromLobby(evt.Lobby, forceResetLocal: false);
+                SkinResolver.SyncFromLobby(evt.Lobby);
                 SkinSystemEvents.RaiseCurrentCharacterChanged(SkinUiContext.CurrentCharacterType);
             }
         });
 
         // 9. 网络消息处理器 + 房主权威配置同步
         if (RunManager.Instance != null)
-        {
             RunManager.Instance.RunStarted += runState =>
             {
-                var netService = RunManager.Instance.NetService;
-
+                var netService = RunManager.Instance?.NetService;
+                if (netService != null)
+                    RelicSwapCoordinator.Init(netService);
                 // ★ 直接传 netService.NetId，避免依赖先前 SetLocalNetId 是否成功
                 if (netService != null && runState != null)
                     SkinResolver.SyncFromRun(runState, netService.NetId);
@@ -334,19 +346,16 @@ public class Entry
 
                 if (netService != null)
                 {
-                    netService.RegisterMessageHandler(new MessageHandlerDelegate<ReloadCountSyncMessage>((msg, senderId) =>
-                        FlybackManager.OnReloadCountReceived(msg.ReloadCount)));
+                    netService.RegisterMessageHandler(
+                        new MessageHandlerDelegate<ReloadCountSyncMessage>((msg, senderId) =>
+                            FlybackManager.OnReloadCountReceived(msg.ReloadCount)));
 
                     netService.RegisterMessageHandler(new MessageHandlerDelegate<NameChangeMessage>((msg, senderId) =>
                     {
                         var runState = NameChangeCmd.GetCurrentRunState();
                         if (runState != null)
-                        {
-                            PlayerNameData.PlayerNameSlot.Modify(runState, msg.TargetNetId, data =>
-                            {
-                                data.CustomName = msg.NewName;
-                            });
-                        }
+                            PlayerNameData.PlayerNameSlot.Modify(runState, msg.TargetNetId,
+                                data => { data.CustomName = msg.NewName; });
                         NameChangeCmd.RefreshAllPlayerNameUI();
                     }));
 
@@ -370,44 +379,43 @@ public class Entry
                         SkinSyncService.OnMessageReceived(msg, senderId);
                     }));
 
-                    netService.RegisterMessageHandler(new MessageHandlerDelegate<EggsGrantMessage>(async (msg, senderId) =>
-                    {
-                        try
+                    netService.RegisterMessageHandler(
+                        new MessageHandlerDelegate<EggsGrantMessage>(async (msg, senderId) =>
                         {
-                            var state = RunManager.Instance.DebugOnlyGetState();
-                            if (state == null) return;
-
-                            var player = state.Players.FirstOrDefault(p => p.NetId == msg.TargetPlayerNetId);
-                            if (player == null)
+                            try
                             {
-                                Logger.Warn($"[ConfigSync] EggsGrantMessage: 找不到 player {msg.TargetPlayerNetId}");
-                                return;
-                            }
-                            if (player.Relics.Any(r => r.Id == ModelDb.Relic<Eggs>().Id))
-                            {
-                                Logger.Info($"[ConfigSync] player {msg.TargetPlayerNetId} 已有 Eggs，跳过");
-                                return;
-                            }
+                                var state = RunManager.Instance.DebugOnlyGetState();
+                                if (state == null) return;
 
-                            Logger.Info($"[ConfigSync] 客户端本地给 player {msg.TargetPlayerNetId} 补发 Eggs");
-                            var eggs = ModelDb.Relic<Eggs>().ToMutable();
-                            await RelicCmd.Obtain(eggs, player);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Warn($"[ConfigSync] EggsGrantMessage 处理失败: {ex}");
-                        }
-                    }));
+                                var player = state.Players.FirstOrDefault(p => p.NetId == msg.TargetPlayerNetId);
+                                if (player == null)
+                                {
+                                    Logger.Warn($"[ConfigSync] EggsGrantMessage: 找不到 player {msg.TargetPlayerNetId}");
+                                    return;
+                                }
+
+                                if (player.Relics.Any(r => r.Id == ModelDb.Relic<Eggs>().Id))
+                                {
+                                    Logger.Info($"[ConfigSync] player {msg.TargetPlayerNetId} 已有 Eggs，跳过");
+                                    return;
+                                }
+
+                                Logger.Info($"[ConfigSync] 客户端本地给 player {msg.TargetPlayerNetId} 补发 Eggs");
+                                var eggs = ModelDb.Relic<Eggs>().ToMutable();
+                                await RelicCmd.Obtain(eggs, player);
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Warn($"[ConfigSync] EggsGrantMessage 处理失败: {ex}");
+                            }
+                        }));
 
                     if (netService is NetHostGameService hostService)
                         hostService.ClientConnected += peerId => { FlybackManager.SyncReloadCountIfHost(); };
                 }
             };
-        }
         else
-        {
             Logger.Warn("RunManager.Instance is null, RunStarted event not subscribed.");
-        }
 
         ModContentRegistry.For(ModId)
             .RegisterCardLibraryCompendiumSharedPoolFilter<CuteSakikoModCardPool>(
@@ -465,25 +473,18 @@ public class Entry
             if (!isHostOrSingle) return;
 
             foreach (var player in evt.RunState.Players)
-            {
                 if (!player.Relics.Any(r => r.Id == ModelDb.Relic<Eggs>().Id))
                     Logger.Warn($"[ConfigSync] 战斗开始时 player {player.NetId} 没有 Eggs（ActEnteredEvent 发放失败？）");
-            }
         });
 
-        RitsuLibFramework.SubscribeLifecycle<RoomExitedEvent>(_ =>
-        {
-            AudioManager.StopMusic();
-        });
+        RitsuLibFramework.SubscribeLifecycle<RoomExitedEvent>(_ => { AudioManager.StopMusic(); });
 
         if (RunManager.Instance != null)
-        {
             RunManager.Instance.RunStarted += _ =>
             {
                 if (CombatManager.Instance != null)
                     CombatManager.Instance.CombatEnded += _ => AudioManager.StopMusic();
             };
-        }
 
         _ = ChordNoteSystem.MaxStoredChords;
     }

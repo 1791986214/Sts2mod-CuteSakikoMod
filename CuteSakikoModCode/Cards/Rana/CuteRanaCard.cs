@@ -37,6 +37,7 @@ public abstract class CuteRanaCard(int cost, CardType type, CardRarity rarity, T
                 if (parfait.Charges < eater.GetParfaitConsumeCount())
                     return false;
             }
+
             return true;
         }
     }
@@ -44,13 +45,13 @@ public abstract class CuteRanaCard(int cost, CardType type, CardRarity rarity, T
     public interface IEatParfaitCard
     {
         /// <summary>
-        /// 需要消耗的芭菲杯数（仅在 ConsumeAll = false 时有效）
-        /// </summary>
-        int GetParfaitConsumeCount();
-
-        /// <summary>
-        /// 是否消耗所有杯数（优先级高于 GetParfaitConsumeCount）
+        ///     是否消耗所有杯数（优先级高于 GetParfaitConsumeCount）
         /// </summary>
         bool ConsumeAll => false;
+
+        /// <summary>
+        ///     需要消耗的芭菲杯数（仅在 ConsumeAll = false 时有效）
+        /// </summary>
+        int GetParfaitConsumeCount();
     }
 }

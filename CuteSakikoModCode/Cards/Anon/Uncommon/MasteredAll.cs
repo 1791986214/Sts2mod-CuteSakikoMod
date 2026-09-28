@@ -1,5 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -17,13 +16,10 @@ public class MasteredAll() : CuteAnonCard(4, CardType.Attack, CardRarity.Uncommo
     {
         get { yield return new DamageVar(50m, ValueProp.Move); }
     }
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.EquippedChords.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.EquippedChords.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -32,7 +28,7 @@ public class MasteredAll() : CuteAnonCard(4, CardType.Attack, CardRarity.Uncommo
         TriggerBanter();
 
         var command = await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_blunt", tmpSfx: "blunt_attack.mp3")
             .Execute(choiceContext);

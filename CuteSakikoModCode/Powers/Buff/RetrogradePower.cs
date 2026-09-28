@@ -1,6 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Monsters.Boss;
 using CuteSakikoMod.CuteSakikoModCode.Singletons;
-using Godot;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -94,7 +93,7 @@ public sealed class RetrogradePower : CuteSakikoModPower
     {
         var playCount = FlybackManager.Instance?.TotalPlayCount ?? 0;
         var reloads = FlybackManager.GetReloadCount();
-        return (int)(playCount * (float)reloads / 10);  // 整数除法，向下取整
+        return (int)(playCount * (float)reloads / 10); // 整数除法，向下取整
     }
 
     public async Task RefreshHpBoost()
@@ -103,11 +102,20 @@ public sealed class RetrogradePower : CuteSakikoModPower
     }
 
     // ========== 复活逻辑（修改后） ==========
-    public override bool ShouldPowerBeRemovedAfterOwnerDeath() => false;
+    public override bool ShouldPowerBeRemovedAfterOwnerDeath()
+    {
+        return false;
+    }
 
-    public override bool ShouldCreatureBeRemovedFromCombatAfterDeath(Creature creature) => creature != Owner;
+    public override bool ShouldCreatureBeRemovedFromCombatAfterDeath(Creature creature)
+    {
+        return creature != Owner;
+    }
 
-    public override bool ShouldStopCombatFromEnding() => true;
+    public override bool ShouldStopCombatFromEnding()
+    {
+        return true;
+    }
 
     public override async Task AfterDeath(
         PlayerChoiceContext choiceContext,

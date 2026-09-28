@@ -1,12 +1,9 @@
-﻿using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Keywords;
 
@@ -24,7 +21,7 @@ public class VocalHarmonyPower : CuteSakikoModPower
         if (card.Owner?.Creature != Owner) return;
         if (!card.Keywords.Contains(CutesakiKeywords.RanaLive.GetModCardKeyword())) return;
 
-        int damagePerEnemy = Amount;
+        var damagePerEnemy = Amount;
         if (damagePerEnemy <= 0) return;
 
         var enemies = Owner.CombatState.HittableEnemies;
@@ -38,8 +35,8 @@ public class VocalHarmonyPower : CuteSakikoModPower
             enemies,
             new DamageVar(damagePerEnemy, ValueProp.Unpowered),
             Owner,
-            (CardModel?)null,
-            (CardPlay?)null
+            null,
+            null
         );
     }
 }

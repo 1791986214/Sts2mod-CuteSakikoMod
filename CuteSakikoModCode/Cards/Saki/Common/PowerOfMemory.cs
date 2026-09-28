@@ -14,7 +14,7 @@ public class PowerOfMemory() : CuteSakikoModCard(0, CardType.Attack, CardRarity.
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.Playpiano.GetModCardKeyword()];
 
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Memory.GetModCardKeyword()); }
@@ -52,7 +52,7 @@ public class PowerOfMemory() : CuteSakikoModCard(0, CardType.Attack, CardRarity.
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await DamageCmd.Attack(DynamicVars.CalculatedDamage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

@@ -1,24 +1,20 @@
 {
   "SKIN_VIEW_DECK": "デッキを見る",
   "SKIN_CLOSE": "閉じる",
-  
   "SAKI_SKIN_DEFAULT": "羽丘",
   "SAKI_SKIN_OB": "衣装",
   "SAKI_DECK_DEFAULT": "デフォルトデッキ",
   "SAKI_DECK_OB": "忘却デッキ",
   "SAKI_RELIC_DEFAULT": "カブトムシのノート",
   "SAKI_RELIC_OB": "人形の仮面",
-
   "ANON_SKIN_DEFAULT": "羽丘",
   "ANON_SKIN_TENDAY": "余命十日",
   "ANON_DECK_DEFAULT": "デフォルトデッキ",
   "ANON_RELIC_DEFAULT": "デフォルトレリック",
-
-  "RANA_SKIN_DEFAULT": "花咲川楽奈",
+  "RANA_SKIN_DEFAULT": "花咲川",
   "RANA_SKIN_TENDAY": "余命十日",
   "RANA_DECK_DEFAULT": "デフォルトデッキ",
   "RANA_RELIC_DEFAULT": "デフォルトレリック",
-  
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.aromaPrinciple": "[sine][blue]...ですわ！？[/blue][/sine]",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.banter.alive.endTurnPing": "早くしてくれませんか？",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.banter.dead.endTurnPing": "忘却...",
@@ -33,22 +29,6 @@
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.pronounSubject": "彼女",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.title": "豊川祥子",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_SAKI.titleObject": "可愛い祥子",
-
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.aromaPrinciple": "[sine][blue]...ですわ！？[/blue][/sine]",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.banter.alive.endTurnPing": "早くしてくれませんか？",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.banter.dead.endTurnPing": "忘却...",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.cardsModifierDescription": "報酬やショップにオブリビオニスのカードが出現するようになる。",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.cardsModifierTitle": "オブリビオニスのカード",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.description": "[red]神[/red]。\nこの尖塔に君臨し続ける。",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.eventDeathPrevention": "だめですわ！",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.goldMonologue": "私の[gold]給料[/gold]よりずっと多いですわ！？",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.possessiveAdjective": "彼女の",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.pronounObject": "彼女",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.pronounPossessive": "彼女の",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.pronounSubject": "彼女",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.title": "オブリビオニス",
-  "CUTE_SAKIKO_MOD_CHARACTER_CUTE_OB.titleObject": "可愛い忘却の女神",
-
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_ANON.aromaPrinciple": "[pink]...うーん、ここはどこ？[/pink]",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_ANON.banter.alive.endTurnPing": "今カードをプレイするのは[pink]私[/pink]のはずでしょ！",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_ANON.banter.dead.endTurnPing": "...痛っ",
@@ -75,7 +55,6 @@
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_ANON.banter.power.1": "[pink]これが私の実力！[/pink]",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_ANON.banter.power.2": "[pink]もっと強くなれる！[/pink]",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_ANON.banter.power.3": "[pink]見てて、これが私の力！[/pink]",
-
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_RANA.aromaPrinciple": "[sine][green]パフェ[/green]...[/sine]",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_RANA.banter.alive.endTurnPing": "[green]抹茶パフェ[/green]....\n溶けちゃう",
   "CUTE_SAKIKO_MOD_CHARACTER_CUTE_RANA.banter.dead.endTurnPing": "[green]パフェ[/green]...",

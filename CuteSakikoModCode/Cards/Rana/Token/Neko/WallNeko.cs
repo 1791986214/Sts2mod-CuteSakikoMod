@@ -14,14 +14,14 @@ public class WallNeko : NekoCard
 
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[]
     {
-        new DamageVar(1m, ValueProp.Move) 
+        new DamageVar(1m, ValueProp.Move)
     };
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var times = IsUpgraded ? 6 : 3;
         await DamageCmd.Attack(DynamicVars.Damage.IntValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .WithHitCount(times)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
@@ -30,6 +30,5 @@ public class WallNeko : NekoCard
 
     protected override void OnUpgrade()
     {
-
     }
 }

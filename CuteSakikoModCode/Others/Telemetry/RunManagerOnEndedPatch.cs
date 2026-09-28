@@ -6,8 +6,8 @@ using MegaCrit.Sts2.Core.Saves;
 namespace CuteSakikoMod.CuteSakikoModCode.Others.Telemetry;
 
 /// <summary>
-/// 拦截 RunManager.OnEnded，拿到返回的 SerializableRun，本地化后上传。
-/// 只在单机或主机端上传，避免多人时每人都传一遍。
+///     拦截 RunManager.OnEnded，拿到返回的 SerializableRun，本地化后上传。
+///     只在单机或主机端上传，避免多人时每人都传一遍。
 /// </summary>
 [HarmonyPatch(typeof(RunManager), nameof(RunManager.OnEnded))]
 public static class RunManagerOnEndedPatch
@@ -27,7 +27,7 @@ public static class RunManagerOnEndedPatch
             // （WinTime > 0 只是近似判断，这里直接传参更准确）
             CuteSakikoModTelemetry.CaptureLocalizedRun(__result);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             Entry.Logger.Warn($"[Telemetry] OnEnded patch failed: {ex.Message}");
         }

@@ -1,6 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Eggs;
 using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Saki;
 using CuteSakikoMod.CuteSakikoModCode.Singletons;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
@@ -12,7 +11,6 @@ using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
-using MegaCrit.Sts2.Core.Saves.Runs;
 using STS2RitsuLib.RunData;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Relics.Event;

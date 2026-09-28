@@ -14,13 +14,10 @@ public class ParkingNekoFour : NekoCard
     public ParkingNekoFour() : base(0, CardType.Skill, CardRarity.Token, TargetType.AnyEnemy)
     {
     }
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromPower<NekoTempStrengthDownPower>();
-        }
+        get { yield return HoverTipFactory.FromPower<NekoTempStrengthDownPower>(); }
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars => new[]

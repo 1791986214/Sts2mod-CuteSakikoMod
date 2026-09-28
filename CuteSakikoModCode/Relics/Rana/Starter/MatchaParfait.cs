@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Status;
-using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Combat;
@@ -24,12 +23,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Relics.Rana.Starter;
 public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
     IRelicExtraIconAmountLabelSpecsProvider, IRelicExtraIconAmountLabelsChangeSource
 {
-    private int _totalConsumedThisCombat;
-    private int _charges;
-    private int _currentTurnCount;
-    private int _drawAmount = 1;
-    private int _energyGain = 1;
-
     private static readonly string AudioDir =
         Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "audio");
 
@@ -42,13 +35,18 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
     private static readonly Random _rand = new();
 
     // 暂存被替换遗物的杯数，供触神升级后的新遗物继承
-    private static int? _pendingTransferCharges;
+    private int _charges;
+    private int _currentTurnCount;
+    private int _drawAmount = 1;
+    private int _energyGain = 1;
+    private int _totalConsumedThisCombat;
 
-    protected static int? PendingTransferCharges
+    public MatchaParfait()
     {
-        get => _pendingTransferCharges;
-        set => _pendingTransferCharges = value;
+        Charges = GetInitialCharges();
     }
+
+    protected static int? PendingTransferCharges { get; set; }
 
     [SavedProperty]
     public int TotalConsumedThisCombat
@@ -112,16 +110,6 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
         }
     }
 
-    protected virtual int GetInitialCharges() => 6;
-
-    public MatchaParfait()
-    {
-        Charges = GetInitialCharges();
-    }
-
-    public event Action? RelicExtraIconAmountLabelsInvalidated;
-    public event Action<Player, int, PlayerChoiceContext?>? ChargesRemoved;
-
     public override RelicRarity Rarity => RelicRarity.Starter;
     public override bool ShowCounter => true;
     public override int DisplayAmount => Charges;
@@ -147,7 +135,7 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
             Entry.Logger.Info("[芭菲] 效果开始");
             await CardPileCmd.Draw(context.PlayerChoiceContext, DrawAmount, player);
             await PlayerCmd.GainEnergy(EnergyGain, player);
-            await RemoveCharges(this, 1, context.PlayerChoiceContext, ignoreTreat: true);
+            await RemoveCharges(this, 1, context.PlayerChoiceContext, true);
             Entry.Logger.Info("[芭菲] 效果完成");
         }
         catch (Exception ex)
@@ -156,6 +144,8 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
         }
     }
 
+    public event Action? RelicExtraIconAmountLabelsInvalidated;
+
     public IReadOnlyList<ExtraIconAmountLabelSpec> GetRelicExtraIconAmountLabelSpecs()
     {
         return new[]
@@ -163,6 +153,13 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
             ExtraIconAmountLabelSpec.Plain(ExtraIconAmountLabelCorner.TopRight, CurrentTurnCount.ToString())
         };
     }
+
+    protected virtual int GetInitialCharges()
+    {
+        return 6;
+    }
+
+    public event Action<Player, int, PlayerChoiceContext?>? ChargesRemoved;
 
     public override async Task AfterSideTurnStart(
         CombatSide side,
@@ -184,17 +181,17 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
     // ★ 新增：被移除时暂存杯数
     public override Task AfterRemoved()
     {
-        _pendingTransferCharges = Charges;
+        PendingTransferCharges = Charges;
         return Task.CompletedTask;
     }
 
     private async Task OnParfaitConsumedInstanceAsync(int amount, PlayerChoiceContext? choiceContext)
     {
-        for (int i = 0; i < amount; i++)
+        for (var i = 0; i < amount; i++)
         {
             // 播放随机音效
             var sfx = Path.Combine(AudioDir, ParfaitSfxFiles[_rand.Next(ParfaitSfxFiles.Length)]);
-            AudioManager.PlaySound(sfx, 1.0f);
+            AudioManager.PlaySound(sfx);
 
             CurrentTurnCount++;
             Entry.Logger.Info($"[芭菲] 当前回合计数={CurrentTurnCount}");
@@ -240,17 +237,11 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
             relic.ChargesRemoved?.Invoke(player, amount, choiceContext);
             _ = relic.OnParfaitConsumedInstanceAsync(amount, choiceContext);
 
-            if (player.Creature.HasPower<WantBothPower>())
-            {
-                await ApplyWantBothEffect(player, amount, choiceContext);
-            }
+            if (player.Creature.HasPower<WantBothPower>()) await ApplyWantBothEffect(player, amount, choiceContext);
         }
         else
         {
-            if (player.Creature.HasPower<WantBothPower>())
-            {
-                await ApplyWantBothEffect(player, amount, choiceContext);
-            }
+            if (player.Creature.HasPower<WantBothPower>()) await ApplyWantBothEffect(player, amount, choiceContext);
         }
     }
 
@@ -268,7 +259,7 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
     {
         if (relic == null) return;
 
-        bool hasTreat = relic.Owner.Creature.HasPower<ParfaitTreatPower>();
+        var hasTreat = relic.Owner.Creature.HasPower<ParfaitTreatPower>();
 
         if (hasTreat && !ignoreTreat)
         {
@@ -278,15 +269,13 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
             _ = relic.OnParfaitConsumedInstanceAsync(amount, choiceContext);
 
             if (relic.Owner.Creature.HasPower<WantBothPower>())
-            {
                 await ApplyWantBothEffect(relic.Owner, amount, choiceContext);
-            }
             return;
         }
 
-        int old = relic.Charges;
+        var old = relic.Charges;
         relic.Charges = Math.Max(0, relic.Charges - amount);
-        int removed = old - relic.Charges;
+        var removed = old - relic.Charges;
         if (removed > 0)
         {
             relic.TotalConsumedThisCombat += removed;
@@ -294,9 +283,7 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
             _ = relic.OnParfaitConsumedInstanceAsync(removed, choiceContext);
 
             if (relic.Owner.Creature.HasPower<WantBothPower>())
-            {
                 await ApplyWantBothEffect(relic.Owner, removed, choiceContext);
-            }
         }
     }
 
@@ -306,11 +293,11 @@ public class MatchaParfait : CuteRanaRelic, IModRightClickableRelic,
         PlayerChoiceContext? choiceContext)
     {
         var wantBothPower = player.Creature.GetPower<WantBothPower>();
-        int layers = wantBothPower?.Amount ?? 0;
+        var layers = wantBothPower?.Amount ?? 0;
         if (layers <= 0) return;
 
-        int totalRewards = amount * layers; // 每杯每层一次奖励
-        for (int i = 0; i < totalRewards; i++)
+        var totalRewards = amount * layers; // 每杯每层一次奖励
+        for (var i = 0; i < totalRewards; i++)
         {
             await PlayerCmd.GainEnergy(1, player);
             if (choiceContext != null)

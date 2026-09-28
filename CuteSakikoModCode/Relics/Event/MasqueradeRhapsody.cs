@@ -2,7 +2,6 @@
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -12,10 +11,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 
 public class MasqueradeRhapsody : CuteSakikoEventRelic
 {
-    public override RelicRarity Rarity => RelicRarity.Event;
-
     // 防止重复施加触发无限递归
     private bool _isReapplying;
+    public override RelicRarity Rarity => RelicRarity.Event;
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {

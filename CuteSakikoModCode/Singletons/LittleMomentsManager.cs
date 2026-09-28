@@ -17,7 +17,7 @@ public class LittleMomentsManager : HookedSingletonModel
 {
     // 通过构造函数指定订阅战斗 Hook
     public LittleMomentsManager()
-        : base(HookedSingletonModel.HookType.Combat)
+        : base(HookType.Combat)
     {
     }
 

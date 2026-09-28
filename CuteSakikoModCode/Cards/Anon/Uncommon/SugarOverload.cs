@@ -8,8 +8,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Uncommon;
 
 public class SugarOverload() : CuteAnonCard(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
-    [SavedProperty]
-    private int TimesPlayedThisCombat { get; set; }
+    [SavedProperty] private int TimesPlayedThisCombat { get; set; }
 
     public override IEnumerable<CardKeyword> CanonicalKeywords
     {

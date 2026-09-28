@@ -8,7 +8,7 @@ public class AtkNote() : OtherModTokenCard(0, CardType.Attack, CardRarity.Token,
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => new[] { CardKeyword.Exhaust };
     public override int MaxUpgradeLevel => 0;
-    
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         // 空效果，仅获得音符（由遗物自动处理）

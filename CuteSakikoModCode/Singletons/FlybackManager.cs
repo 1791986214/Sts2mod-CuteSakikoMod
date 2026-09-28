@@ -15,7 +15,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Singletons;
 [RegisterSingleton]
 public class FlybackManager : HookedSingletonModel
 {
-    public FlybackManager() : base(HookType.None) { }
+    public FlybackManager() : base(HookType.None)
+    {
+    }
 
     // ---------- 数据槽位 ----------
     public static PlayerRunSavedData<PlayerFlybackData>? PlayerDataSlot { get; set; }
@@ -29,6 +31,20 @@ public class FlybackManager : HookedSingletonModel
         RunManager.Instance.NetService?.Type == NetGameType.Client;
 
     public static FlybackManager Instance => ModelDb.Singleton<FlybackManager>();
+
+    // ---------- TotalPlayCount ----------
+    public int TotalPlayCount
+    {
+        get
+        {
+            var runState = GetCurrentRunState();
+            if (runState == null || PlayerDataSlot == null) return 0;
+            var total = 0;
+            foreach (var player in runState.Players)
+                total += PlayerDataSlot.Get(runState, player.NetId).PlayCount;
+            return total;
+        }
+    }
 
     // ---------- 获取当前 RunState ----------
     private static RunState? GetCurrentRunState()
@@ -102,20 +118,6 @@ public class FlybackManager : HookedSingletonModel
         foreach (var player in runState.Players)
             PlayerDataSlot.Modify(player, data => data.PlayCount *= 2);
         Instance.NotifyDataChanged();
-    }
-
-    // ---------- TotalPlayCount ----------
-    public int TotalPlayCount
-    {
-        get
-        {
-            var runState = GetCurrentRunState();
-            if (runState == null || PlayerDataSlot == null) return 0;
-            var total = 0;
-            foreach (var player in runState.Players)
-                total += PlayerDataSlot.Get(runState, player.NetId).PlayCount;
-            return total;
-        }
     }
 
     // ---------- 内部工具 ----------

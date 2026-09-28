@@ -9,7 +9,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 public static class ChordSequenceModifierHelper
 {
     private static readonly Dictionary<Player, Dictionary<string, ChordSequenceModifier>> _cardModifiers = new();
-    private static int _getModifiedSequenceCallCount = 0; // 全局调用计数器
+    private static int _getModifiedSequenceCallCount; // 全局调用计数器
 
     public static void SetCardModifier(Player player, string chordId, ChordSequenceModifier modifier)
     {
@@ -51,11 +51,12 @@ public static class ChordSequenceModifierHelper
             {
                 var mods = provider.GetModifiers(creature, chordDef).ToList();
                 if (mods.Count > 0)
-                    Entry.Logger.Debug($"[CollectModifiers] Power {provider.GetType().Name} added {mods.Count} mod(s) for {chordDef.Id}");
+                    Entry.Logger.Debug(
+                        $"[CollectModifiers] Power {provider.GetType().Name} added {mods.Count} mod(s) for {chordDef.Id}");
                 result.AddRange(mods);
             }
         }
-        
+
         if (player != null)
             foreach (var provider in player.Relics.OfType<IChordSequenceModifierProvider>())
             {
@@ -64,10 +65,12 @@ public static class ChordSequenceModifierHelper
                 {
                     var mods = provider.GetModifiers(creature, chordDef).ToList();
                     if (mods.Count > 0)
-                        Entry.Logger.Debug($"[CollectModifiers] Relic {provider.GetType().Name} added {mods.Count} mod(s) for {chordDef.Id}");
+                        Entry.Logger.Debug(
+                            $"[CollectModifiers] Relic {provider.GetType().Name} added {mods.Count} mod(s) for {chordDef.Id}");
                     result.AddRange(mods);
                 }
             }
+
         return result;
     }
 
@@ -76,7 +79,8 @@ public static class ChordSequenceModifierHelper
         _getModifiedSequenceCallCount++;
         var stackTrace = new StackTrace(true);
         var caller = stackTrace.GetFrame(1)?.GetMethod()?.Name ?? "Unknown";
-        var log = $"[GetModifiedSequence] #{_getModifiedSequenceCallCount} for chord {chordDef.Id} from {caller}, owner={owner?.Player?.NetId}";
+        var log =
+            $"[GetModifiedSequence] #{_getModifiedSequenceCallCount} for chord {chordDef.Id} from {caller}, owner={owner?.Player?.NetId}";
         Entry.Logger.Debug(log);
 
         var mods = CollectModifiers(owner, chordDef);
@@ -85,7 +89,7 @@ public static class ChordSequenceModifierHelper
             seq = mod.Apply(seq);
         return seq;
     }
-    
+
     public static void RemoveCardModifier(Player player, string chordId)
     {
         if (_cardModifiers.TryGetValue(player, out var dict))
@@ -110,28 +114,34 @@ public static class ChordSequenceModifierHelper
                 text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_ANY").GetFormattedText();
                 color = "pink";
             }
-            else switch (t)
+            else
             {
-                case CardType.Attack:
-                    text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_ATTACK").GetFormattedText();
-                    color = "red";
-                    break;
-                case CardType.Skill:
-                    text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_SKILL").GetFormattedText();
-                    color = "blue";
-                    break;
-                case CardType.Power:
-                    text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_POWER").GetFormattedText();
-                    color = "gold";
-                    break;
-                default:
-                    text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_STATUS").GetFormattedText();
-                    color = "purple";
-                    break;
+                switch (t)
+                {
+                    case CardType.Attack:
+                        text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_ATTACK")
+                            .GetFormattedText();
+                        color = "red";
+                        break;
+                    case CardType.Skill:
+                        text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_SKILL").GetFormattedText();
+                        color = "blue";
+                        break;
+                    case CardType.Power:
+                        text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_POWER").GetFormattedText();
+                        color = "gold";
+                        break;
+                    default:
+                        text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_STATUS")
+                            .GetFormattedText();
+                        color = "purple";
+                        break;
+                }
             }
 
             parts.Add($"[{color}]{text}[/{color}]");
         }
+
         return string.Join(" ", parts);
     }
 }

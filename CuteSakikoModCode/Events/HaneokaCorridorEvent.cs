@@ -1,10 +1,8 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Basic;
+﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Character.Mujica;
 using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Event;
-using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Events;
@@ -24,14 +22,17 @@ namespace CuteSakikoMod.CuteSakikoModCode.Events;
 public sealed class HaneokaCorridorEvent : CuteSakikoEvent
 {
     private IHoverTip[]? _relicHoverTips;
-    
+
     public override EventAssetProfile AssetProfile => new(
         InitialPortraitPath: "res://CuteSakikoMod/images/events/haneoka_corridor.png"
     );
 
     public override bool IsShared => true;
 
-    protected override bool IsAllowedInternal(IRunState runState) => true;
+    protected override bool IsAllowedInternal(IRunState runState)
+    {
+        return true;
+    }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
@@ -40,19 +41,15 @@ public sealed class HaneokaCorridorEvent : CuteSakikoEvent
             new(this, Listen, InitialOptionKey("LISTEN"))
         };
 
-        if (HasSakiOrOb())
-        {
-            options.Add(new(this, OpenDoorPiano, InitialOptionKey("OPEN_DOOR_PIANO")));
-        }
+        if (HasSaki())
+            options.Add(new EventOption(this, OpenDoorPiano, InitialOptionKey("OPEN_DOOR_PIANO")));
         else
-        {
             options.Add(new EventOption(this, null, InitialOptionKey("OPEN_DOOR_PIANO_LOCKED")));
-        }
 
-        if (HasSakiOrObAndAnon())
+        if (HasSakiAndAnon())
         {
             _relicHoverTips ??= HoverTipFactory.FromRelic<FlaxenHairedGirl>().ToArray();
-            options.Add(new(this, OpenDoorAnon, InitialOptionKey("OPEN_DOOR_ANON"), _relicHoverTips));
+            options.Add(new EventOption(this, OpenDoorAnon, InitialOptionKey("OPEN_DOOR_ANON"), _relicHoverTips));
         }
         else
         {
@@ -62,15 +59,15 @@ public sealed class HaneokaCorridorEvent : CuteSakikoEvent
         return options;
     }
 
-    private bool HasSakiOrOb()
+    private bool HasSaki()
     {
         if (Owner?.RunState == null) return false;
-        return Owner.RunState.Players.Any(p => p.Character is CuteSaki );
+        return Owner.RunState.Players.Any(p => p.Character is CuteSaki);
     }
 
-    private bool HasSakiOrObAndAnon()
+    private bool HasSakiAndAnon()
     {
-        if (!HasSakiOrOb()) return false;
+        if (!HasSaki()) return false;
         return Owner!.RunState.Players.Any(p => p.Character is CuteAnon);
     }
 
@@ -121,19 +118,14 @@ public sealed class HaneokaCorridorEvent : CuteSakikoEvent
             var targetId = pianoCardIds[Owner.PlayerRng.Transformations.NextInt(pianoCardIds.Count)];
             var newCard = Owner.RunState.CreateCard(ModelDb.GetById<CardModel>(targetId), Owner);
             // 保留升级
-            if (strike.IsUpgraded && newCard.IsUpgradable)
-            {
-                CardCmd.Upgrade(newCard);
-            }
+            if (strike.IsUpgraded && newCard.IsUpgradable) CardCmd.Upgrade(newCard);
             // 保留附魔（如果目标可附魔）
             if (strike.Enchantment != null)
             {
                 var ench = (EnchantmentModel)strike.Enchantment.MutableClone();
-                if (ench.CanEnchant(newCard))
-                {
-                    CardCmd.Enchant(ench, newCard, ench.Amount);
-                }
+                if (ench.CanEnchant(newCard)) CardCmd.Enchant(ench, newCard, ench.Amount);
             }
+
             transformations.Add(new CardTransformation(strike, newCard));
         }
 
@@ -144,25 +136,28 @@ public sealed class HaneokaCorridorEvent : CuteSakikoEvent
     // 选项3：推开门 - 获得遗物“亚麻色头发的少女”
     private async Task OpenDoorAnon()
     {
-    // 授予遗物
-    var relicFinal = ModelDb.Relic<FlaxenHairedGirl>().ToMutable();
-    await RelicCmd.Obtain(relicFinal, Owner!);
+        // 授予遗物
+        var relicFinal = ModelDb.Relic<FlaxenHairedGirl>().ToMutable();
+        await RelicCmd.Obtain(relicFinal, Owner!);
 
-    // 显示第一段剧情，并提供“继续”按钮进入第二段
-    SetEventState(
-        PageDescription("ANON_SUCCESS_PART1"),
-        new List<EventOption>
-        {
-            new(this, ShowSecondPart, ModOptionKey("ANON_SUCCESS", "CONTINUE"))
-        }
-    );
-}
+        // 显示第一段剧情，并提供“继续”按钮进入第二段
+        SetEventState(
+            PageDescription("ANON_SUCCESS_PART1"),
+            new List<EventOption>
+            {
+                new(this, ShowSecondPart, ModOptionKey("ANON_SUCCESS", "CONTINUE"))
+            }
+        );
+    }
 
-private Task ShowSecondPart()
-{
-    SetEventFinished(PageDescription("ANON_SUCCESS_PART2"));
-    return Task.CompletedTask;
-}
+    private Task ShowSecondPart()
+    {
+        SetEventFinished(PageDescription("ANON_SUCCESS_PART2"));
+        return Task.CompletedTask;
+    }
 
-    private LocString PageDescription(string pageKey) => L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    private LocString PageDescription(string pageKey)
+    {
+        return L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    }
 }

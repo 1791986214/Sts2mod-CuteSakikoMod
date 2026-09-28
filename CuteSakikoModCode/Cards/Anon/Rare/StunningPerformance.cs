@@ -1,5 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -15,7 +14,7 @@ public class StunningPerformance() : CuteAnonCard(2, CardType.Attack, CardRarity
     protected override HashSet<CardTag> CanonicalTags => new() { CardTag.Strike };
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.Playguitar.GetModCardKeyword()];
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
         get
@@ -41,7 +40,7 @@ public class StunningPerformance() : CuteAnonCard(2, CardType.Attack, CardRarity
         TriggerBanter();
 
         await DamageCmd.Attack(DynamicVars.CalculatedDamage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

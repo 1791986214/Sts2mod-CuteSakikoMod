@@ -9,12 +9,11 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Events;
 
 [RegisterSharedEvent]
-public sealed class GuitarEffectsPedalEvent : CuteSakikoEvent 
+public sealed class GuitarEffectsPedalEvent : CuteSakikoEvent
 {
     private const int LowCost = 50;
     private const int HighCost = 100;
@@ -32,7 +31,7 @@ public sealed class GuitarEffectsPedalEvent : CuteSakikoEvent
 
     protected override bool IsAllowedInternal(IRunState runState)
     {
-        return runState.Players.All(p => p.Relics.OfType<AnonGuitar>().Any()) 
+        return runState.Players.All(p => p.Relics.OfType<AnonGuitar>().Any())
                && runState.Players.All(p => p.Gold >= DynamicVars.Gold.BaseValue);
     }
 

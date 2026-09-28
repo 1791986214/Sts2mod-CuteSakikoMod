@@ -1,6 +1,6 @@
 ﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Cards;          // 新增，用于 CardPlay
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -9,6 +9,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Models.Relics;
 using MegaCrit.Sts2.Core.ValueProps;
+// 新增，用于 CardPlay
 
 namespace CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 
@@ -31,7 +32,7 @@ public class CloseObservePower : CuteSakikoModPower
         ValueProp props,
         Creature? dealer,
         CardModel? cardSource,
-        CardPlay? cardPlay)   // 已修正
+        CardPlay? cardPlay) // 已修正
     {
         if (target != Owner || !props.IsPoweredAttack())
             return 1m;

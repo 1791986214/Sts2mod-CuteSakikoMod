@@ -1,7 +1,6 @@
-﻿namespace CuteSakikoMod.CuteSakikoModCode.Singletons
+﻿namespace CuteSakikoMod.CuteSakikoModCode.Singletons;
+
+public class PlayerParfaitData
 {
-    public class PlayerParfaitData
-    {
-        public int Charges { get; set; } = 6;
-    }
+    public int Charges { get; set; } = 6;
 }

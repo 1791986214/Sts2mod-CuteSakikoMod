@@ -5,8 +5,8 @@ using MegaCrit.Sts2.Core.Multiplayer.Transport;
 namespace CuteSakikoMod.CuteSakikoModCode.NetMessage;
 
 /// <summary>
-/// 房主广播：给指定玩家（TargetPlayerNetId）发放 Eggs 遗物。
-/// 客户端收到后本地执行 RelicCmd.Obtain，保证两端状态一致。
+///     房主广播：给指定玩家（TargetPlayerNetId）发放 Eggs 遗物。
+///     客户端收到后本地执行 RelicCmd.Obtain，保证两端状态一致。
 /// </summary>
 public sealed class EggsGrantMessage : INetMessage
 {

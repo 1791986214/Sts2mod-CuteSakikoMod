@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 using MegaCrit.Sts2.Core.Commands;
@@ -12,7 +11,6 @@ using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Common;
 
-
 public class StrikeSlow() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.Playpiano.GetModCardKeyword()];
@@ -24,7 +22,7 @@ public class StrikeSlow() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Com
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(6m, ValueProp.Move),
-        new BlockVar(6m, ValueProp.Move) 
+        new BlockVar(6m, ValueProp.Move)
     ];
 
     protected override bool ShouldGlowGoldInternal
@@ -61,7 +59,7 @@ public class StrikeSlow() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Com
         }
 
         await DamageCmd.Attack(baseDamage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

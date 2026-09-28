@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Systems;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using Godot;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
@@ -8,22 +7,23 @@ namespace CuteSakikoMod.CuteSakikoModCode.Nodes;
 
 public partial class ChordSlotDropTarget : Control
 {
-    private ChordCategory _slotCategory;
-    private int _slotIndex;          // 当前槽位的索引（0-based）
     private string _currentChordId;
     private ChordManagementScreen _screen;
+    private ChordCategory _slotCategory;
+    private int _slotIndex; // 当前槽位的索引（0-based）
 
-    public ChordSlotDropTarget(ChordCategory slotCategory, int slotIndex, string currentChordId, ChordManagementScreen screen)
+    public ChordSlotDropTarget(ChordCategory slotCategory, int slotIndex, string currentChordId,
+        ChordManagementScreen screen)
     {
         _slotCategory = slotCategory;
         _slotIndex = slotIndex;
         _currentChordId = currentChordId;
         _screen = screen;
         CustomMinimumSize = new Vector2(80, 80);
-        MouseFilter = Control.MouseFilterEnum.Pass;
+        MouseFilter = MouseFilterEnum.Pass;
 
         SetDragForwarding(
-            default(Callable),
+            default,
             Callable.From((Vector2 atPosition, Variant data) => CanDropImpl(atPosition, data)),
             Callable.From((Vector2 atPosition, Variant data) => DropImpl(atPosition, data))
         );
@@ -41,7 +41,7 @@ public partial class ChordSlotDropTarget : Control
                     Texture = texture,
                     ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
                     StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
-                    MouseFilter = Control.MouseFilterEnum.Ignore
+                    MouseFilter = MouseFilterEnum.Ignore
                 };
                 img.SetAnchorsPreset(LayoutPreset.FullRect);
                 AddChild(img);
@@ -52,7 +52,7 @@ public partial class ChordSlotDropTarget : Control
     private bool CanDropImpl(Vector2 atPosition, Variant data)
     {
         if (data.VariantType != Variant.Type.String) return false;
-        string chordId = (string)data;
+        var chordId = (string)data;
         if (!ChordManager.AllChords.TryGetValue(chordId, out var def)) return false;
         if (_slotCategory == ChordCategory.Bonus) return true;
         return def.Category == _slotCategory;
@@ -61,7 +61,7 @@ public partial class ChordSlotDropTarget : Control
     private void DropImpl(Vector2 atPosition, Variant data)
     {
         if (_screen.Guitar == null || _screen._readOnly) return;
-        string newChordId = (string)data;
+        var newChordId = (string)data;
 
         // 直接使用构造函数传入的槽位索引
         _screen.SetTempSlot(_slotCategory, _slotIndex, newChordId);

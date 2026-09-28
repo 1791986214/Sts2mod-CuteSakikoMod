@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Networking;
 using Godot;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -18,13 +17,13 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Ui;
 public sealed partial class DeckPresetPanel : Control
 {
     private const string ModalRootName = "SakiDeckViewModalRoot";
+    private static DeckViewModal? _currentDeckModal;
 
     private Label _deckNameLabel = null!;
-    private NGoldArrowButton _prevBtn = null!;
-    private NGoldArrowButton _nextBtn = null!;
 
     private bool _logicalVisible;
-    private static DeckViewModal? _currentDeckModal;
+    private NGoldArrowButton _nextBtn = null!;
+    private NGoldArrowButton _prevBtn = null!;
 
     public override async void _Ready()
     {
@@ -36,7 +35,7 @@ public sealed partial class DeckPresetPanel : Control
         BuildUi();
 
         // ★ 等 UI 树布局稳定后再根据 InfoPanel 定位
-        for (int i = 0; i < 3; i++)
+        for (var i = 0; i < 3; i++)
             await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
         RepositionToInfoPanel();
 
@@ -55,7 +54,7 @@ public sealed partial class DeckPresetPanel : Control
 
     public override void _Process(double delta)
     {
-        bool shouldBeVisible = _logicalVisible && !SkinPanelVisibilityHelper.IsInspectScreenOpen();
+        var shouldBeVisible = _logicalVisible && !SkinPanelVisibilityHelper.IsInspectScreenOpen();
         if (Visible != shouldBeVisible)
             Visible = shouldBeVisible;
     }
@@ -73,11 +72,12 @@ public sealed partial class DeckPresetPanel : Control
             Color = new Color(0, 0, 0, 0.55f),
             Position = Vector2.Zero,
             Size = new Vector2(380, 110),
-            MouseFilter = MouseFilterEnum.Ignore,
+            MouseFilter = MouseFilterEnum.Ignore
         };
         AddChild(bg);
 
-        _prevBtn = SkinPreviewPanel.MakeArrowButton("res://images/atlases/ui_atlas.sprites/settings_tiny_left_arrow.tres");
+        _prevBtn = SkinPreviewPanel.MakeArrowButton(
+            "res://images/atlases/ui_atlas.sprites/settings_tiny_left_arrow.tres");
         _prevBtn.Position = new Vector2(8, 20);
         _prevBtn.Size = new Vector2(48, 64);
         AddChild(_prevBtn);
@@ -86,11 +86,11 @@ public sealed partial class DeckPresetPanel : Control
         var viewBtn = new Button
         {
             Position = new Vector2(72, 20),
-            Size = new Vector2(236, 48),
+            Size = new Vector2(236, 48)
         };
         var viewLabel = new Label
         {
-            // ★ 改成走本地化
+            // ★ 走本地化
             Text = new LocString("characters", "SKIN_VIEW_DECK").GetFormattedText(),
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center,
@@ -100,14 +100,15 @@ public sealed partial class DeckPresetPanel : Control
             OffsetTop = 0,
             OffsetRight = 0,
             OffsetBottom = 0,
-            MouseFilter = MouseFilterEnum.Ignore,
+            MouseFilter = MouseFilterEnum.Ignore
         };
         viewLabel.AddThemeFontSizeOverride("font_size", 20);
         viewBtn.AddChild(viewLabel);
         viewBtn.Pressed += OpenDeckView;
         AddChild(viewBtn);
 
-        _nextBtn = SkinPreviewPanel.MakeArrowButton("res://images/atlases/ui_atlas.sprites/settings_tiny_right_arrow.tres");
+        _nextBtn = SkinPreviewPanel.MakeArrowButton(
+            "res://images/atlases/ui_atlas.sprites/settings_tiny_right_arrow.tres");
         _nextBtn.Position = new Vector2(324, 20);
         _nextBtn.Size = new Vector2(48, 64);
         AddChild(_nextBtn);
@@ -118,14 +119,14 @@ public sealed partial class DeckPresetPanel : Control
             Position = new Vector2(0, 76),
             Size = new Vector2(380, 26),
             HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
         };
         _deckNameLabel.AddThemeFontSizeOverride("font_size", 18);
         AddChild(_deckNameLabel);
     }
 
     // ─────────────────────────────────────────────────────────
-    // ★ 定位：左边缘和 InfoPanel 对齐，紧贴其上，避开顶部头像
+    // 定位：左边缘和 InfoPanel 对齐，紧贴其上，避开顶部头像
     // ─────────────────────────────────────────────────────────
     private NCharacterSelectScreen? FindScreen()
     {
@@ -143,8 +144,6 @@ public sealed partial class DeckPresetPanel : Control
             return;
         }
 
-        // NCharacterSelectScreen._Ready 里用这个路径查的 InfoPanel：
-        //   this._infoPanel = this.GetNode<Godot.Control>((NodePath) "InfoPanel");
         var infoPanel = screen.GetNodeOrNull<Control>("InfoPanel");
         if (infoPanel == null)
         {
@@ -153,10 +152,9 @@ public sealed partial class DeckPresetPanel : Control
         }
 
         var rect = infoPanel.GetRect();
-        float x = rect.Position.X;
-        float y = rect.Position.Y - Size.Y - 16f;   // 贴在 InfoPanel 上方，留 8px 间隙
+        var x = rect.Position.X;
+        var y = rect.Position.Y - Size.Y - 16f;
 
-        // 保底：如果上方空间不够（顶到屏幕顶部），放到 InfoPanel 下方
         if (y < 8f)
             y = rect.Position.Y + rect.Size.Y + 8f;
 
@@ -167,12 +165,18 @@ public sealed partial class DeckPresetPanel : Control
     private void OnCurrentCharacterChanged(Type? _)
     {
         RefreshAndToggle();
-        // 这样写更明确，避免 Callable.From 对 Action 的隐式推断
         CallDeferred(nameof(RepositionToInfoPanel));
     }
 
-    private void OnArtSkinChanged(Type _) => RefreshAndToggle();
-    private void OnDeckPresetChanged(Type _) => Refresh();
+    private void OnArtSkinChanged(Type _)
+    {
+        RefreshAndToggle();
+    }
+
+    private void OnDeckPresetChanged(Type _)
+    {
+        Refresh();
+    }
 
     private void RefreshAndToggle()
     {
@@ -191,14 +195,9 @@ public sealed partial class DeckPresetPanel : Control
             c.DeckPresetIndex = (c.DeckPresetIndex + delta + skin.DeckPresets.Count) % skin.DeckPresets.Count);
 
         if (SkinUiContext.GetLobby(this) is { } lobby)
-        {
             SkinDataStore.ModifyLobbyChoice(lobby, characterType,
                 c => c.DeckPresetIndex = SkinResolver.GetLocalChoice(characterType).DeckPresetIndex);
-        }
-        else if (RunManager.Instance?.DebugOnlyGetState() != null)
-        {
-            SkinSyncService.Broadcast(characterType);
-        }
+        else if (RunManager.Instance?.DebugOnlyGetState() != null) SkinSyncService.Broadcast(characterType);
 
         SkinSystemEvents.RaiseDeckPresetChanged(characterType);
     }
@@ -209,7 +208,7 @@ public sealed partial class DeckPresetPanel : Control
         var skin = SkinResolver.GetLocalSkin(characterType);
         if (skin == null || skin.DeckPresets.Count == 0) return;
 
-        bool canSwitch = skin.DeckPresets.Count > 1;
+        var canSwitch = skin.DeckPresets.Count > 1;
         _prevBtn.Visible = canSwitch;
         _nextBtn.Visible = canSwitch;
 
@@ -225,7 +224,7 @@ public sealed partial class DeckPresetPanel : Control
         var skin = SkinResolver.GetLocalSkin(characterType);
         if (skin == null || skin.DeckPresets.Count == 0) return;
 
-        if (_currentDeckModal != null && GodotObject.IsInstanceValid(_currentDeckModal))
+        if (_currentDeckModal != null && IsInstanceValid(_currentDeckModal))
         {
             _currentDeckModal.QueueFree();
             _currentDeckModal = null;
@@ -239,23 +238,36 @@ public sealed partial class DeckPresetPanel : Control
         foreach (var (cardType, count) in preset.Cards)
         {
             var model = ModelDb.GetById<CardModel>(ModelDb.GetId(cardType));
-            for (int i = 0; i < Mathf.Max(1, count); i++)
+            for (var i = 0; i < Mathf.Max(1, count); i++)
                 cards.Add(model);
         }
+
         if (cards.Count == 0) return;
 
-        try { NCard.InitPool(); } catch { }
-        try { NGridCardHolder.InitPool(); } catch { }
+        try
+        {
+            NCard.InitPool();
+        }
+        catch
+        {
+        }
+
+        try
+        {
+            NGridCardHolder.InitPool();
+        }
+        catch
+        {
+        }
 
         var host = (Node?)NGame.Instance ?? GetTree().Root;
-
-        // ★ 拿到视口尺寸（游戏内部的 1920x1080 逻辑分辨率，不含窗口黑边）
         var viewportSize = GetViewportRect().Size;
 
+        // ★ 不要设 ZIndex = 100！那会让 modal 盖住 hover tip。
+        //   改用 tree order：把 modalRoot 插到 HoverTipsContainer 之前。
         var modalRoot = new DeckViewModal
         {
-            Name = ModalRootName,
-            ZIndex = 100,
+            Name = ModalRootName
         };
         _currentDeckModal = modalRoot;
         modalRoot.TreeExited += () =>
@@ -264,7 +276,29 @@ public sealed partial class DeckPresetPanel : Control
         };
         host.AddChild(modalRoot);
 
-        // ★ 显式铺满整个游戏视口（不靠 anchors，不靠父尺寸）
+        // ★ 关键：把 modalRoot 移到 HoverTipsContainer 之前，
+        //   效果：DeckViewModal 盖住角色选择界面（皮肤面板），
+        //         但不盖住 hover tip。
+        if (NGame.Instance != null && host == NGame.Instance)
+        {
+            var hoverContainer = NGame.Instance.HoverTipsContainer;
+            if (hoverContainer != null)
+            {
+                var hoverIdx = hoverContainer.GetIndex();
+                if (hoverIdx >= 0)
+                {
+                    NGame.Instance.MoveChild(modalRoot, hoverIdx);
+                    GD.Print($"[DeckPresetPanel] Moved modalRoot to index {hoverIdx} " +
+                             $"(before HoverTipsContainer)");
+                }
+            }
+            else
+            {
+                GD.PrintErr("[DeckPresetPanel] HoverTipsContainer is null; hover tip may be hidden");
+            }
+        }
+
+        // 显式铺满整个游戏视口
         modalRoot.Position = Vector2.Zero;
         modalRoot.Size = viewportSize;
         modalRoot.MouseFilter = MouseFilterEnum.Stop;
@@ -275,20 +309,20 @@ public sealed partial class DeckPresetPanel : Control
             Color = new Color(0, 0, 0, 0.75f),
             Position = Vector2.Zero,
             Size = viewportSize,
-            MouseFilter = MouseFilterEnum.Stop,
+            MouseFilter = MouseFilterEnum.Stop
         };
         modalRoot.AddChild(dim);
 
         const float panelW = 1400f;
         const float panelH = 900f;
-        float panelLeft = (viewportSize.X - panelW) / 2f;
-        float panelTop = (viewportSize.Y - panelH) / 2f;
+        var panelLeft = (viewportSize.X - panelW) / 2f;
+        var panelTop = (viewportSize.Y - panelH) / 2f;
 
         var panel = new PanelContainer
         {
             Position = new Vector2(panelLeft, panelTop),
             Size = new Vector2(panelW, panelH),
-            MouseFilter = MouseFilterEnum.Stop,
+            MouseFilter = MouseFilterEnum.Stop
         };
         modalRoot.AddChild(panel);
 
@@ -306,7 +340,7 @@ public sealed partial class DeckPresetPanel : Control
         var title = new Label
         {
             Text = new LocString("characters", preset.DisplayNameKey).GetFormattedText(),
-            HorizontalAlignment = HorizontalAlignment.Center,
+            HorizontalAlignment = HorizontalAlignment.Center
         };
         title.AddThemeFontSizeOverride("font_size", 24);
         vbox.AddChild(title);
@@ -317,6 +351,7 @@ public sealed partial class DeckPresetPanel : Control
             SizeFlagsHorizontal = SizeFlags.ExpandFill,
             HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled,
             VerticalScrollMode = ScrollContainer.ScrollMode.Auto,
+            ClipContents = false // ★ 卡牌 hover 放大时不裁剪
         };
         scroll.ScrollVertical = 0;
         vbox.AddChild(scroll);
@@ -326,21 +361,22 @@ public sealed partial class DeckPresetPanel : Control
         const float padding = 30f;
         const int columns = 5;
 
-        int rows = (int)Mathf.Ceil((float)cards.Count / columns);
-        float canvasW = columns * cardW + (columns - 1) * padding;
-        float canvasH = rows * cardH + (rows - 1) * padding;
+        var rows = (int)Mathf.Ceil((float)cards.Count / columns);
+        var canvasW = columns * cardW + (columns - 1) * padding;
+        var canvasH = rows * cardH + (rows - 1) * padding;
 
         var canvas = new Control
         {
             CustomMinimumSize = new Vector2(canvasW, canvasH),
             Size = new Vector2(canvasW, canvasH),
+            ClipContents = false // ★ 不裁剪子节点
         };
         scroll.AddChild(canvas);
 
-        for (int i = 0; i < cards.Count; i++)
+        for (var i = 0; i < cards.Count; i++)
         {
-            int col = i % columns;
-            int row = i / columns;
+            var col = i % columns;
+            var row = i / columns;
             var model = cards[i];
 
             var cardNode = NCard.Create(model);
@@ -349,14 +385,14 @@ public sealed partial class DeckPresetPanel : Control
             var holder = NGridCardHolder.Create(cardNode);
             if (holder == null) continue;
 
-            float cx = col * (cardW + padding) + cardW / 2f;
-            float cy = row * (cardH + padding) + cardH / 2f;
+            var cx = col * (cardW + padding) + cardW / 2f;
+            var cy = row * (cardH + padding) + cardH / 2f;
             holder.Position = new Vector2(cx, cy);
 
             canvas.AddChild(holder);
             cardNode.UpdateVisuals(PileType.None, CardPreviewMode.Normal);
 
-            int capturedIndex = i;
+            var capturedIndex = i;
             holder.Connect(NCardHolder.SignalName.Pressed,
                 Callable.From<NCardHolder>(_ => ShowInspect(cards, capturedIndex)));
         }
@@ -366,14 +402,13 @@ public sealed partial class DeckPresetPanel : Control
         const float closeBtnH = 50f;
         var close = new Button
         {
-            // ★ 改成走本地化
+            // ★ 走本地化
             Text = new LocString("characters", "SKIN_CLOSE").GetFormattedText(),
             Size = new Vector2(closeBtnW, closeBtnH),
-            MouseFilter = MouseFilterEnum.Stop,
+            MouseFilter = MouseFilterEnum.Stop
         };
-        float closeX = panelLeft + (panelW - closeBtnW) / 2f;
-        float closeY = panelTop + panelH + 20f;
-        // 保底：不要跑出视口底部
+        var closeX = panelLeft + (panelW - closeBtnW) / 2f;
+        var closeY = panelTop + panelH + 20f;
         if (closeY + closeBtnH > viewportSize.Y - 8f)
             closeY = viewportSize.Y - closeBtnH - 8f;
         close.Position = new Vector2(closeX, closeY);
@@ -381,23 +416,23 @@ public sealed partial class DeckPresetPanel : Control
         StyleBoxFlat MakeCloseStyle(Color bgColor)
         {
             var sb = new StyleBoxFlat { BgColor = bgColor };
-            const int radius = 10; // 方形圆角
-            sb.CornerRadiusTopLeft     = radius;
-            sb.CornerRadiusTopRight    = radius;
-            sb.CornerRadiusBottomLeft  = radius;
+            const int radius = 10;
+            sb.CornerRadiusTopLeft = radius;
+            sb.CornerRadiusTopRight = radius;
+            sb.CornerRadiusBottomLeft = radius;
             sb.CornerRadiusBottomRight = radius;
             return sb;
         }
 
-        close.AddThemeStyleboxOverride("normal",  MakeCloseStyle(new Color(1f, 1f, 1f, 1f)));
-        close.AddThemeStyleboxOverride("hover",   MakeCloseStyle(new Color(0.95f, 0.95f, 0.95f, 1f)));
-        close.AddThemeStyleboxOverride("pressed", MakeCloseStyle(new Color(0.85f, 0.85f, 0.85f, 1f)));
-        close.AddThemeStyleboxOverride("focus",   MakeCloseStyle(new Color(1f, 1f, 1f, 1f)));
+        close.AddThemeStyleboxOverride("normal", MakeCloseStyle(new Color(1f, 1f, 1f)));
+        close.AddThemeStyleboxOverride("hover", MakeCloseStyle(new Color(0.95f, 0.95f, 0.95f)));
+        close.AddThemeStyleboxOverride("pressed", MakeCloseStyle(new Color(0.85f, 0.85f, 0.85f)));
+        close.AddThemeStyleboxOverride("focus", MakeCloseStyle(new Color(1f, 1f, 1f)));
 
-        close.AddThemeColorOverride("font_color",         Colors.Black);
-        close.AddThemeColorOverride("font_hover_color",   Colors.Black);
+        close.AddThemeColorOverride("font_color", Colors.Black);
+        close.AddThemeColorOverride("font_hover_color", Colors.Black);
         close.AddThemeColorOverride("font_pressed_color", new Color(0.15f, 0.15f, 0.15f));
-        close.AddThemeColorOverride("font_focus_color",   Colors.Black);
+        close.AddThemeColorOverride("font_focus_color", Colors.Black);
         close.AddThemeFontSizeOverride("font_size", 22);
 
         close.Pressed += () => modalRoot.CloseSelf();
@@ -414,7 +449,8 @@ public sealed partial class DeckPresetPanel : Control
             GD.PrintErr("[DeckPresetPanel] NInspectCardScreen not available");
             return;
         }
-        inspect.Open(cards, index, false);
+
+        inspect.Open(cards, index);
         // DeckViewModal._Process 会自动检测 inspect 并隐藏自己
     }
 }

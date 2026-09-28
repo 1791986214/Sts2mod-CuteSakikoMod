@@ -11,14 +11,13 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 
 public class ManyNeko : CuteRanaCard
 {
-    public ManyNeko() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self) { }
+    public ManyNeko() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    {
+    }
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -40,7 +39,9 @@ public class ManyNeko : CuteRanaCard
             cardDraw.UpgradeInternal();
             cardDraw.FinalizeUpgradeInternal();
         }
-        var drawResult = await CardPileCmd.AddGeneratedCardToCombat(cardDraw, PileType.Draw, Owner,CardPilePosition.Random);
+
+        var drawResult =
+            await CardPileCmd.AddGeneratedCardToCombat(cardDraw, PileType.Draw, Owner, CardPilePosition.Random);
 
         // 手牌堆
         var templateHand = rng.NextItem(allNekoCards);
@@ -50,6 +51,7 @@ public class ManyNeko : CuteRanaCard
             cardHand.UpgradeInternal();
             cardHand.FinalizeUpgradeInternal();
         }
+
         await CardPileCmd.AddGeneratedCardToCombat(cardHand, PileType.Hand, Owner);
 
         // 弃牌堆
@@ -60,7 +62,9 @@ public class ManyNeko : CuteRanaCard
             cardDiscard.UpgradeInternal();
             cardDiscard.FinalizeUpgradeInternal();
         }
-        var discardResult = await CardPileCmd.AddGeneratedCardToCombat(cardDiscard, PileType.Discard, Owner,CardPilePosition.Random);
+
+        var discardResult =
+            await CardPileCmd.AddGeneratedCardToCombat(cardDiscard, PileType.Discard, Owner, CardPilePosition.Random);
 
         // 预览抽牌堆和弃牌堆的添加，刷新 UI 数字
         CardCmd.PreviewCardPileAdd(new List<CardPileAddResult> { drawResult, discardResult });
@@ -68,6 +72,5 @@ public class ManyNeko : CuteRanaCard
 
     protected override void OnUpgrade()
     {
-
     }
 }

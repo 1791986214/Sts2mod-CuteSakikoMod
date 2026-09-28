@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -28,7 +27,7 @@ public class SecretPractice() : CuteAnonCard(1, CardType.Skill, CardRarity.Uncom
         // 演奏所有储存的和弦
         ChordNoteSystem.Activate(Owner);
         var count = DynamicVars.Repeat.IntValue;
-        await ChordNoteSystem.PlayAllStoredChordsAsync(Owner, choiceContext, countPerChord: count);
+        await ChordNoteSystem.PlayAllStoredChordsAsync(Owner, choiceContext, count);
 
         // 获得格挡
         var blockAmount = DynamicVars.Block.IntValue;

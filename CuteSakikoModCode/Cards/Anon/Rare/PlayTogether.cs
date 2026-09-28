@@ -1,6 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -16,13 +15,10 @@ public class PlayTogether() : CuteAnonCard(-1, CardType.Skill, CardRarity.Rare, 
     {
         get { yield return CardKeyword.Exhaust; }
     }
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.EquippedChords.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.EquippedChords.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -33,7 +29,7 @@ public class PlayTogether() : CuteAnonCard(-1, CardType.Skill, CardRarity.Rare, 
         if (guitar == null) return;
 
         var x = ResolveEnergyXValue();
-        var times = IsUpgraded ? x + 4 : x + 2; 
+        var times = IsUpgraded ? x + 4 : x + 2;
         if (times <= 0) return;
 
         await guitar.PlayRandomEquippedChord(choiceContext, times);

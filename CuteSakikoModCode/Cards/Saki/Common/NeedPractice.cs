@@ -80,3 +80,4 @@ public class NeedPractice() : CuteSakikoModCard(1, CardType.Attack, CardRarity.C
         DynamicVars.Damage.UpgradeValueBy(4m);
     }
 }*/
+

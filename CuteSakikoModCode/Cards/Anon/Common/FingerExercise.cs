@@ -10,11 +10,10 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Common;
 
 public class FingerExercise() : CuteAnonCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
-    
     protected override HashSet<CardTag> CanonicalTags => new() { CardTag.Strike };
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.Playguitar.GetModCardKeyword()];
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(3m, ValueProp.Move)
@@ -28,9 +27,9 @@ public class FingerExercise() : CuteAnonCard(1, CardType.Attack, CardRarity.Comm
 
         var hitCount = 3; // 固定攻击3次
         var damage = DynamicVars.Damage.BaseValue;
-        
+
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .WithHitCount(hitCount)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")

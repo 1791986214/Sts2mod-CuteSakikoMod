@@ -9,7 +9,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Pools.Saki;
 
 public class CuteSakiCardPool : TypeListCardPoolModel, IModColorfulPhilosophersCardPool
 {
-    private static readonly Material? _poolFrameMaterial = MaterialUtils.CreateReplaceHueShaderMaterial(0.4666667f, 0.6f, 0.8f);
+    private static readonly Material? _poolFrameMaterial =
+        MaterialUtils.CreateReplaceHueShaderMaterial(0.4666667f, 0.6f, 0.8f);
+
     public override string Title => CuteSaki.CharacterId; //This is not a display name.
     public override string EnergyColorName => CuteSaki.CharacterId;
     public override string BigEnergyIconPath => "charui/saki/saki_big_energy.png".ImagePath();

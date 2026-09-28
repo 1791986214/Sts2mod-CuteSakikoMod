@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Basic;
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -11,22 +10,20 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Keywords;
-using STS2RitsuLib.Utils;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Rare;
 
 public class NekoMarch : CuteRanaCard
 {
-    public NekoMarch() : base(4, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies) { }
-    
+    public NekoMarch() : base(4, CardType.Attack, CardRarity.Rare, TargetType.AllEnemies)
+    {
+    }
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword()); }
     }
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars => new[]
     {
         new DamageVar(10m, ValueProp.Move)
@@ -35,9 +32,9 @@ public class NekoMarch : CuteRanaCard
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         // 1. 对所有敌人造成伤害
-        int damage = (int)DynamicVars.Damage.BaseValue;
+        var damage = (int)DynamicVars.Damage.BaseValue;
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .TargetingAllOpponents(CombatState)
             .Execute(choiceContext);
 
@@ -84,7 +81,8 @@ public class NekoMarch : CuteRanaCard
         {
             TargetType.Self => player.Creature,
             TargetType.AnyEnemy => combatState.HittableEnemies.Any()
-                ? combatState.HittableEnemies.ElementAt(player.RunState.Rng.CombatTargets.NextInt(combatState.HittableEnemies.Count()))
+                ? combatState.HittableEnemies.ElementAt(
+                    player.RunState.Rng.CombatTargets.NextInt(combatState.HittableEnemies.Count()))
                 : null,
             TargetType.AllEnemies => null,
             _ => null

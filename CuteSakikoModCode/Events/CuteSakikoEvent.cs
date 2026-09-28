@@ -1,13 +1,12 @@
-﻿using MegaCrit.Sts2.Core.Runs;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others.Config;
+using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Scaffolding.Content;
-using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Others.Config;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Events;
 
 /// <summary>
-/// 所有自定义普通事件的抽象基类，受设置“Custom Events”开关控制。
-/// 子类可以重写 IsAllowedInternal 来追加额外的生成条件。
+///     所有自定义普通事件的抽象基类，受设置“Custom Events”开关控制。
+///     子类可以重写 IsAllowedInternal 来追加额外的生成条件。
 /// </summary>
 public abstract class CuteSakikoEvent : ModEventTemplate
 {
@@ -19,8 +18,11 @@ public abstract class CuteSakikoEvent : ModEventTemplate
     }
 
     /// <summary>
-    /// 子类可重写此方法，添加除全局开关外的自定义出现条件。
-    /// 默认返回 true。
+    ///     子类可重写此方法，添加除全局开关外的自定义出现条件。
+    ///     默认返回 true。
     /// </summary>
-    protected virtual bool IsAllowedInternal(IRunState runState) => true;
+    protected virtual bool IsAllowedInternal(IRunState runState)
+    {
+        return true;
+    }
 }

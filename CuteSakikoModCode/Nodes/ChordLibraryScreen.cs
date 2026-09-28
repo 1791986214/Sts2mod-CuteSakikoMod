@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using Godot;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Nodes;
@@ -11,28 +7,27 @@ namespace CuteSakikoMod.CuteSakikoModCode.Nodes;
 
 public partial class ChordLibraryScreen : Control
 {
+    private const string LocTable = "rest_site_ui";
     private static ChordLibraryScreen _browseInstance;
 
     private readonly Dictionary<string, ChordButton> _chordButtons = new();
+    private Button _cancelButton = null!;
+    private List<string>? _candidateIds;
+    private Button _confirmButton = null!;
+    private LocString? _freePromptLoc;
     private bool _isCancelled;
     private bool _isSelectMode;
+
+    private int _multiplier; // 新增字段
     private List<string> _selectedChords;
 
     private TaskCompletionSource<List<string>> _selectionTcs;
     private int _targetCount;
-
-    private string _titleTable;
     private string _titleKey;
-    private LocString? _freePromptLoc;
-    private List<string>? _candidateIds;
 
     private Label _titleLabel = null!;
-    private Button _confirmButton = null!;
-    private Button _cancelButton = null!;
 
-    private int _multiplier = 0; // 新增字段
-
-    private const string LocTable = "rest_site_ui";
+    private string _titleTable;
 
     public static void OpenBrowse()
     {
@@ -170,26 +165,38 @@ public partial class ChordLibraryScreen : Control
         Dictionary<ChordCategory, List<ChordDefinition>> chordsByCategory;
         if (_isSelectMode && _candidateIds != null)
         {
-            chordsByCategory = new();
+            chordsByCategory = new Dictionary<ChordCategory, List<ChordDefinition>>();
             foreach (var id in _candidateIds)
-            {
                 if (ChordManager.AllChords.TryGetValue(id, out var def))
                 {
                     if (!chordsByCategory.ContainsKey(def.Category))
-                        chordsByCategory[def.Category] = new();
+                        chordsByCategory[def.Category] = new List<ChordDefinition>();
                     chordsByCategory[def.Category].Add(def);
                 }
-            }
         }
         else
         {
-            chordsByCategory = new()
+            chordsByCategory = new Dictionary<ChordCategory, List<ChordDefinition>>
             {
-                { ChordCategory.Major, ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Major).ToList() },
-                { ChordCategory.Minor, ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Minor).ToList() },
-                { ChordCategory.Dominant, ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Dominant).ToList() },
-                { ChordCategory.Anon, ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Anon).ToList() },
-                { ChordCategory.Bonus, ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Bonus).ToList() }
+                {
+                    ChordCategory.Major,
+                    ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Major).ToList()
+                },
+                {
+                    ChordCategory.Minor,
+                    ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Minor).ToList()
+                },
+                {
+                    ChordCategory.Dominant,
+                    ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Dominant).ToList()
+                },
+                {
+                    ChordCategory.Anon, ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Anon).ToList()
+                },
+                {
+                    ChordCategory.Bonus,
+                    ChordManager.AllChordsList.Where(c => c.Category == ChordCategory.Bonus).ToList()
+                }
             };
         }
 
@@ -204,24 +211,27 @@ public partial class ChordLibraryScreen : Control
             vbox.AddChild(catLabel);
 
             var grid = new GridContainer();
-            float availableWidth = scroll.Size.X - 40f;
-            int columns = Mathf.Max(1, Mathf.FloorToInt(availableWidth / 120f));
+            var availableWidth = scroll.Size.X - 40f;
+            var columns = Mathf.Max(1, Mathf.FloorToInt(availableWidth / 120f));
             grid.Columns = columns;
             foreach (var chordDef in kv.Value)
             {
                 var btn = new ChordButton();
                 btn.Setup(chordDef.Id, _multiplier); // 使用 _multiplier
                 btn.Modulate = _isSelectMode && _selectedChords.Contains(chordDef.Id)
-                    ? new Color(1, 1, 0.5f) : Colors.White;
+                    ? new Color(1, 1, 0.5f)
+                    : Colors.White;
 
                 if (_isSelectMode)
                 {
                     var chordId = chordDef.Id;
                     btn.Pressed += () => OnChordButtonPressed(chordId);
                 }
+
                 _chordButtons[chordDef.Id] = btn;
                 grid.AddChild(btn);
             }
+
             vbox.AddChild(grid);
         }
 
@@ -295,7 +305,9 @@ public partial class ChordLibraryScreen : Control
         GetViewport().SizeChanged += OnViewportSizeChanged;
     }
 
-    private void OnViewportSizeChanged() { }
+    private void OnViewportSizeChanged()
+    {
+    }
 
     private void OnChordButtonPressed(string chordId)
     {
@@ -337,15 +349,9 @@ public partial class ChordLibraryScreen : Control
         }
 
         var loc = new LocString(_titleTable, _titleKey);
-        if (_targetCount != int.MaxValue)
-        {
-            loc.Add("Count", (decimal)_targetCount);
-        }
-        if (_freePromptLoc != null)
-        {
-            loc.Add("Prompt", _freePromptLoc.GetFormattedText());
-        }
-        loc.Add("Selected", (decimal)_selectedChords.Count);
+        if (_targetCount != int.MaxValue) loc.Add("Count", _targetCount);
+        if (_freePromptLoc != null) loc.Add("Prompt", _freePromptLoc.GetFormattedText());
+        loc.Add("Selected", _selectedChords.Count);
         _titleLabel.Text = loc.GetFormattedText();
     }
 
@@ -358,6 +364,7 @@ public partial class ChordLibraryScreen : Control
                 _isCancelled = true;
                 _selectionTcs?.TrySetResult(new List<string>());
             }
+
             QueueFree();
             AcceptEvent();
         }
@@ -378,7 +385,7 @@ public partial class ChordLibraryScreen : Control
 
     private static LocString GetCategoryLocString(ChordCategory cat)
     {
-        string key = cat switch
+        var key = cat switch
         {
             ChordCategory.Major => "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_MAJOR",
             ChordCategory.Minor => "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_MINOR",

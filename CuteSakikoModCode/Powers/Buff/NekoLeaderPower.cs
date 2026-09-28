@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Pools;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Keywords;
 
@@ -22,7 +20,7 @@ public sealed class NekoLeaderPower : CuteSakikoModPower
     {
         if (player.Creature != Owner) return;
 
-        int catCount = Amount;
+        var catCount = Amount;
         if (catCount <= 0) return;
 
         var allNekoCards = ModelDb.CardPool<CuteSakikoTokenCardPool>()
@@ -34,7 +32,7 @@ public sealed class NekoLeaderPower : CuteSakikoModPower
         var combatState = Owner.CombatState;
         var rng = Owner.Player.RunState.Rng.CombatCardGeneration;
 
-        for (int i = 0; i < catCount; i++)
+        for (var i = 0; i < catCount; i++)
         {
             var template = rng.NextItem(allNekoCards);
             var catCard = combatState.CreateCard(template, Owner.Player);

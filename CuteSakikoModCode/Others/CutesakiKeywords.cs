@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Eggs.Common;
-using STS2RitsuLib.Content;
+﻿using STS2RitsuLib.Content;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Keywords;
 
@@ -35,7 +34,10 @@ public class CutesakiKeywords
     public static readonly string Pressure = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Pressure));
     public static readonly string Memory = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Memory));
     public static readonly string Sword = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Sword));
-    public static readonly string KnightSword = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(KnightSword));
+
+    public static readonly string KnightSword =
+        ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(KnightSword));
+
     public static readonly string Eggs = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Eggs));
     public static readonly string Nochest = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Nochest));
     public static readonly string Playpiano = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Playpiano));
@@ -55,18 +57,25 @@ public class CutesakiKeywords
 
     public static readonly string
         Sakiforget = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Sakiforget));
+
     public static readonly string
         Parfait = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Parfait));
+
     public static readonly string
         Neko = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Neko));
+
     public static readonly string
         RanaLive = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(RanaLive));
+
     public static readonly string
         Pancake = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Pancake));
+
     public static readonly string
         LearnedChords = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(LearnedChords));
+
     public static readonly string
         EquippedChords = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(EquippedChords));
+
     public static readonly string
         AnonNote = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(AnonNote));
 }

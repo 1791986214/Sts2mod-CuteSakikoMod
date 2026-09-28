@@ -13,7 +13,8 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 
 public static class MemoryCmd
 {
-    public static async Task Forget(PlayerChoiceContext choiceContext, IEnumerable<CardModel> cards, CardModel? source = null, bool removeFromMemory = true)
+    public static async Task Forget(PlayerChoiceContext choiceContext, IEnumerable<CardModel> cards,
+        CardModel? source = null, bool removeFromMemory = true)
     {
         var list = cards.ToList();
         if (list.Count == 0) return;
@@ -78,13 +79,13 @@ public static class MemoryCmd
         if (sourceCards.Count == 0)
             return new List<CardModel>();
 
-        int targetCount = 0;
+        var targetCount = 0;
 
         if (fillHand)
         {
             var handPile = PileType.Hand.GetPile(player);
-            int currentSize = handPile?.Cards.Count ?? 0;
-            int maxHandSize = RitsuLibFramework.GetMaxHandSize(player);
+            var currentSize = handPile?.Cards.Count ?? 0;
+            var maxHandSize = RitsuLibFramework.GetMaxHandSize(player);
             targetCount = Math.Max(0, maxHandSize - currentSize);
             if (targetCount == 0)
                 return new List<CardModel>();
@@ -100,14 +101,13 @@ public static class MemoryCmd
             var selectableCards = sourceCards
                 .Select(template => MemoryCardPile.CreateCardFromMemorySnapshot(player, template))
                 .Where(c => c != null)
-                .Cast<CardModel>()
                 .ToList();
 
             if (selectableCards.Count == 0)
                 return new List<CardModel>();
 
-            int maxSelect = Math.Min(targetCount, selectableCards.Count);
-            int minSelect = Math.Min(1, maxSelect);
+            var maxSelect = Math.Min(targetCount, selectableCards.Count);
+            var minSelect = Math.Min(1, maxSelect);
 
             var prefs = new CardSelectorPrefs(
                 new LocString("cards", "CUTE_SAKIKO_MOD_CARD_RECALL.selectionScreenPrompt"),
@@ -126,78 +126,72 @@ public static class MemoryCmd
 
             // 升级处理
             foreach (var card in selectedList)
-            {
                 if (upgraded && !card.IsUpgraded)
                 {
                     card.UpgradeInternal();
                     card.FinalizeUpgradeInternal();
                 }
-            }
 
             // 加入手牌
             if (selectedList.Count > 0)
-            {
                 await CardPileCmd.AddGeneratedCardsToCombat(selectedList, PileType.Hand, player);
-            }
 
             return selectedList;
         }
-        else // allowChoose == false
+
+        // allowChoose == false
+        var rng = player.RunState.Rng.Shuffle;
+        var sourceList = sourceCards.ToList();
+        if (sourceList.Count == 0)
+            return new List<CardModel>();
+
+        var newCards = new List<CardModel>();
+        var toAdd = targetCount;
+
+        if (fillHand || allowDuplicates)
         {
-            var rng = player.RunState.Rng.Shuffle;
-            var sourceList = sourceCards.ToList();
-            if (sourceList.Count == 0)
-                return new List<CardModel>();
-
-            var newCards = new List<CardModel>();
-            int toAdd = targetCount;
-
-            if (fillHand || allowDuplicates)
+            // 允许重复抽取同一模板
+            for (var i = 0; i < toAdd; i++)
             {
-                // 允许重复抽取同一模板
-                for (int i = 0; i < toAdd; i++)
+                var template = sourceList[rng.NextInt(0, sourceList.Count)];
+                var newCard = MemoryCardPile.CreateCardFromMemorySnapshot(player, template);
+                if (newCard != null)
                 {
-                    var template = sourceList[rng.NextInt(0, sourceList.Count)];
-                    var newCard = MemoryCardPile.CreateCardFromMemorySnapshot(player, template);
-                    if (newCard != null)
+                    if (upgraded && !newCard.IsUpgraded)
                     {
-                        if (upgraded && !newCard.IsUpgraded)
-                        {
-                            newCard.UpgradeInternal();
-                            newCard.FinalizeUpgradeInternal();
-                        }
-                        newCards.Add(newCard);
+                        newCard.UpgradeInternal();
+                        newCard.FinalizeUpgradeInternal();
                     }
+
+                    newCards.Add(newCard);
                 }
             }
-            else
-            {
-                // 每个模板只取一次
-                toAdd = Math.Min(toAdd, sourceList.Count);
-                var tempList = sourceList.ToList();
-                for (int i = 0; i < toAdd; i++)
-                {
-                    int index = rng.NextInt(0, tempList.Count);
-                    var template = tempList[index];
-                    tempList.RemoveAt(index);
-                    var newCard = MemoryCardPile.CreateCardFromMemorySnapshot(player, template);
-                    if (newCard != null)
-                    {
-                        if (upgraded && !newCard.IsUpgraded)
-                        {
-                            newCard.UpgradeInternal();
-                            newCard.FinalizeUpgradeInternal();
-                        }
-                        newCards.Add(newCard);
-                    }
-                }
-            }
-
-            if (newCards.Count > 0)
-            {
-                await CardPileCmd.AddGeneratedCardsToCombat(newCards, PileType.Hand, player);
-            }
-            return newCards;
         }
+        else
+        {
+            // 每个模板只取一次
+            toAdd = Math.Min(toAdd, sourceList.Count);
+            var tempList = sourceList.ToList();
+            for (var i = 0; i < toAdd; i++)
+            {
+                var index = rng.NextInt(0, tempList.Count);
+                var template = tempList[index];
+                tempList.RemoveAt(index);
+                var newCard = MemoryCardPile.CreateCardFromMemorySnapshot(player, template);
+                if (newCard != null)
+                {
+                    if (upgraded && !newCard.IsUpgraded)
+                    {
+                        newCard.UpgradeInternal();
+                        newCard.FinalizeUpgradeInternal();
+                    }
+
+                    newCards.Add(newCard);
+                }
+            }
+        }
+
+        if (newCards.Count > 0) await CardPileCmd.AddGeneratedCardsToCombat(newCards, PileType.Hand, player);
+        return newCards;
     }
 }

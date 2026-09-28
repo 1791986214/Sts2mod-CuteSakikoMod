@@ -7,23 +7,26 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.ValueProps;
-using STS2RitsuLib.Scaffolding.Content;
 using STS2RitsuLib.Interop.AutoRegistration;
+using STS2RitsuLib.Scaffolding.Content;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Events;
 
 [RegisterSharedEvent]
-public sealed class AlleyShadowCat : CuteSakikoEvent 
+public sealed class AlleyShadowCat : CuteSakikoEvent
 {
-    private IHoverTip[]? _relicHoverTips;  // 缓存遗物提示
+    private IHoverTip[]? _relicHoverTips; // 缓存遗物提示
 
     public override EventAssetProfile AssetProfile => new(
         InitialPortraitPath: "res://CuteSakikoMod/images/events/alley_shadow_cat.png"
     );
-    
+
     public override bool IsShared => false;
 
-    protected override bool IsAllowedInternal(IRunState runState) => true;
+    protected override bool IsAllowedInternal(IRunState runState)
+    {
+        return true;
+    }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {

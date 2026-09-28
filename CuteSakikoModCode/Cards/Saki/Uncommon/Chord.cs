@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Basic;
-using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Common;
+﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Common;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
@@ -18,7 +17,7 @@ public class Chord() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Uncommon
     private static readonly Type[] QinPlayTypes = new[]
     {
         typeof(StrikeFast),
-        typeof(StrikeSlow),
+        typeof(StrikeSlow)
     };
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.Playpiano.GetModCardKeyword()];

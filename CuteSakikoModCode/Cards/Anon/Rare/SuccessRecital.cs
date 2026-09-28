@@ -1,5 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -47,7 +46,7 @@ public class SuccessRecital() : CuteAnonCard(1, CardType.Skill, CardRarity.Rare,
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(3m); 
+        DynamicVars.Block.UpgradeValueBy(3m);
     }
 
     /// <summary>动态变量：实时计算总格挡（基于当前储存的和弦数）</summary>

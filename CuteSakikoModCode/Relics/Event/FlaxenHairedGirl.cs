@@ -33,7 +33,7 @@ public class FlaxenHairedGirl : CuteSakikoEventRelic
         var distinctCards = allCards
             .GroupBy(c => new
             {
-                Id = c.Id,
+                c.Id,
                 UpgradeLevel = c.CurrentUpgradeLevel,
                 EnchantmentId = c.Enchantment?.Id,
                 EnchantmentAmount = c.Enchantment?.Amount
@@ -49,8 +49,8 @@ public class FlaxenHairedGirl : CuteSakikoEventRelic
             var preview = ModelDb.GetById<CardModel>(original.Id).ToMutable();
 
             // 复制原卡的升级等级（不超过 MaxUpgradeLevel）
-            int baseUpgrade = Math.Min(original.CurrentUpgradeLevel, preview.MaxUpgradeLevel);
-            for (int i = 0; i < baseUpgrade; i++)
+            var baseUpgrade = Math.Min(original.CurrentUpgradeLevel, preview.MaxUpgradeLevel);
+            for (var i = 0; i < baseUpgrade; i++)
             {
                 preview.UpgradeInternal();
                 preview.FinalizeUpgradeInternal();
@@ -60,10 +60,7 @@ public class FlaxenHairedGirl : CuteSakikoEventRelic
             if (original.Enchantment != null)
             {
                 var ench = (EnchantmentModel)original.Enchantment.MutableClone();
-                if (ench.CanEnchant(preview))
-                {
-                    preview.EnchantInternal(ench, ench.Amount);
-                }
+                if (ench.CanEnchant(preview)) preview.EnchantInternal(ench, ench.Amount);
             }
 
             return preview;
@@ -88,27 +85,18 @@ public class FlaxenHairedGirl : CuteSakikoEventRelic
         var newCard = Owner.RunState.CreateCard(ModelDb.GetById<CardModel>(chosenPreview.Id), Owner);
 
         // 1) 先复制原卡的升级等级
-        int baseUpgrade = Math.Min(chosenPreview.CurrentUpgradeLevel, newCard.MaxUpgradeLevel);
-        for (int i = 0; i < baseUpgrade && newCard.IsUpgradable; i++)
-        {
-            CardCmd.Upgrade(newCard);
-        }
+        var baseUpgrade = Math.Min(chosenPreview.CurrentUpgradeLevel, newCard.MaxUpgradeLevel);
+        for (var i = 0; i < baseUpgrade && newCard.IsUpgradable; i++) CardCmd.Upgrade(newCard);
 
         // 2) 额外升级一次 —— 这才是“比队友多一级”的效果
         //    若已满级则跳过，避免越界
-        if (newCard.IsUpgradable)
-        {
-            CardCmd.Upgrade(newCard);
-        }
+        if (newCard.IsUpgradable) CardCmd.Upgrade(newCard);
 
         // 3) 复制附魔
         if (chosenPreview.Enchantment != null)
         {
             var ench = (EnchantmentModel)chosenPreview.Enchantment.MutableClone();
-            if (ench.CanEnchant(newCard))
-            {
-                CardCmd.Enchant(ench, newCard, ench.Amount);
-            }
+            if (ench.CanEnchant(newCard)) CardCmd.Enchant(ench, newCard, ench.Amount);
         }
 
         // 加入牌组

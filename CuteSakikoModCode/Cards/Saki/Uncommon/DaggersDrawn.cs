@@ -13,7 +13,7 @@ public class DaggersDrawn() : CuteSakikoModCard(1, CardType.Power, CardRarity.Un
 {
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new PowerVar<DaggersDrawnPower>(5m) 
+        new PowerVar<DaggersDrawnPower>(5m)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips

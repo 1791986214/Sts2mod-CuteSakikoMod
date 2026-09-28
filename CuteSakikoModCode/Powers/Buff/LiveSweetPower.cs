@@ -1,6 +1,6 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
+﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
 using CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
+using CuteSakikoMod.CuteSakikoModCode.Others;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -8,7 +8,6 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Keywords;
-using CuteSakikoMod.CuteSakikoModCode.Others;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 

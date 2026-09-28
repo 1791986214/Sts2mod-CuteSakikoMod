@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Cards;
-using CuteSakikoMod.CuteSakikoModCode.Cards.Eggs;
+﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Eggs;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Commands;

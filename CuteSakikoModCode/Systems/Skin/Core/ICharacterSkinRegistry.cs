@@ -1,5 +1,4 @@
-﻿
-using Godot;
+﻿using Godot;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 
@@ -20,17 +19,25 @@ public static class CharacterSkinRegistry
             GD.Print($"[SkinRegistry] Skip duplicate: {registry.CharacterType.Name}");
             return;
         }
+
         _registries[registry.CharacterType] = registry;
         GD.Print($"[SkinRegistry] Registered: {registry.CharacterType.Name} (skins={registry.AllSkins.Count})");
     }
 
-    public static bool HasSkins(Type characterType) => _registries.ContainsKey(characterType);
+    public static bool HasSkins(Type characterType)
+    {
+        return _registries.ContainsKey(characterType);
+    }
 
     public static ICharacterSkinRegistry? ForCharacter(Type characterType)
-        => _registries.GetValueOrDefault(characterType);
+    {
+        return _registries.GetValueOrDefault(characterType);
+    }
 
     public static IReadOnlyList<CharacterSkinDefinition>? AllSkinsFor(Type characterType)
-        => ForCharacter(characterType)?.AllSkins;
+    {
+        return ForCharacter(characterType)?.AllSkins;
+    }
 
     public static CharacterSkinDefinition? GetSkin(Type characterType, int index)
     {
@@ -39,5 +46,8 @@ public static class CharacterSkinRegistry
         return list[Math.Clamp(index, 0, list.Count - 1)];
     }
 
-    public static IReadOnlyList<ICharacterSkinRegistry> GetAll() => _registries.Values.ToList();
+    public static IReadOnlyList<ICharacterSkinRegistry> GetAll()
+    {
+        return _registries.Values.ToList();
+    }
 }

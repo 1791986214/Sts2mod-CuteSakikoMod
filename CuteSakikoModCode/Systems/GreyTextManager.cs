@@ -2,8 +2,6 @@
 using HarmonyLib;
 using MegaCrit.Sts2.addons.mega_text;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Systems;
 
@@ -27,10 +25,7 @@ public static class GreyTextManager
         if (_container != null && GodotObject.IsInstanceValid(_container) && _container.GetParent() == room)
             return;
 
-        if (_container != null && GodotObject.IsInstanceValid(_container))
-        {
-            _container.QueueFree();
-        }
+        if (_container != null && GodotObject.IsInstanceValid(_container)) _container.QueueFree();
 
         _container = new Node2D
         {
@@ -53,7 +48,7 @@ public static class GreyTextManager
         }
 
         // ★ 添加粗体 BBCode，不破坏原有颜色标签
-        string boldText = "[font_size=38][b]" + text + "[/b][/font_size]";
+        var boldText = "[font_size=38][b]" + text + "[/b][/font_size]";
 
         var label = GetOrCreateLabel();
         label.Text = boldText;
@@ -77,16 +72,13 @@ public static class GreyTextManager
 
         var room = NCombatRoom.Instance;
         if (room != null)
-        {
             Setup(room);
-        }
         else
-        {
             GD.PrintErr("[GreyTextManager] Cannot ensure container: NCombatRoom.Instance is null.");
-        }
     }
 
-    private static async Task AnimateText(MegaRichTextLabel label, string fullText, Vector2 basePosition, string? audioPath)
+    private static async Task AnimateText(MegaRichTextLabel label, string fullText, Vector2 basePosition,
+        string? audioPath)
     {
         const float charDelay = 0.03f;
         const float floatDuration = 1.2f;
@@ -96,8 +88,8 @@ public static class GreyTextManager
         await Task.Yield();
         if (!GodotObject.IsInstanceValid(label)) return;
 
-        int totalChars = fullText.Length;
-        for (int i = 0; i < totalChars; i++)
+        var totalChars = fullText.Length;
+        for (var i = 0; i < totalChars; i++)
         {
             label.VisibleCharacters = i + 1;
             label.Position = basePosition + new Vector2(
@@ -128,13 +120,11 @@ public static class GreyTextManager
     private static MegaRichTextLabel GetOrCreateLabel()
     {
         foreach (var label in _pool)
-        {
             if (!label.Visible)
             {
                 label.GetParent()?.RemoveChild(label);
                 return label;
             }
-        }
 
         var newLabel = CreateLabel();
         _pool.Add(newLabel);
@@ -159,7 +149,7 @@ public static class GreyTextManager
         if (_font != null)
             label.AddThemeFontOverride("normal_font", _font);
 
-        label.AddThemeColorOverride("default_color", new Color(1, 1, 1, 1));
+        label.AddThemeColorOverride("default_color", new Color(1, 1, 1));
         label.AddThemeColorOverride("font_shadow_color", new Color(0, 0, 0, 0.6f));
         label.AddThemeConstantOverride("shadow_outline_size", 2);
         label.AddThemeConstantOverride("shadow_offset_x", 2);

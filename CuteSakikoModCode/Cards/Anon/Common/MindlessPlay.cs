@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -37,7 +36,7 @@ public class MindlessPlay() : CuteAnonCard(1, CardType.Skill, CardRarity.Common,
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(4m); 
+        DynamicVars.Block.UpgradeValueBy(4m);
         DynamicVars.Repeat.UpgradeValueBy(1);
     }
 }

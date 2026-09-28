@@ -18,8 +18,8 @@ public class NoLongerNaive() : CuteSakikoModCard(0, CardType.Attack, CardRarity.
     {
         get
         {
-            yield return new CalculationBaseVar(6m);   // 基础伤害
-            yield return new ExtraDamageVar(3m);        // 每张遗忘牌加成
+            yield return new CalculationBaseVar(6m); // 基础伤害
+            yield return new ExtraDamageVar(3m); // 每张遗忘牌加成
             yield return new CalculatedDamageVar(ValueProp.Move)
                 .WithMultiplier((card, target) =>
                 {
@@ -30,7 +30,7 @@ public class NoLongerNaive() : CuteSakikoModCard(0, CardType.Attack, CardRarity.
                 });
         }
     }
-    
+
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.Memory.GetModCardKeyword()];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
@@ -57,7 +57,7 @@ public class NoLongerNaive() : CuteSakikoModCard(0, CardType.Attack, CardRarity.
 
     protected override void OnUpgrade()
     {
-        DynamicVars["CalculationBase"].UpgradeValueBy(3m);  // 10 → 13
-        DynamicVars["ExtraDamage"].UpgradeValueBy(2m);      // 3 → 5
+        DynamicVars["CalculationBase"].UpgradeValueBy(3m); // 10 → 13
+        DynamicVars["ExtraDamage"].UpgradeValueBy(2m); // 3 → 5
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.Nodes;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
+﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using Godot;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -29,7 +27,7 @@ public partial class PracticeGuitarButton : NButton
         img.Texture = texture;
         img.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
         img.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
-        img.MouseFilter = Control.MouseFilterEnum.Ignore;
+        img.MouseFilter = MouseFilterEnum.Ignore;
         img.SetAnchorsPreset(LayoutPreset.FullRect);
         AddChild(img);
 

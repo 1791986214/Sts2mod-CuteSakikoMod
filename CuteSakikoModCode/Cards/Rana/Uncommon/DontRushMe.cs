@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.Combat;
+﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -49,10 +48,7 @@ public class DontRushMe : CuteRanaCard
         IEnumerable<Creature> participants)
     {
         // 玩家回合结束时，若此牌仍在手牌中，则保留回合数 +1
-        if (side == CombatSide.Player && Pile?.Type == PileType.Hand)
-        {
-            DynamicVars["RetainTurns"].BaseValue += 1;
-        }
+        if (side == CombatSide.Player && Pile?.Type == PileType.Hand) DynamicVars["RetainTurns"].BaseValue += 1;
         await Task.CompletedTask;
     }
 

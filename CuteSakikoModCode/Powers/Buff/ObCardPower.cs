@@ -3,7 +3,6 @@ using System.Reflection;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 using Godot;
 using MegaCrit.Sts2.Core.Combat;
@@ -32,7 +31,7 @@ public sealed class ObCardPower : CuteSakikoModPower
     private readonly Dictionary<CardModel, int> _originalCosts = new();
     private bool _isRemoving;
     private Node2D? _obVisual;
-    private NCreatureVisuals? _originalVisual;      // 缓存原始视觉节点，避免索引查找
+    private NCreatureVisuals? _originalVisual; // 缓存原始视觉节点，避免索引查找
 
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Single;
@@ -202,9 +201,7 @@ public sealed class ObCardPower : CuteSakikoModPower
 
         // ★ 禁用新视觉中所有 Control 的鼠标交互，避免阻挡旧 Bounds
         foreach (var control in _obVisual.FindChildrenOfType<Control>())
-        {
             control.MouseFilter = Control.MouseFilterEnum.Ignore;
-        }
 
         creatureNode.AddChild(_obVisual);
 
@@ -255,6 +252,8 @@ public sealed class ObCardPower : CuteSakikoModPower
     }
 
     // 辅助方法：检查节点是否有效（未被销毁且仍在场景树中）
-    private static bool IsInstanceValid(Node node) => node != null && !node.IsQueuedForDeletion() && node.IsInsideTree();
+    private static bool IsInstanceValid(Node node)
+    {
+        return node != null && !node.IsQueuedForDeletion() && node.IsInsideTree();
+    }
 }
-

@@ -41,7 +41,6 @@
   "CUTE_SAKIKO_MOD_KEYWORD_RANA_LIVE.description": "Gain 1 [gold]Live[/gold] when played.",
   "CUTE_SAKIKO_MOD_KEYWORD_PANCAKE.title": "Pancake Strike",
   "CUTE_SAKIKO_MOD_KEYWORD_PANCAKE.description": "Deals 9 damage to an enemy. This damage can be blocked by Block. If Block exceeds the damage, HP is unaffected and only Block is reduced. If Block is less than the damage, HP is reduced by the difference, then this card goes to the discard pile. If upgraded: Deals 10 damage to a targeted enemy. If you have no draw-preventing debuffs, draw 2 cards from your draw pile, then this card goes to the discard pile. If you have a draw-preventing debuff, only the 10 damage is dealt, then this card goes to the discard pile.",
-
   "CUTE_SAKIKO_MOD_CCHORD.title": "C Chord",
   "CUTE_SAKIKO_MOD_CCHORD.description": "Deal [blue]{0}[/blue] damage to a random enemy.",
   "CUTE_SAKIKO_MOD_DCHORD.title": "D Chord",
@@ -70,7 +69,6 @@
   "CUTE_SAKIKO_MOD_A#CHORD.description": "The next [blue]{0}[/blue] Attack(s) played by each ally cost 1 less.",
   "CUTE_SAKIKO_MOD_B#CHORD.title": "B# Chord",
   "CUTE_SAKIKO_MOD_B#CHORD.description": "All allies gain [blue]{0}[/blue] [gold]Vigor[/gold].",
-
   "CUTE_SAKIKO_MOD_CMCHORD.title": "Cm Chord",
   "CUTE_SAKIKO_MOD_CMCHORD.description": "All allies gain [blue]{0}[/blue] [gold]Block[/gold].",
   "CUTE_SAKIKO_MOD_DMCHORD.title": "Dm Chord",
@@ -99,7 +97,6 @@
   "CUTE_SAKIKO_MOD_A#MCHORD.description": "The next [blue]{0}[/blue] Skill(s) played by each ally cost 1 less.",
   "CUTE_SAKIKO_MOD_B#MCHORD.title": "B#m Chord",
   "CUTE_SAKIKO_MOD_B#MCHORD.description": "All allies gain [blue]{0}[/blue] [gold]Plated Armor[/gold].",
-
   "CUTE_SAKIKO_MOD_C7CHORD.title": "C7 Chord",
   "CUTE_SAKIKO_MOD_C7CHORD.description": "ALL enemies lose [blue]{0}[/blue] [img]CuteSakikoMod/images/ui/text/text_strength.png[/img] this turn.",
   "CUTE_SAKIKO_MOD_D7CHORD.title": "D7 Chord",
@@ -128,7 +125,6 @@
   "CUTE_SAKIKO_MOD_A#7CHORD.description": "All allies gain [blue]{0}[/blue] Energy.",
   "CUTE_SAKIKO_MOD_B#7CHORD.title": "B#7 Chord",
   "CUTE_SAKIKO_MOD_B#7CHORD.description": "The next [blue]{0}[/blue] [gold]Chord(s)[/gold] performed have their values increased by 1.",
-
   "CUTE_SAKIKO_MOD_ANONCCHORD.title": "Anon's C Chord",
   "CUTE_SAKIKO_MOD_ANONCCHORD.description": "Upgrade [blue]{0}[/blue] cards in all allies' piles this combat.",
   "CUTE_SAKIKO_MOD_ANONDCHORD.title": "Anon's D Chord",

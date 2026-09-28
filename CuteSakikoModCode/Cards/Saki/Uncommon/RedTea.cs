@@ -10,7 +10,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Uncommon;
 public class RedTea() : CuteSakikoModCard(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [];
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new EnergyVar(2)

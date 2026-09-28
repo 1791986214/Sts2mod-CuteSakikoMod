@@ -9,7 +9,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 
 public class BoringWoman : CuteRanaCard
 {
-    public BoringWoman() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self) { }
+    public BoringWoman() : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+    {
+    }
 
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[]
     {
@@ -28,8 +30,10 @@ public class BoringWoman : CuteRanaCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await PowerCmd.Apply<StrengthPower>(choiceContext, Owner.Creature, DynamicVars.Strength.BaseValue, Owner.Creature, this);
-        await PowerCmd.Apply<DexterityPower>(choiceContext, Owner.Creature, DynamicVars.Dexterity.BaseValue, Owner.Creature, this);
+        await PowerCmd.Apply<StrengthPower>(choiceContext, Owner.Creature, DynamicVars.Strength.BaseValue,
+            Owner.Creature, this);
+        await PowerCmd.Apply<DexterityPower>(choiceContext, Owner.Creature, DynamicVars.Dexterity.BaseValue,
+            Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

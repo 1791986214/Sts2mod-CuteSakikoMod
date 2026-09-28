@@ -27,7 +27,10 @@ public sealed class FriedShrimpEvent : CuteSakikoEvent
 
     public override bool IsShared => true;
 
-    protected override bool IsAllowedInternal(IRunState runState) => runState.CurrentActIndex >= 1;
+    protected override bool IsAllowedInternal(IRunState runState)
+    {
+        return runState.CurrentActIndex >= 1;
+    }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
@@ -56,7 +59,7 @@ public sealed class FriedShrimpEvent : CuteSakikoEvent
 
         EnterCombatWithoutExitingEvent<LuoEncounterCrossBush>(
             extraRewards,
-            shouldResumeAfterCombat: true
+            true
         );
         return Task.CompletedTask;
     }
@@ -68,7 +71,7 @@ public sealed class FriedShrimpEvent : CuteSakikoEvent
 
         EnterCombatWithoutExitingEvent<LuoEncounterRestHere>(
             Array.Empty<Reward>(),
-            shouldResumeAfterCombat: true
+            true
         );
     }
 
@@ -88,10 +91,7 @@ public sealed class FriedShrimpEvent : CuteSakikoEvent
             new CardSelectorPrefs(CardSelectorPrefs.RemoveSelectionPrompt, 1)
         );
         var card = selected.FirstOrDefault();
-        if (card != null)
-        {
-            await CardPileCmd.RemoveFromDeck(card);
-        }
+        if (card != null) await CardPileCmd.RemoveFromDeck(card);
 
         SetEventFinished(PageDescription("DETOUR_DESC"));
     }
@@ -102,17 +102,15 @@ public sealed class FriedShrimpEvent : CuteSakikoEvent
             return Task.CompletedTask;
 
         if (combatRoom.Encounter is LuoEncounterCrossBush)
-        {
             // ★ 奖励已由 extraRewards 统一发放，这里只负责结束事件
             SetEventFinished(PageDescription("CROSS_BUSH_WIN"));
-        }
-        else if (combatRoom.Encounter is LuoEncounterRestHere)
-        {
-            SetEventFinished(PageDescription("REST_HERE_WIN"));
-        }
+        else if (combatRoom.Encounter is LuoEncounterRestHere) SetEventFinished(PageDescription("REST_HERE_WIN"));
 
         return Task.CompletedTask;
     }
 
-    private LocString PageDescription(string pageKey) => L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    private LocString PageDescription(string pageKey)
+    {
+        return L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    }
 }

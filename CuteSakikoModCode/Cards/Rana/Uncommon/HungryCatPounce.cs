@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -27,17 +26,14 @@ public class HungryCatPounce : CuteRanaCard
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         // 1. 对所有敌人造成伤害
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)                       // 注意：新版需要传入 cardPlay
+            .FromCard(this, cardPlay) // 注意：新版需要传入 cardPlay
             .TargetingAllOpponents(CombatState)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
@@ -52,8 +48,8 @@ public class HungryCatPounce : CuteRanaCard
             .ToList();
         if (nekoCardsInDraw.Count == 0) return;
 
-        int enemyCount = CombatState.HittableEnemies.Count;
-        int catsToPlay = Math.Min(enemyCount, nekoCardsInDraw.Count);
+        var enemyCount = CombatState.HittableEnemies.Count;
+        var catsToPlay = Math.Min(enemyCount, nekoCardsInDraw.Count);
         if (catsToPlay <= 0) return;
 
         // 随机打乱后取前 catsToPlay 张

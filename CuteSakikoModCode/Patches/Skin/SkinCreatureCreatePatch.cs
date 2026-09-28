@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Reflection;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 using Godot;
 using HarmonyLib;
@@ -12,10 +12,10 @@ namespace CuteSakikoMod.CuteSakikoModCode.Patches.Skin;
 [HarmonyPatch(typeof(NCreature), nameof(NCreature.Create))]
 public static class SkinCreatureCreatePatch
 {
-    private static readonly System.Reflection.PropertyInfo? VisualsProp =
+    private static readonly PropertyInfo? VisualsProp =
         AccessTools.Property(typeof(NCreature), "Visuals");
 
-    static void Postfix(Creature entity, NCreature __result)
+    private static void Postfix(Creature entity, NCreature __result)
     {
         if (__result == null || entity == null || !entity.IsPlayer) return;
         var player = entity.Player;
@@ -34,12 +34,13 @@ public static class SkinCreatureCreatePatch
             newVisuals = RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(
                 skin.Assets.VisualsPath);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             GD.PrintErr($"[SkinPatch] CreateFromScenePath failed: " +
                         $"{skin.Assets.VisualsPath}: {ex.Message}");
             return;
         }
+
         if (newVisuals == null) return;
 
         __result.Visuals?.QueueFreeSafely();

@@ -41,7 +41,6 @@
   "CUTE_SAKIKO_MOD_KEYWORD_RANA_LIVE.description": "プレイ後、[gold]ライブ[/gold]を1層得る。",
   "CUTE_SAKIKO_MOD_KEYWORD_PANCAKE.title": "パンケーキストライク",
   "CUTE_SAKIKO_MOD_KEYWORD_PANCAKE.description": "敵に9ダメージを与える。このダメージはブロックで防ぐことができる。ブロックがダメージを上回る場合、HPに影響はなくブロックのみが減少する。ブロックがダメージより少ない場合、差額分だけHPが減少し、その後このカードは捨て札に行く。アップグレード版：指定した敵に10ダメージを与える。ドロー妨害デバフがない場合、山札からカードを2枚引いて手札に加え、その後このカードは捨て札に行く。ドロー妨害デバフがある場合、10ダメージのみを与え、その後このカードは捨て札に行く。",
-  
   "CUTE_SAKIKO_MOD_CCHORD.title": "Cコード",
   "CUTE_SAKIKO_MOD_CCHORD.description": "ランダムな敵に[blue]{0}[/blue]ダメージを与える。",
   "CUTE_SAKIKO_MOD_DCHORD.title": "Dコード",
@@ -70,7 +69,6 @@
   "CUTE_SAKIKO_MOD_A#CHORD.description": "各味方が次にプレイする[blue]{0}[/blue]枚のアタックのコストが1減る。",
   "CUTE_SAKIKO_MOD_B#CHORD.title": "B#コード",
   "CUTE_SAKIKO_MOD_B#CHORD.description": "すべての味方が[blue]{0}[/blue]の[gold]活力[/gold]を得る。",
-
   "CUTE_SAKIKO_MOD_CMCHORD.title": "Cmコード",
   "CUTE_SAKIKO_MOD_CMCHORD.description": "すべての味方が[blue]{0}[/blue]の[gold]ブロック[/gold]を得る。",
   "CUTE_SAKIKO_MOD_DMCHORD.title": "Dmコード",
@@ -99,7 +97,6 @@
   "CUTE_SAKIKO_MOD_A#MCHORD.description": "各味方が次にプレイする[blue]{0}[/blue]枚のスキルのコストが1減る。",
   "CUTE_SAKIKO_MOD_B#MCHORD.title": "B#mコード",
   "CUTE_SAKIKO_MOD_B#MCHORD.description": "すべての味方が[blue]{0}[/blue]の[gold]プレート[/gold]を得る。",
-
   "CUTE_SAKIKO_MOD_C7CHORD.title": "C7コード",
   "CUTE_SAKIKO_MOD_C7CHORD.description": "このターン、すべての敵は[blue]{0}[/blue]の[img]CuteSakikoMod/images/ui/text/text_strength.png[/img]を失う。",
   "CUTE_SAKIKO_MOD_D7CHORD.title": "D7コード",
@@ -128,7 +125,6 @@
   "CUTE_SAKIKO_MOD_A#7CHORD.description": "すべての味方が[blue]{0}[/blue]エナジーを得る。",
   "CUTE_SAKIKO_MOD_B#7CHORD.title": "B#7コード",
   "CUTE_SAKIKO_MOD_B#7CHORD.description": "次に演奏する[blue]{0}[/blue]個の[gold]コード[/gold]の数値が1増加する。",
-
   "CUTE_SAKIKO_MOD_ANONCCHORD.title": "愛音Cコード",
   "CUTE_SAKIKO_MOD_ANONCCHORD.description": "この戦闘中、すべての味方の山にあるカードを[blue]{0}[/blue]枚アップグレードする。",
   "CUTE_SAKIKO_MOD_ANONDCHORD.title": "愛音Dコード",

@@ -13,8 +13,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Relics.Event.Doll;
 
 public class AraluoDoll : CuteSakikoEventRelic, IModRightClickableRelic
 {
-    public override RelicRarity Rarity => RelicRarity.Event;
-
     private static readonly string[] UmePowerFiles =
     {
         "umepower1.mp3",
@@ -23,20 +21,21 @@ public class AraluoDoll : CuteSakikoEventRelic, IModRightClickableRelic
     };
 
     private static readonly Random _rand = new();
+    public override RelicRarity Rarity => RelicRarity.Event;
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromPower<VigorPower>();
-        }
+        get { yield return HoverTipFactory.FromPower<VigorPower>(); }
     }
 
-    public bool CanHandleRightClickLocal(ModRightClickContext context) => true;
+    public bool CanHandleRightClickLocal(ModRightClickContext context)
+    {
+        return true;
+    }
 
     public Task OnRightClick(ModRightClickExecutionContext context)
     {
-        string file = UmePowerFiles[_rand.Next(UmePowerFiles.Length)];
+        var file = UmePowerFiles[_rand.Next(UmePowerFiles.Length)];
         var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var fullPath = Path.Combine(dir, "audio", file);
         AudioManager.PlaySound(fullPath);

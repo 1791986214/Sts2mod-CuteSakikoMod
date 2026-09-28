@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
+﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -59,12 +56,9 @@ public class MarksOfPracticePower : CuteSakikoModPower
         var currentCount = existing.Count;
 
         if (currentCount < targetCount)
-        {
             // 调用封装方法添加随机临时和弦
             ChordCmd.AddRandomTemporaryChords(guitar, targetCount);
-        }
         else if (currentCount > targetCount)
-        {
             // 移除多余的临时和弦
             while (currentCount > targetCount)
             {
@@ -73,7 +67,6 @@ public class MarksOfPracticePower : CuteSakikoModPower
                 existing.RemoveAt(existing.Count - 1);
                 currentCount--;
             }
-        }
     }
 
     private void ClearTemporaryChords()

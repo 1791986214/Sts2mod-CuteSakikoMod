@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CuteSakikoMod.CuteSakikoModCode.CardPiles;
+﻿using CuteSakikoMod.CuteSakikoModCode.CardPiles;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -16,6 +12,19 @@ namespace CuteSakikoMod.CuteSakikoModCode.Enchantments;
 [RegisterEnchantment]
 public sealed class MyGoEnchantment : ModEnchantmentTemplate
 {
+    private static readonly Lazy<PileType?> _forgetPileType = new(() =>
+    {
+        try
+        {
+            return ForgetCardPile.GetPileType();
+        }
+        catch
+        {
+            return null;
+        }
+    });
+
+    private Player? _pendingDeckOwner;
     public override bool ShowAmount => false;
     public override bool HasExtraCardText => true;
 
@@ -23,15 +32,10 @@ public sealed class MyGoEnchantment : ModEnchantmentTemplate
         "CuteSakikoMod/images/enchantments/mygo.png"
     );
 
-    private static readonly Lazy<PileType?> _forgetPileType = new(() =>
+    public override bool CanEnchant(CardModel card)
     {
-        try { return ForgetCardPile.GetPileType(); }
-        catch { return null; }
-    });
-
-    private Player? _pendingDeckOwner;
-
-    public override bool CanEnchant(CardModel card) => true;
+        return true;
+    }
 
     public override CardLocation ModifyCardPlayResultLocation(
         CardModel card,
@@ -54,7 +58,7 @@ public sealed class MyGoEnchantment : ModEnchantmentTemplate
             PileType.Discard,
             PileType.Exhaust,
             PileType.Hand,
-            PileType.None,
+            PileType.None
         };
         if (_forgetPileType.Value is { } forget)
             piles.Add(forget);
@@ -63,7 +67,7 @@ public sealed class MyGoEnchantment : ModEnchantmentTemplate
         var targetPlayer = players[rng.NextInt(players.Count)];
 
         // 追加“进牌组”分支
-        int roll = rng.NextInt(piles.Count + 1);
+        var roll = rng.NextInt(piles.Count + 1);
         if (roll == piles.Count)
         {
             _pendingDeckOwner = targetPlayer;
@@ -84,8 +88,8 @@ public sealed class MyGoEnchantment : ModEnchantmentTemplate
         var canonical = ModelDb.GetById<CardModel>(Card.Id);
         var newCard = deckOwner.RunState.CreateCard(canonical, deckOwner);
 
-        int upgradeCount = Math.Min(Card.CurrentUpgradeLevel, newCard.MaxUpgradeLevel);
-        for (int i = 0; i < upgradeCount; i++)
+        var upgradeCount = Math.Min(Card.CurrentUpgradeLevel, newCard.MaxUpgradeLevel);
+        for (var i = 0; i < upgradeCount; i++)
             CardCmd.Upgrade(newCard);
 
         if (Card.Enchantment != null)
@@ -96,7 +100,7 @@ public sealed class MyGoEnchantment : ModEnchantmentTemplate
         }
 
         await CardPileCmd.Add(newCard, PileType.Deck);
-        
+
         PileType.Deck.GetPile(deckOwner).InvokeCardAddFinished();
     }
 }

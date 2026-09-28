@@ -8,18 +8,17 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Keywords;
 
-
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 
 public class SoundCheck() : CuteRanaCard(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => new() { CardTag.Strike };
-    
+
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CutesakiKeywords.RanaLive.GetModCardKeyword()
     ];
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get
@@ -41,13 +40,13 @@ public class SoundCheck() : CuteRanaCard(1, CardType.Attack, CardRarity.Uncommon
 
         // 执行攻击
         var attackCommand = await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
         // 检查是否有未格挡的伤害
-        bool hasUnblockedDamage = attackCommand.Results
+        var hasUnblockedDamage = attackCommand.Results
             .SelectMany(hitResults => hitResults)
             .Any(result => result.UnblockedDamage > 0);
 

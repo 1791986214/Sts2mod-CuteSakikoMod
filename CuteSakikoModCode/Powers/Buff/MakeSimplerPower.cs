@@ -1,6 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
+﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -11,12 +9,11 @@ namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 
 public class MakeSimplerPower : CuteSakikoModPower, IChordSequenceModifierProvider
 {
+    // 缓存修饰符结果，键为和弦ID
+    private readonly Dictionary<string, List<ChordSequenceModifier>> _cachedModifiers = new();
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
     public IEnumerable<ChordCategory>? AffectedCategories => null;
-
-    // 缓存修饰符结果，键为和弦ID
-    private Dictionary<string, List<ChordSequenceModifier>> _cachedModifiers = new();
 
     public IEnumerable<ChordSequenceModifier> GetModifiers(Creature owner, ChordDefinition chordDef)
     {
@@ -36,10 +33,10 @@ public class MakeSimplerPower : CuteSakikoModPower, IChordSequenceModifierProvid
         var allChordIds = guitar.GetEquippedChordIds();
         if (!allChordIds.Contains(chordDef.Id)) yield break;
 
-        int noteCount = chordDef.NoteSequence.Length;
+        var noteCount = chordDef.NoteSequence.Length;
         if (noteCount == 0) yield break;
 
-        int replaceCount = Math.Min(Amount, noteCount);
+        var replaceCount = Math.Min(Amount, noteCount);
 
         var combatState = owner.CombatState;
         if (combatState == null) yield break;
@@ -47,14 +44,14 @@ public class MakeSimplerPower : CuteSakikoModPower, IChordSequenceModifierProvid
         var rng = combatState.RunState.Rng.Niche;
 
         var indices = Enumerable.Range(0, noteCount).ToList();
-        for (int i = indices.Count - 1; i > 0; i--)
+        for (var i = indices.Count - 1; i > 0; i--)
         {
-            int j = rng.NextInt(i + 1);
+            var j = rng.NextInt(i + 1);
             (indices[i], indices[j]) = (indices[j], indices[i]);
         }
 
         var newModifiers = new List<ChordSequenceModifier>();
-        for (int i = 0; i < replaceCount; i++)
+        for (var i = 0; i < replaceCount; i++)
         {
             var mod = new ReplaceNoteModifier(indices[i], Entry.AnyNote);
             newModifiers.Add(mod);

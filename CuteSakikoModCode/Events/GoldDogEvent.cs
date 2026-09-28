@@ -1,35 +1,38 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Encounters.Event;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Events;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.RelicPools;
 using MegaCrit.Sts2.Core.Rewards;
 using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
-using MegaCrit.Sts2.Core.Entities.Relics;
-using MegaCrit.Sts2.Core.Models.RelicPools;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Events;
 
 [RegisterSharedEvent]
-public sealed class GoldDogEvent : CuteSakikoEvent 
+public sealed class GoldDogEvent : CuteSakikoEvent
 {
     public override bool IsShared => true;
 
 
     public override EventAssetProfile AssetProfile => new(
         InitialPortraitPath: "res://CuteSakikoMod/images/events/gold_dog.png");
-  
+
 
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[]
     {
         new GoldVar(20)
     };
 
-    protected override bool IsAllowedInternal(IRunState runState) => runState.CurrentActIndex == 2;
+    protected override bool IsAllowedInternal(IRunState runState)
+    {
+        return runState.CurrentActIndex == 2;
+    }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
@@ -50,7 +53,7 @@ public sealed class GoldDogEvent : CuteSakikoEvent
     {
         EnterCombatWithoutExitingEvent<Act1DoubleBossEncounter>(
             Array.Empty<Reward>(),
-            shouldResumeAfterCombat: true
+            true
         );
         return Task.CompletedTask;
     }
@@ -75,7 +78,7 @@ public sealed class GoldDogEvent : CuteSakikoEvent
             var chosen = Owner.PlayerRng.Rewards.NextItem(rareRelics).ToMutable();
             await RelicCmd.Obtain(chosen, Owner!);
         }
-        
+
         // 两次稀有牌三选一
         var cardOptions1 = CardCreationOptions.ForNonCombatWithUniformOdds(
                 new[] { Owner!.Character.CardPool },
@@ -91,7 +94,7 @@ public sealed class GoldDogEvent : CuteSakikoEvent
             new CardReward(cardOptions1, 3, Owner),
             new CardReward(cardOptions2, 3, Owner)
         });
-        
+
 
         SetEventFinished(PageDescription("DOG_TRAP"));
     }

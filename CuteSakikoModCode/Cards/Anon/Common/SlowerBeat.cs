@@ -1,13 +1,10 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
-
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Common;
 
@@ -35,14 +32,13 @@ public class SlowerBeat() : CuteAnonCard(2, CardType.Skill, CardRarity.Common, T
         await PowerCmd.Apply<BlockNextTurnPower>(choiceContext, Owner.Creature, nextTurnBlock, Owner.Creature, this);
 
         ChordNoteSystem.Activate(Owner);
-        
-        int manualNoteCount = IsUpgraded ? 3 : 2;
-        for (int i = 0; i < manualNoteCount; i++)
+
+        var manualNoteCount = IsUpgraded ? 3 : 2;
+        for (var i = 0; i < manualNoteCount; i++)
             await ChordNoteSystem.AddNoteAsync(Owner, CardType.Skill, choiceContext);
 
         ChordNoteUIManager.UpdateNoteDisplay(Owner);
         ChordNoteUIManager.UpdateStoredChordDisplay(Owner);
-        
     }
 
     protected override void OnUpgrade()

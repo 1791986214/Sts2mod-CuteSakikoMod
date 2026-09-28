@@ -1,8 +1,6 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -34,6 +32,6 @@ public sealed class MemoryComingPower : CuteSakikoModPower
         if (player.Creature != Owner) return;
 
         // 从记忆牌堆随机取 Amount 张牌（不消耗），不升级
-        await MemoryCmd.Recall(choiceContext, player, allowChoose: false, count: Amount, false, false, null,true);
+        await MemoryCmd.Recall(choiceContext, player, false, Amount, false, false, null, true);
     }
 }

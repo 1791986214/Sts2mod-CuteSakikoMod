@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Rana.Starter;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -13,26 +12,26 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 
 public class NobodyKnowParfait : CuteRanaCard, CuteRanaCard.IEatParfaitCard
 {
-    public override bool GainsBlock => true;
-    
     public NobodyKnowParfait() : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
+    public override bool GainsBlock => true;
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Parfait.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Parfait.GetModCardKeyword()); }
     }
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
         get { yield return new BlockVar(16m, ValueProp.Move); }
     }
 
-    public int GetParfaitConsumeCount() => 1;
+    public int GetParfaitConsumeCount()
+    {
+        return 1;
+    }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

@@ -32,14 +32,13 @@ public class TianXiangLuo : ModMonsterTemplate
     private int ActingCuteBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 3, 2);
     private int HappyBlock => AscensionHelper.GetValueIfAscension(AscensionLevel.DeadlyEnemies, 2, 1);
 
-    
-    
+    public int InitialIntentIndex { get; set; } = 0;
+
+
     protected override NCreatureVisuals? TryCreateCreatureVisuals()
     {
         return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(AssetProfile.VisualsScenePath!);
     }
-
-    public int InitialIntentIndex { get; set; } = 0;
 
     protected override MonsterMoveStateMachine GenerateMoveStateMachine()
     {
@@ -55,7 +54,7 @@ public class TianXiangLuo : ModMonsterTemplate
         happy.FollowUpState = desuwa;
 
         var states = new List<MonsterState> { desuwa, actingCute, happy };
-        int idx = Math.Clamp(InitialIntentIndex, 0, states.Count - 1);
+        var idx = Math.Clamp(InitialIntentIndex, 0, states.Count - 1);
         return new MonsterMoveStateMachine(states, states[idx]);
     }
 
@@ -71,7 +70,7 @@ public class TianXiangLuo : ModMonsterTemplate
     private async Task ActingCuteMove(IReadOnlyList<Creature> targets)
     {
         PlayDesuwaSound();
-        
+
         await CreatureCmd.GainBlock(Creature, ActingCuteBlock, ValueProp.Move, null);
 
         foreach (var player in Creature.CombatState.Players)
@@ -82,7 +81,7 @@ public class TianXiangLuo : ModMonsterTemplate
     private async Task HappyMove(IReadOnlyList<Creature> targets)
     {
         PlayDesuwaSound();
-        
+
         await PowerCmd.Apply<StrengthPower>(new ThrowingPlayerChoiceContext(),
             Creature, 2, Creature, null);
         await CreatureCmd.GainBlock(Creature, HappyBlock, ValueProp.Move, null);

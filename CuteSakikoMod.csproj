@@ -24,7 +24,7 @@
 
     <!-- 版本号诊断日志 -->
     <Target Name="LogModVersion" BeforeTargets="CoreCompile">
-        <Message Text="[CuteSakikoMod] Version from manifest: $(_ManifestVersion) (Version=$(Version), InformationalVersion=$(InformationalVersion)), GameTarget: $(_ManifestGameVersion)" Importance="high" />
+        <Message Text="[CuteSakikoMod] Version from manifest: $(_ManifestVersion) (Version=$(Version), InformationalVersion=$(InformationalVersion)), GameTarget: $(_ManifestGameVersion)" Importance="high"/>
     </Target>
 
     <!-- OS Detection & Paths -->
@@ -83,7 +83,7 @@
 
     <ItemGroup>
         <AdditionalFiles Include="CuteSakikoMod/localization/**/*.json"/>
-        <PackageReference Include="STS2.RitsuLib" Version="0.6.2" />
+        <PackageReference Include="STS2.RitsuLib" Version="0.6.2"/>
     </ItemGroup>
 
     <!-- 资源排除与包含 -->
@@ -96,10 +96,10 @@
         <EmbeddedResource Remove="materials/**"/>
         <EmbeddedResource Remove="shaders/**"/>
         <EmbeddedResource Remove="images/**"/>
-        <Compile Remove="CuteSakikoModCode\Cards\Rana\Uncommon\ManyCats.cs" />
-        <Compile Remove="CuteSakikoModCode\Cards\Rana\Common\AllAreCats.cs" />
-        <Compile Remove="CuteSakikoModCode\Cards\Rana\Common\WatchCats.cs" />
-        <Compile Remove="CuteSakikoModCode\Cards\Rana\Common\CatPet.cs" />
+        <Compile Remove="CuteSakikoModCode\Cards\Rana\Uncommon\ManyCats.cs"/>
+        <Compile Remove="CuteSakikoModCode\Cards\Rana\Common\AllAreCats.cs"/>
+        <Compile Remove="CuteSakikoModCode\Cards\Rana\Common\WatchCats.cs"/>
+        <Compile Remove="CuteSakikoModCode\Cards\Rana\Common\CatPet.cs"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -111,16 +111,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="CuteSakikoModCode\Cards\Mod\Token\" />
-        <Folder Include="CuteSakikoModCode\Cards\Rana\Ancient\" />
-        <Folder Include="CuteSakikoModCode\Cards\Rana\Token\" />
-        <Folder Include="CuteSakikoModCode\Encounters\Normal\" />
+        <Folder Include="CuteSakikoModCode\Cards\Mod\Token\"/>
+        <Folder Include="CuteSakikoModCode\Cards\Rana\Ancient\"/>
+        <Folder Include="CuteSakikoModCode\Cards\Rana\Token\"/>
+        <Folder Include="CuteSakikoModCode\Encounters\Normal\"/>
         <Folder Include="CuteSakikoModCode\Monsters\Normal\"/>
-        <Folder Include="CuteSakikoModCode\Potions\Shared\Uncommon\" />
+        <Folder Include="CuteSakikoModCode\Potions\Shared\Uncommon\"/>
         <Folder Include="CuteSakikoModCode\Relics\Anon\Uncommon\"/>
-        <Folder Include="CuteSakikoModCode\Relics\Other\Common\" />
-        <Folder Include="CuteSakikoModCode\Relics\Other\Rare\" />
-        <Folder Include="CuteSakikoModCode\Relics\Other\Uncommon\" />
+        <Folder Include="CuteSakikoModCode\Relics\Other\Common\"/>
+        <Folder Include="CuteSakikoModCode\Relics\Other\Rare\"/>
+        <Folder Include="CuteSakikoModCode\Relics\Other\Uncommon\"/>
         <Folder Include="CuteSakikoModCode\Relics\Saki\Ancient\"/>
         <Folder Include="CuteSakikoModCode\Relics\Saki\Event\"/>
         <Folder Include="CuteSakikoMod\images\ui\run_history\"/>

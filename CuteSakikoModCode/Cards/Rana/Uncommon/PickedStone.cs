@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
-using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -16,7 +14,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 
 public class PickedStone : CuteRanaCard
 {
-    public PickedStone() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self) { }
+    public PickedStone() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    {
+    }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
@@ -30,7 +30,7 @@ public class PickedStone : CuteRanaCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int amount = DynamicVars["PickedStoneTemporaryDexterity"].IntValue;
+        var amount = DynamicVars["PickedStoneTemporaryDexterity"].IntValue;
         await PowerCmd.Apply<PickedStoneTemporaryDexterity>(
             choiceContext, Owner.Creature, amount, Owner.Creature, this);
     }

@@ -13,18 +13,18 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 public class ImmersedGuitar() : CuteRanaCard(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => new() { CardTag.Strike };
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(8m, ValueProp.Move),
         new CardsVar(1)
     ];
-    
+
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CutesakiKeywords.RanaLive.GetModCardKeyword()
     ];
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get
@@ -37,19 +37,17 @@ public class ImmersedGuitar() : CuteRanaCard(1, CardType.Attack, CardRarity.Unco
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         if (cardPlay.Target != null)
-        {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this,cardPlay)
+                .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);
-        }
 
         await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2m); 
+        DynamicVars.Damage.UpgradeValueBy(2m);
     }
 }

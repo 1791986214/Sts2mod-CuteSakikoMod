@@ -7,7 +7,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Keywords;
-using System.Linq;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Rare;
 
@@ -15,12 +14,9 @@ public class FinalLive() : CuteSakikoModCard(3, CardType.Attack, CardRarity.Rare
 {
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Playpiano.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Playpiano.GetModCardKeyword()); }
     }
-    
+
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
         [CardKeyword.Exhaust];
 
@@ -49,12 +45,10 @@ public class FinalLive() : CuteSakikoModCard(3, CardType.Attack, CardRarity.Rare
 
         var count = allCards.Count;
         if (count <= 0) return;
-        
+
         foreach (var card in allCards)
-        {
             if (card.Pile != null && card.Pile.IsCombatPile)
                 await CardCmd.Exhaust(choiceContext, card);
-        }
 
         // 2. 获得格挡（基于 count）
         var valueBlock = DynamicVars.Block.BaseValue;

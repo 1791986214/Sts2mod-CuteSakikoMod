@@ -43,15 +43,13 @@ public class PerfectPlay : CuteAnonCard
         var learned = guitar.GetLearnedChords().ToList();
         if (learned.Count == 0) return;
 
-        int targetCount = DynamicVars["ChordCount"].IntValue;
+        var targetCount = DynamicVars["ChordCount"].IntValue;
 
         var rng = Owner.RunState.Rng.CombatCardGeneration;
         var selected = new List<string>(targetCount);
-        for (int i = 0; i < targetCount; i++)
-        {
+        for (var i = 0; i < targetCount; i++)
             // 允许重复：随机从已学习和弦中抽取
             selected.Add(learned[rng.NextInt(learned.Count)]);
-        }
 
         await guitar.PlaySpecificChords(choiceContext, selected);
     }

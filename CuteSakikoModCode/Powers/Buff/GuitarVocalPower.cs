@@ -1,9 +1,6 @@
-﻿using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Creatures;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
@@ -18,7 +15,7 @@ public class GuitarVocalPower : CuteSakikoModPower
         var owner = Owner;
         if (owner?.CombatState == null) return;
 
-        int totalDamage = count * Amount;
+        var totalDamage = count * Amount;
         if (totalDamage <= 0) return;
 
         var hittableEnemies = owner.CombatState.HittableEnemies.ToList();

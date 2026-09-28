@@ -11,12 +11,13 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Keywords;
 
-
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
 
 public class FriendlyNeko : CuteRanaCard
 {
-    public FriendlyNeko() : base(1, CardType.Attack, CardRarity.Common, TargetType.AllEnemies) { }
+    public FriendlyNeko() : base(1, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
+    {
+    }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
@@ -25,17 +26,14 @@ public class FriendlyNeko : CuteRanaCard
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         // 1. 对所有敌人造成伤害
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .TargetingAllOpponents(CombatState)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
@@ -58,6 +56,7 @@ public class FriendlyNeko : CuteRanaCard
                     card.UpgradeInternal();
                     card.FinalizeUpgradeInternal();
                 }
+
                 return card;
             })
             .ToList();

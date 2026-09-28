@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using CuteSakikoMod.CuteSakikoModCode.Others;
-using MegaCrit.Sts2.Core.Combat;
+﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -28,7 +26,7 @@ public sealed class EveLivePower : CuteSakikoModPower
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         if (cardPlay.Card.Owner?.Creature != Owner) return;
-        int stacks = Amount;
+        var stacks = Amount;
         if (stacks <= 0) return;
 
         Flash();

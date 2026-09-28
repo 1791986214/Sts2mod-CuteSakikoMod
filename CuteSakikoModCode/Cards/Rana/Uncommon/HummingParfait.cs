@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Rana.Starter;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -24,13 +23,14 @@ public class HummingParfait : CuteRanaCard, CuteRanaCard.IEatParfaitCard
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Parfait.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Parfait.GetModCardKeyword()); }
     }
 
-    public int GetParfaitConsumeCount() => 1; // 固定消耗 1 杯
+    public int GetParfaitConsumeCount()
+    {
+        return 1;
+        // 固定消耗 1 杯
+    }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -40,7 +40,7 @@ public class HummingParfait : CuteRanaCard, CuteRanaCard.IEatParfaitCard
 
         // 对全体敌人造成伤害
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .TargetingAllOpponents(Owner.Creature.CombatState)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

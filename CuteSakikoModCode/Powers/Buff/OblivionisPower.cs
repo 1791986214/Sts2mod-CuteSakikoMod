@@ -1,63 +1,61 @@
-﻿
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 
-namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff
+namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
+
+public sealed class OblivionisPower : CuteSakikoModPower, IForgetHookHandler
 {
-    public sealed class OblivionisPower : CuteSakikoModPower, IForgetHookHandler
+    public override PowerType Type => PowerType.Buff;
+    public override PowerStackType StackType => PowerStackType.Counter;
+    public override bool AllowNegative => false;
+
+    // 移除静态构造函数中的事件订阅
+
+    public async Task BeforeForget(
+        PlayerChoiceContext choiceContext,
+        IReadOnlyList<CardModel> forgottenCards,
+        CardModel? source)
     {
-        public override PowerType Type => PowerType.Buff;
-        public override PowerStackType StackType => PowerStackType.Counter;
-        public override bool AllowNegative => false;
+        if (forgottenCards == null || forgottenCards.Count == 0) return;
 
-        // 移除静态构造函数中的事件订阅
+        var owner = forgottenCards[0].Owner;
+        if (owner == null) return;
 
-        public async Task BeforeForget(
-            PlayerChoiceContext choiceContext,
-            IReadOnlyList<CardModel> forgottenCards,
-            CardModel? source)
+        var power = owner.Creature?.GetPower<OblivionisPower>();
+        if (power == null || power.Amount <= 0) return;
+
+        var combatState = owner.Creature.CombatState;
+        if (combatState == null) return;
+
+        var damagePerCard = power.Amount;
+
+        for (var i = 0; i < forgottenCards.Count; i++)
         {
-            if (forgottenCards == null || forgottenCards.Count == 0) return;
+            var enemies = combatState.HittableEnemies;
+            if (enemies.Count == 0) break;
 
-            var owner = forgottenCards[0].Owner;
-            if (owner == null) return;
-
-            var power = owner.Creature?.GetPower<OblivionisPower>();
-            if (power == null || power.Amount <= 0) return;
-
-            var combatState = owner.Creature.CombatState;
-            if (combatState == null) return;
-
-            int damagePerCard = power.Amount;
-
-            for (int i = 0; i < forgottenCards.Count; i++)
-            {
-                var enemies = combatState.HittableEnemies;
-                if (enemies.Count == 0) break;
-
-                await CreatureCmd.Damage(
-                    choiceContext,
-                    enemies,
-                    new DamageVar(damagePerCard, ValueProp.Unpowered),
-                    owner.Creature,
-                    null,
-                    null
-                );
-            }
+            await CreatureCmd.Damage(
+                choiceContext,
+                enemies,
+                new DamageVar(damagePerCard, ValueProp.Unpowered),
+                owner.Creature,
+                null,
+                null
+            );
         }
+    }
 
-        // AfterForget 不需要实现，但接口要求，可以留空或返回 Task.CompletedTask
-        public Task AfterForget(
-            PlayerChoiceContext choiceContext,
-            IReadOnlyList<CardModel> cards,
-            CardModel? source)
-        {
-            return Task.CompletedTask;
-        }
+    // AfterForget 不需要实现，但接口要求，可以留空或返回 Task.CompletedTask
+    public Task AfterForget(
+        PlayerChoiceContext choiceContext,
+        IReadOnlyList<CardModel> cards,
+        CardModel? source)
+    {
+        return Task.CompletedTask;
     }
 }

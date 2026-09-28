@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 using Godot;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -68,14 +67,14 @@ public sealed class PressurePower : CuteSakikoModPower, IHealthBarForecastSource
     public override async Task AfterCurrentHpChanged(Creature creature, decimal delta)
     {
         if (creature != Owner) return;
-        if (delta >= 0) return;          // 只关心受伤
+        if (delta >= 0) return; // 只关心受伤
         if (Owner == null || CombatState == null) return;
 
         // 使用 CombatState 的第一个玩家作为 Owner 构造合法上下文
         var ownerPlayer = CombatState.Players[0];
         var ctx = new HookPlayerChoiceContext(ownerPlayer, ownerPlayer.NetId, GameActionType.Combat);
 
-        Task task = CheckAndTriggerCollapse(ctx);
+        var task = CheckAndTriggerCollapse(ctx);
         await ctx.AssignTaskAndWaitForPauseOrCompletion(task);
     }
 

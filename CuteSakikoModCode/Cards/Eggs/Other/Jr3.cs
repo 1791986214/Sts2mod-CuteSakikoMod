@@ -7,7 +7,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Eggs.Other;
 
-public class Jr3() :OtherModTokenCard(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+public class Jr3() : OtherModTokenCard(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
@@ -26,14 +26,14 @@ public class Jr3() :OtherModTokenCard(0, CardType.Attack, CardRarity.Common, Tar
         var lowDamage = DynamicVars["lowDamage"].IntValue;
         // 低伤一次
         await DamageCmd.Attack(lowDamage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
         // 高伤一次
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

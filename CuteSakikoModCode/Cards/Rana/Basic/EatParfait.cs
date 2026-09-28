@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Ancient;
-using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
+﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Ancient;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Rana.Starter;
 using MegaCrit.Sts2.Core.Commands;
@@ -14,21 +12,23 @@ using STS2RitsuLib.Keywords;
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Basic;
 
 [RegisterArchaicToothTranscendence(typeof(StormInhale))]
-public class EatParfait() : CuteRanaCard(0, CardType.Skill, CardRarity.Basic, TargetType.Self), CuteRanaCard.IEatParfaitCard
+public class EatParfait()
+    : CuteRanaCard(0, CardType.Skill, CardRarity.Basic, TargetType.Self), CuteRanaCard.IEatParfaitCard
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Parfait.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Parfait.GetModCardKeyword()); }
     }
-    
-    public int GetParfaitConsumeCount() => 2; // 固定消耗2杯
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new HealVar(5m)];
+
+    public int GetParfaitConsumeCount()
+    {
+        return 2;
+        // 固定消耗2杯
+    }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
@@ -36,9 +36,12 @@ public class EatParfait() : CuteRanaCard(0, CardType.Skill, CardRarity.Basic, Ta
         if (parfait != null)
             await MatchaParfait.RemoveCharges(parfait, 2, choiceContext);
 
-        int healAmount = DynamicVars["Heal"].IntValue;
+        var healAmount = DynamicVars["Heal"].IntValue;
         await CreatureCmd.Heal(Owner.Creature, healAmount);
     }
 
-    protected override void OnUpgrade() => DynamicVars.Heal.UpgradeValueBy(3m);
+    protected override void OnUpgrade()
+    {
+        DynamicVars.Heal.UpgradeValueBy(3m);
+    }
 }

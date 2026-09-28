@@ -1,8 +1,9 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Common;
+﻿using CuteSakikoMod.CuteSakikoModCode.CardPiles;
+using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Common;
 using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Token;
-using CuteSakikoMod.CuteSakikoModCode.CardPiles;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
+using CuteSakikoMod.CuteSakikoModCode.Relics.Saki.Uncommon;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -68,35 +69,37 @@ public sealed class SwordManager : HookedSingletonModel
     }
 
     /// <summary>
-    /// 增加所有骑士之剑（手牌/抽牌堆/弃牌堆/消耗堆/遗忘堆）的伤害。
+    ///     增加指定玩家所有骑士之剑（手牌/抽牌堆/弃牌堆/消耗堆/遗忘堆）的伤害。
+    /// </summary>
+    public static void IncreasePlayerSwordDamage(Player player, int delta)
+    {
+        if (delta <= 0) return;
+        if (player?.Creature?.CombatState == null) return;
+
+        foreach (var pileType in new[] { PileType.Hand, PileType.Draw, PileType.Discard, PileType.Exhaust })
+        {
+            var pile = pileType.GetPile(player);
+            if (pile == null) continue;
+            foreach (var card in pile.Cards)
+                if (card is KnightSword ks)
+                    ks.DynamicVars.Damage.BaseValue += delta;
+        }
+
+        var forgetPile = ForgetCardPile.Get(player);
+        if (forgetPile != null)
+            foreach (var card in forgetPile.Cards)
+                if (card is KnightSword ks)
+                    ks.DynamicVars.Damage.BaseValue += delta;
+    }
+
+    /// <summary>
+    ///     增加所有玩家所有骑士之剑的伤害。
     /// </summary>
     public static void IncreaseAllSwordDamage(int delta, ICombatState combatState)
     {
         if (delta <= 0 || combatState == null) return;
-
         foreach (var player in combatState.Players)
-        {
-            if (player?.Creature?.CombatState == null) continue;
-
-            // 标准牌堆
-            foreach (var pileType in new[] { PileType.Hand, PileType.Draw, PileType.Discard, PileType.Exhaust })
-            {
-                var pile = pileType.GetPile(player);
-                if (pile == null) continue;
-                foreach (var card in pile.Cards)
-                    if (card is KnightSword ks)
-                        ks.DynamicVars.Damage.BaseValue += delta;
-            }
-
-            // 遗忘堆（自定义 ModCardPile）
-            var forgetPile = ForgetCardPile.Get(player);
-            if (forgetPile != null)
-            {
-                foreach (var card in forgetPile.Cards)
-                    if (card is KnightSword ks)
-                        ks.DynamicVars.Damage.BaseValue += delta;
-            }
-        }
+            IncreasePlayerSwordDamage(player, delta);
     }
 
     public override Task BeforeCardPlayed(CardPlay cardPlay)
@@ -104,13 +107,13 @@ public sealed class SwordManager : HookedSingletonModel
         var playedCard = cardPlay.Card;
         if (playedCard == null) return Task.CompletedTask;
 
-        CardKeyword swordKeyword = CutesakiKeywords.Sword.GetModCardKeyword();
+        var swordKeyword = CutesakiKeywords.Sword.GetModCardKeyword();
         if (!playedCard.Keywords.Contains(swordKeyword)) return Task.CompletedTask;
 
         var player = playedCard.Owner;
         if (player?.Creature?.CombatState == null) return Task.CompletedTask;
 
-        bool includeExhaustAndForget = playedCard is Unsheathe;
+        var includeExhaustAndForget = playedCard is Unsheathe;
 
         return EnsureSwordExists(player, false, playedCard, includeExhaustAndForget);
     }
@@ -127,12 +130,34 @@ public sealed class SwordManager : HookedSingletonModel
         if (power is not PressurePower) return;
         if (amount <= 0) return;
 
-        var owner = power.Owner;
-        if (owner == null || !owner.IsPlayer) return;
+        var pressureOwner = power.Owner;
+        if (pressureOwner == null || !pressureOwner.IsPlayer) return;
         if (power.CombatState == null) return;
 
-        int delta = (int)amount;
-        if (delta > 0)
+        var delta = (int)amount;
+        if (delta <= 0) return;
+
+        var pressurePlayer = power.CombatState.Players
+            .FirstOrDefault(p => p.Creature == pressureOwner);
+        if (pressurePlayer == null) return;
+
+        // 是否有任何玩家持有 OblivionisSword
+        var anyHasRelic = power.CombatState.Players
+            .Any(p => p.GetRelic<OblivionisSword>() != null);
+
+        if (anyHasRelic)
+        {
+            // 遗物效果：任何人压力增加 → 所有玩家剑伤增加
             IncreaseAllSwordDamage(delta, power.CombatState);
+
+            // 视觉反馈：所有持有遗物的玩家 Flash
+            foreach (var p in power.CombatState.Players)
+                p.GetRelic<OblivionisSword>()?.Flash();
+        }
+        else
+        {
+            // 基础效果：仅压力 owner 自己的剑伤增加
+            IncreasePlayerSwordDamage(pressurePlayer, delta);
+        }
     }
 }

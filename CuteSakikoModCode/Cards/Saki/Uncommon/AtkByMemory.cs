@@ -1,7 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -38,9 +37,9 @@ public class AtkByMemory : CuteSakikoModCard
             Owner.Creature,
             cardPlay.Card
         );
-        
+
         // 用记忆牌填满手牌
-        await MemoryCmd.Recall(choiceContext, Owner, allowChoose: false, fillHand: true, upgraded: false);
+        await MemoryCmd.Recall(choiceContext, Owner, false, fillHand: true, upgraded: false);
     }
 
     protected override void OnUpgrade()

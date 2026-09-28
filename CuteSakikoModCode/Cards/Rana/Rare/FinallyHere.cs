@@ -15,7 +15,7 @@ public class FinallyHere() : CuteRanaCard(1, CardType.Power, CardRarity.Rare, Ta
     [
         CutesakiKeywords.RanaLive.GetModCardKeyword()
     ];
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new PowerVar<FinallyHerePower>(1m)

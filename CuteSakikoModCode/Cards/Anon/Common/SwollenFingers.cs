@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
+﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -20,13 +19,13 @@ public class SwollenFingers : CuteAnonCard
         get
         {
             yield return new DamageVar(10m, ValueProp.Move);
-            yield return new PowerVar<ChordBonusThisTurnPower>(1m);
+            yield return new PowerVar<ChordBonusPower>(1m);
         }
     }
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get { yield return HoverTipFactory.FromPower<ChordBonusThisTurnPower>(); }
+        get { yield return HoverTipFactory.FromPower<ChordBonusPower>(); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -41,17 +40,16 @@ public class SwollenFingers : CuteAnonCard
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
-        // 本回合获得和弦增幅（回合结束自动移除）
-        await PowerCmd.Apply<ChordBonusThisTurnPower>(
+        await PowerCmd.Apply<ChordBonusPower>(
             choiceContext,
             Owner.Creature,
-            DynamicVars["ChordBonusThisTurnPower"].IntValue,
+            DynamicVars["ChordBonusPower"].IntValue,
             Owner.Creature,
             this);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["ChordBonusThisTurnPower"].UpgradeValueBy(1m); // 1 → 2
+        DynamicVars["ChordBonusPower"].UpgradeValueBy(1m); // 1 → 2
     }
 }

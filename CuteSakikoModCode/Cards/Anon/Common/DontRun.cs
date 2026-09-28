@@ -1,6 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -31,8 +29,8 @@ public class DontRun() : CuteAnonCard(1, CardType.Attack, CardRarity.Common, Tar
         // 激活系统（即使没有吉他）
         ChordNoteSystem.Activate(Owner);
 
-        int manualNoteCount = IsUpgraded ? 3 : 2;
-        for (int i = 0; i < manualNoteCount; i++)
+        var manualNoteCount = IsUpgraded ? 3 : 2;
+        for (var i = 0; i < manualNoteCount; i++)
             await ChordNoteSystem.AddNoteAsync(Owner, CardType.Attack, choiceContext);
 
         // UI 更新由事件自动触发，但可以手动刷新确保即时

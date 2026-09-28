@@ -11,13 +11,10 @@ public class RainfallOmen : CuteRanaCard
     public RainfallOmen() : base(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
     }
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromPower<RainfallOmenPower>();
-        }
+        get { yield return HoverTipFactory.FromPower<RainfallOmenPower>(); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

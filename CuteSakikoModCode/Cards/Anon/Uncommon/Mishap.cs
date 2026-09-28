@@ -13,15 +13,13 @@ public class Mishap() : CuteAnonCard(2, CardType.Skill, CardRarity.Uncommon, Tar
 
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
-        get
-        {
-            yield return new BlockVar(35m, ValueProp.Move);
-        }
+        get { yield return new BlockVar(35m, ValueProp.Move); }
     }
 
     public override IEnumerable<CardKeyword> CanonicalKeywords
     {
-        get { 
+        get
+        {
             yield return CardKeyword.Exhaust;
             yield return CardKeyword.Retain;
         }
@@ -46,6 +44,6 @@ public class Mishap() : CuteAnonCard(2, CardType.Skill, CardRarity.Uncommon, Tar
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(10m); 
+        DynamicVars.Block.UpgradeValueBy(10m);
     }
 }

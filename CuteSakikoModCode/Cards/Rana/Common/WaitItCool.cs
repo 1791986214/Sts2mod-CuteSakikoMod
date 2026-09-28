@@ -10,10 +10,11 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
 
 public class WaitItCool : CuteRanaCard
 {
-    [SavedProperty]
-    private int TimesRetainedThisCombat { get; set; }
+    public WaitItCool() : base(3, CardType.Skill, CardRarity.Common, TargetType.Self)
+    {
+    }
 
-    public WaitItCool() : base(3, CardType.Skill, CardRarity.Common, TargetType.Self) { }
+    [SavedProperty] private int TimesRetainedThisCombat { get; set; }
 
     public override IEnumerable<CardKeyword> CanonicalKeywords
     {
@@ -33,10 +34,12 @@ public class WaitItCool : CuteRanaCard
         }
     }
 
+    private bool IsExhausted => Pile == null;
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int energy = DynamicVars.Energy.IntValue;
-        int draw = DynamicVars.Cards.IntValue;
+        var energy = DynamicVars.Energy.IntValue;
+        var draw = DynamicVars.Cards.IntValue;
 
         if (energy > 0)
             await PlayerCmd.GainEnergy(energy, Owner);
@@ -44,7 +47,8 @@ public class WaitItCool : CuteRanaCard
             await CardPileCmd.Draw(choiceContext, draw, Owner);
     }
 
-    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side,
+        IEnumerable<Creature> participants)
     {
         if (side != CombatSide.Enemy) return;
         if (Pile?.Type != PileType.Hand) return;
@@ -53,8 +57,8 @@ public class WaitItCool : CuteRanaCard
         TimesRetainedThisCombat++;
 
         // 获取基础费用（升级后的费用，不含任何本地或全局修饰）
-        int baseCost = EnergyCost.GetWithModifiers((CostModifiers)0);
-        int newCost = Math.Max(0, baseCost - TimesRetainedThisCombat);
+        var baseCost = EnergyCost.GetWithModifiers(0);
+        var newCost = Math.Max(0, baseCost - TimesRetainedThisCombat);
 
         // 设置为新费用，并确保只降低不升高（reduceOnly = true）
         EnergyCost.SetThisCombat(newCost, true);
@@ -64,6 +68,4 @@ public class WaitItCool : CuteRanaCard
     {
         EnergyCost.UpgradeBy(-1); // 3c -> 2c
     }
-
-    private bool IsExhausted => Pile == null;
 }

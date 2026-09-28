@@ -41,7 +41,7 @@ public sealed class ForgetCardPile
             )
         });
     }
-    
+
     public static PileType GetPileType()
     {
         var id = ModContentRegistry.GetQualifiedCardPileId("CuteSakikoMod", "Forget");

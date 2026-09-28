@@ -1,10 +1,7 @@
-﻿using Godot;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others.Config;
+using Godot;
 using MegaCrit.Sts2.Core.Nodes.Audio;
 using MegaCrit.Sts2.Core.Saves;
-using CuteSakikoMod.CuteSakikoModCode.Others;
-using System.Collections.Generic;
-using CuteSakikoMod.CuteSakikoModCode.Others.Config;
-using STS2RitsuLib;
 using FileAccess = Godot.FileAccess;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Systems;
@@ -55,7 +52,10 @@ public static class AudioManager
     }
 
     // ==================== 内部实现 ====================
-    private static bool IsMainThread() => OS.GetMainThreadId() == OS.GetThreadCallerId();
+    private static bool IsMainThread()
+    {
+        return OS.GetMainThreadId() == OS.GetThreadCallerId();
+    }
 
     private static void EnsureAudioRoot()
     {
@@ -74,7 +74,7 @@ public static class AudioManager
         try
         {
             byte[] data;
-            if (path.StartsWith("res://", System.StringComparison.OrdinalIgnoreCase))
+            if (path.StartsWith("res://", StringComparison.OrdinalIgnoreCase))
             {
                 using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
                 if (file == null) return null;
@@ -85,7 +85,8 @@ public static class AudioManager
                 if (!File.Exists(path)) return null;
                 data = File.ReadAllBytes(path);
             }
-            var ext = System.IO.Path.GetExtension(path).ToLowerInvariant();
+
+            var ext = Path.GetExtension(path).ToLowerInvariant();
             return ext switch
             {
                 ".mp3" => new AudioStreamMP3 { Data = data },
@@ -120,8 +121,8 @@ public static class AudioManager
         player.Stream = stream;
         player.Bus = "Master";
 
-        float linearVol = CalculateFinalSfxVolume(baseVolume);
-        float dbVol = LinearToDb(linearVol);
+        var linearVol = CalculateFinalSfxVolume(baseVolume);
+        var dbVol = LinearToDb(linearVol);
         player.VolumeDb = dbVol;
         player.Play();
 
@@ -148,14 +149,18 @@ public static class AudioManager
             NRunMusicController.Instance?.StopMusic();
             _nativeMusicStopped = true;
         }
+
         _musicPlayer = new AudioStreamPlayer();
         _audioRoot.AddChild(_musicPlayer);
         _musicPlayer.Stream = stream;
         _musicPlayer.Bus = "Master";
-        float linearVol = CalculateFinalBgmVolume(baseVolume);
-        float dbVol = LinearToDb(linearVol);
+        var linearVol = CalculateFinalBgmVolume(baseVolume);
+        var dbVol = LinearToDb(linearVol);
         _musicPlayer.VolumeDb = dbVol;
-        _musicPlayer.Finished += () => { if (_musicPlayer?.Playing == false) _musicPlayer.Play(); };
+        _musicPlayer.Finished += () =>
+        {
+            if (_musicPlayer?.Playing == false) _musicPlayer.Play();
+        };
         _musicPlayer.Play();
         _currentMusicPath = filePath;
         return _musicPlayer;
@@ -178,7 +183,7 @@ public static class AudioManager
     {
         if (_musicPlayer != null && GodotObject.IsInstanceValid(_musicPlayer))
         {
-            float linearVol = CalculateFinalBgmVolume(1f);
+            var linearVol = CalculateFinalBgmVolume(1f);
             _musicPlayer.VolumeDb = LinearToDb(linearVol);
         }
     }
@@ -186,18 +191,18 @@ public static class AudioManager
     private static float CalculateFinalSfxVolume(float baseVolume)
     {
         var settings = SaveManager.Instance?.SettingsSave;
-        float master = settings?.VolumeMaster ?? 1f;
-        float sfx = settings?.VolumeSfx ?? 1f;
-        float mod = ModConfig.ModSfxVolume;
+        var master = settings?.VolumeMaster ?? 1f;
+        var sfx = settings?.VolumeSfx ?? 1f;
+        var mod = ModConfig.ModSfxVolume;
         return Mathf.Clamp(baseVolume * master * sfx * mod, 0f, 1f);
     }
 
     private static float CalculateFinalBgmVolume(float baseVolume)
     {
         var settings = SaveManager.Instance?.SettingsSave;
-        float master = settings?.VolumeMaster ?? 1f;
-        float bgm = settings?.VolumeBgm ?? 1f;
-        float mod = ModConfig.ModBgmVolume;
+        var master = settings?.VolumeMaster ?? 1f;
+        var bgm = settings?.VolumeBgm ?? 1f;
+        var mod = ModConfig.ModBgmVolume;
         return Mathf.Clamp(baseVolume * master * bgm * mod, 0f, 1f);
     }
 

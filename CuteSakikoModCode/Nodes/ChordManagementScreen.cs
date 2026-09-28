@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.NetMessage;
+﻿using CuteSakikoMod.CuteSakikoModCode.NetMessage;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using Godot;
-using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Multiplayer.Game;
@@ -17,26 +13,25 @@ namespace CuteSakikoMod.CuteSakikoModCode.Nodes;
 
 public partial class ChordManagementScreen : Control
 {
-    
-    public AnonGuitar Guitar { get; private set; }
+    private const string LocTable = "rest_site_ui";
+
+    private static ChordManagementScreen? _currentOpenScreen;
+
+    // 当前显示的标签页：0 = 装备，1 = 和弦图鉴
+    private int _currentTab;
+    private Button _equipTabButton;
     private VBoxContainer _leftSlotsContainer;
-    private VBoxContainer _rightWarehouseContainer;
+    private Button _libraryTabButton;
     public bool _readOnly;
+    private ScrollContainer _rightScroll; // 用于获取宽度计算列数
+    private VBoxContainer _rightWarehouseContainer;
+    private List<string> _tempBonusChords = new();
 
     // 临时状态：每个类别一个列表，Bonus 单独列表
     private Dictionary<ChordCategory, List<string>> _tempCategorySlots = new();
-    private List<string> _tempBonusChords = new();
 
-    private const string LocTable = "rest_site_ui";
+    public AnonGuitar Guitar { get; private set; }
 
-    // 当前显示的标签页：0 = 装备，1 = 和弦图鉴
-    private int _currentTab = 0;
-    private Button _equipTabButton;
-    private Button _libraryTabButton;
-    private ScrollContainer _rightScroll; // 用于获取宽度计算列数
-
-    private static ChordManagementScreen? _currentOpenScreen;
-    
     public void SetGuitar(AnonGuitar guitar)
     {
         Guitar = guitar;
@@ -47,26 +42,25 @@ public partial class ChordManagementScreen : Control
             {
                 var slots = guitar.GetCategorySlots(cat).ToList();
                 if (!_readOnly)
-                {
                     while (slots.Count < guitar.GetMaxChordsPerCategory())
                         slots.Add("");
-                }
                 _tempCategorySlots[cat] = slots;
             }
+
             _tempBonusChords = new List<string>(guitar.GetBonusChords());
         }
     }
 
-    public void SetReadOnly(bool readOnly) => _readOnly = readOnly;
+    public void SetReadOnly(bool readOnly)
+    {
+        _readOnly = readOnly;
+    }
 
     // 修改 ShowScreen 方法
     public void ShowScreen()
     {
         // 如果已有打开的界面，先关闭它
-        if (_currentOpenScreen != null && IsInstanceValid(_currentOpenScreen))
-        {
-            _currentOpenScreen.QueueFree();
-        }
+        if (_currentOpenScreen != null && IsInstanceValid(_currentOpenScreen)) _currentOpenScreen.QueueFree();
         _currentOpenScreen = this;
         SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         NRun.Instance.GlobalUi.AddChild(this);
@@ -199,6 +193,7 @@ public partial class ChordManagementScreen : Control
             buttonBar.AddChild(cancelButton);
             buttonBar.AddChild(confirmButton);
         }
+
         GetViewport().SizeChanged += () => RefreshAll();
         // 延迟到下一帧刷新，确保容器尺寸已计算
         CallDeferred(nameof(RefreshAll));
@@ -260,17 +255,13 @@ public partial class ChordManagementScreen : Control
                 Guitar.RemoveEquippedChord(cat, id);
 
             if (_tempCategorySlots.TryGetValue(cat, out var slots))
-            {
                 foreach (var id in slots)
-                {
                     if (!string.IsNullOrEmpty(id))
                         Guitar.AddEquippedChord(cat, id);
-                }
-            }
         }
 
         var oldBonus = Guitar.GetBonusChords().ToList();
-        for (int i = oldBonus.Count - 1; i >= 0; i--)
+        for (var i = oldBonus.Count - 1; i >= 0; i--)
             Guitar.RemoveBonusChord(oldBonus[i]);
         foreach (var id in _tempBonusChords)
             Guitar.AddBonusChord(id);
@@ -280,7 +271,10 @@ public partial class ChordManagementScreen : Control
         QueueFree();
     }
 
-    private void OnCancel() => QueueFree();
+    private void OnCancel()
+    {
+        QueueFree();
+    }
 
     public void SetTempSlot(ChordCategory slotCategory, int index, string newChordId)
     {
@@ -295,10 +289,14 @@ public partial class ChordManagementScreen : Control
             if (_tempCategorySlots.TryGetValue(slotCategory, out var slots) && index >= 0 && index < slots.Count)
                 slots[index] = newChordId;
         }
+
         RefreshAll();
     }
 
-    public int GetBonusChordIndex(string chordId) => _tempBonusChords.IndexOf(chordId);
+    public int GetBonusChordIndex(string chordId)
+    {
+        return _tempBonusChords.IndexOf(chordId);
+    }
 
     public void SyncIfMultiplayer()
     {
@@ -308,8 +306,10 @@ public partial class ChordManagementScreen : Control
         {
             var chordsData = string.Join(";",
                 Guitar.GetCategorySlots(ChordCategory.Major).Select(id => $"{(int)ChordCategory.Major}:{id}")
-                .Concat(Guitar.GetCategorySlots(ChordCategory.Minor).Select(id => $"{(int)ChordCategory.Minor}:{id}"))
-                .Concat(Guitar.GetCategorySlots(ChordCategory.Dominant).Select(id => $"{(int)ChordCategory.Dominant}:{id}")));
+                    .Concat(Guitar.GetCategorySlots(ChordCategory.Minor)
+                        .Select(id => $"{(int)ChordCategory.Minor}:{id}"))
+                    .Concat(Guitar.GetCategorySlots(ChordCategory.Dominant)
+                        .Select(id => $"{(int)ChordCategory.Dominant}:{id}")));
 
             var msg = new ChordSyncMessage
             {
@@ -330,7 +330,7 @@ public partial class ChordManagementScreen : Control
 
     public void RefreshLeftSlots()
     {
-        foreach (Node child in _leftSlotsContainer.GetChildren())
+        foreach (var child in _leftSlotsContainer.GetChildren())
             child.QueueFree();
 
         if (Guitar == null) return;
@@ -340,6 +340,7 @@ public partial class ChordManagementScreen : Control
             (_leftSlotsContainer.GetParent() as Control).Visible = false;
             return;
         }
+
         (_leftSlotsContainer.GetParent() as Control).Visible = true;
 
         // 主类别槽位
@@ -350,50 +351,45 @@ public partial class ChordManagementScreen : Control
                 : _tempCategorySlots.GetValueOrDefault(cat, new List<string>());
 
             if (_readOnly)
-            {
-                for (int i = 0; i < slots.Count; i++)
+                for (var i = 0; i < slots.Count; i++)
                 {
                     var label = $"{new LocString(LocTable, GetSlotLocKey(cat)).GetFormattedText()} {i + 1}";
                     AddStaticSlotRow(label, slots[i]);
                 }
-            }
             else
-            {
-                for (int i = 0; i < slots.Count; i++)
+                for (var i = 0; i < slots.Count; i++)
                 {
                     var label = $"{new LocString(LocTable, GetSlotLocKey(cat)).GetFormattedText()} {i + 1}";
                     AddSlotRow(label, cat, i, slots[i]);
                 }
-            }
         }
 
         // Bonus 槽位
         var bonusChords = _readOnly ? Guitar.GetBonusChords() : _tempBonusChords;
         if (_readOnly)
-        {
-            for (int i = 0; i < bonusChords.Count; i++)
+            for (var i = 0; i < bonusChords.Count; i++)
             {
                 var baseText = new LocString(LocTable, "CUTE_SAKIKO_MOD_SLOT_BONUS").GetFormattedText();
                 AddStaticSlotRow($"{baseText} {i + 1}", bonusChords[i]);
             }
-        }
         else
-        {
-            for (int i = 0; i < bonusChords.Count; i++)
+            for (var i = 0; i < bonusChords.Count; i++)
             {
                 var baseText = new LocString(LocTable, "CUTE_SAKIKO_MOD_SLOT_BONUS").GetFormattedText();
                 AddSlotRow($"{baseText} {i + 1}", ChordCategory.Bonus, i, bonusChords[i]);
             }
-        }
     }
 
-    private static string GetSlotLocKey(ChordCategory cat) => cat switch
+    private static string GetSlotLocKey(ChordCategory cat)
     {
-        ChordCategory.Major => "CUTE_SAKIKO_MOD_SLOT_MAJOR",
-        ChordCategory.Minor => "CUTE_SAKIKO_MOD_SLOT_MINOR",
-        ChordCategory.Dominant => "CUTE_SAKIKO_MOD_SLOT_DOMINANT",
-        _ => "CUTE_SAKIKO_MOD_SLOT_BONUS"
-    };
+        return cat switch
+        {
+            ChordCategory.Major => "CUTE_SAKIKO_MOD_SLOT_MAJOR",
+            ChordCategory.Minor => "CUTE_SAKIKO_MOD_SLOT_MINOR",
+            ChordCategory.Dominant => "CUTE_SAKIKO_MOD_SLOT_DOMINANT",
+            _ => "CUTE_SAKIKO_MOD_SLOT_BONUS"
+        };
+    }
 
     private void AddSlotRow(string labelText, ChordCategory slotCategory, int slotIndex, string currentChordId)
     {
@@ -421,21 +417,24 @@ public partial class ChordManagementScreen : Control
                     Texture = texture,
                     ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
                     StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
-                    MouseFilter = Control.MouseFilterEnum.Ignore
+                    MouseFilter = MouseFilterEnum.Ignore
                 };
                 img.SetAnchorsPreset(LayoutPreset.FullRect);
                 iconControl.AddChild(img);
             }
+
             iconControl.MouseEntered += () =>
             {
                 if (Guitar?.Owner?.Creature != null)
                 {
-                    var tip = ChordDisplayHelper.GetDynamicChordHoverTip(chordId, Guitar.Owner.Creature, Guitar.GetDisplayBonus());
+                    var tip = ChordDisplayHelper.GetDynamicChordHoverTip(chordId, Guitar.Owner.Creature,
+                        Guitar.GetDisplayBonus());
                     ShowHoverTip(iconControl, tip);
                 }
             };
             iconControl.MouseExited += () => NHoverTipSet.Remove(iconControl);
         }
+
         hbox.AddChild(iconControl);
         _leftSlotsContainer.AddChild(hbox);
     }
@@ -450,8 +449,8 @@ public partial class ChordManagementScreen : Control
             CallDeferred(nameof(RefreshRightWarehouse));
             return;
         }
-        
-        foreach (Node child in _rightWarehouseContainer.GetChildren())
+
+        foreach (var child in _rightWarehouseContainer.GetChildren())
             child.QueueFree();
 
         if (Guitar == null) return;
@@ -463,7 +462,10 @@ public partial class ChordManagementScreen : Control
                 .Select(id => ChordManager.AllChords.TryGetValue(id, out var def) ? def : null)
                 .Where(c => c != null)
                 .GroupBy(c => c.Category)
-                .OrderBy(g => g.Key switch { ChordCategory.Major => 0, ChordCategory.Minor => 1, ChordCategory.Dominant => 2, _ => 3 });
+                .OrderBy(g => g.Key switch
+                {
+                    ChordCategory.Major => 0, ChordCategory.Minor => 1, ChordCategory.Dominant => 2, _ => 3
+                });
 
             foreach (var group in grouped)
             {
@@ -475,7 +477,6 @@ public partial class ChordManagementScreen : Control
 
                 var grid = new GridContainer { Columns = CalculateColumns() };
                 foreach (var chord in group)
-                {
                     if (_readOnly)
                     {
                         var iconControl = new Control { CustomMinimumSize = new Vector2(80, 80) };
@@ -487,16 +488,18 @@ public partial class ChordManagementScreen : Control
                                 Texture = texture,
                                 ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
                                 StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
-                                MouseFilter = Control.MouseFilterEnum.Ignore
+                                MouseFilter = MouseFilterEnum.Ignore
                             };
                             img.SetAnchorsPreset(LayoutPreset.FullRect);
                             iconControl.AddChild(img);
                         }
+
                         iconControl.MouseEntered += () =>
                         {
                             if (Guitar?.Owner?.Creature != null)
                             {
-                                var tip = ChordDisplayHelper.GetDynamicChordHoverTip(chord.Id, Guitar.Owner.Creature, Guitar.GetDisplayBonus());
+                                var tip = ChordDisplayHelper.GetDynamicChordHoverTip(chord.Id, Guitar.Owner.Creature,
+                                    Guitar.GetDisplayBonus());
                                 ShowHoverTip(iconControl, tip);
                             }
                         };
@@ -508,7 +511,7 @@ public partial class ChordManagementScreen : Control
                         var dragSource = new ChordDragSource(chord.Id, this);
                         grid.AddChild(dragSource);
                     }
-                }
+
                 _rightWarehouseContainer.AddChild(grid);
             }
         }
@@ -518,7 +521,10 @@ public partial class ChordManagementScreen : Control
             var grouped = allChords
                 .Where(c => !c.IsTemporaryOnly)
                 .GroupBy(c => c.Category)
-                .OrderBy(g => g.Key switch { ChordCategory.Major => 0, ChordCategory.Minor => 1, ChordCategory.Dominant => 2, _ => 3 });
+                .OrderBy(g => g.Key switch
+                {
+                    ChordCategory.Major => 0, ChordCategory.Minor => 1, ChordCategory.Dominant => 2, _ => 3
+                });
 
             foreach (var group in grouped)
             {
@@ -540,34 +546,37 @@ public partial class ChordManagementScreen : Control
                             Texture = texture,
                             ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
                             StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
-                            MouseFilter = Control.MouseFilterEnum.Ignore
+                            MouseFilter = MouseFilterEnum.Ignore
                         };
                         img.SetAnchorsPreset(LayoutPreset.FullRect);
                         iconControl.AddChild(img);
                     }
+
                     iconControl.MouseEntered += () =>
                     {
                         if (Guitar?.Owner?.Creature != null)
                         {
-                            var tip = ChordDisplayHelper.GetDynamicChordHoverTip(chord.Id, Guitar.Owner.Creature, Guitar.GetDisplayBonus());
+                            var tip = ChordDisplayHelper.GetDynamicChordHoverTip(chord.Id, Guitar.Owner.Creature,
+                                Guitar.GetDisplayBonus());
                             ShowHoverTip(iconControl, tip);
                         }
                     };
                     iconControl.MouseExited += () => NHoverTipSet.Remove(iconControl);
                     grid.AddChild(iconControl);
                 }
+
                 _rightWarehouseContainer.AddChild(grid);
             }
         }
     }
 
     /// <summary>
-    /// 根据右侧容器可用宽度动态计算每行列数。每个和弦图标约占 90 像素宽。
+    ///     根据右侧容器可用宽度动态计算每行列数。每个和弦图标约占 90 像素宽。
     /// </summary>
     private int CalculateColumns()
     {
         if (_rightScroll == null) return 4;
-        float available = _rightScroll.Size.X - 20; // 减去滚动条宽度
+        var available = _rightScroll.Size.X - 20; // 减去滚动条宽度
         if (available <= 0) available = 400; // 兜底
         return Mathf.Max(1, Mathf.FloorToInt(available / 90));
     }
@@ -576,7 +585,9 @@ public partial class ChordManagementScreen : Control
     {
         var tipSet = NHoverTipSet.CreateAndShow(owner, tip);
         if (tipSet == null) return;
-        var alignment = owner.GlobalPosition.X > owner.GetViewportRect().Size.X * 0.5f ? HoverTipAlignment.Left : HoverTipAlignment.Right;
+        var alignment = owner.GlobalPosition.X > owner.GetViewportRect().Size.X * 0.5f
+            ? HoverTipAlignment.Left
+            : HoverTipAlignment.Right;
         tipSet.SetAlignment(owner, alignment);
         var pos = tipSet.GlobalPosition;
         var viewportRect = owner.GetViewportRect();
@@ -587,14 +598,21 @@ public partial class ChordManagementScreen : Control
         tipSet.GlobalPosition = pos;
     }
 
-    public static string GetCategoryDisplayText(ChordCategory cat) => cat switch
+    public static string GetCategoryDisplayText(ChordCategory cat)
     {
-        ChordCategory.Major => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_MAJOR").GetFormattedText(),
-        ChordCategory.Minor => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_MINOR").GetFormattedText(),
-        ChordCategory.Dominant => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_DOMINANT").GetFormattedText(),
-        ChordCategory.Anon => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_ANON").GetFormattedText(),
-        _ => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_OTHER").GetFormattedText()
-    };
+        return cat switch
+        {
+            ChordCategory.Major => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_MAJOR")
+                .GetFormattedText(),
+            ChordCategory.Minor => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_MINOR")
+                .GetFormattedText(),
+            ChordCategory.Dominant => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_DOMINANT")
+                .GetFormattedText(),
+            ChordCategory.Anon => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_ANON")
+                .GetFormattedText(),
+            _ => new LocString(LocTable, "CUTE_SAKIKO_MOD_CHORD_LIBRARY_CATEGORY_OTHER").GetFormattedText()
+        };
+    }
 
     public override void _Input(InputEvent @event)
     {

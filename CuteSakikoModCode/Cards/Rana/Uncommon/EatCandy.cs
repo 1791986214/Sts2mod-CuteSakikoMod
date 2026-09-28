@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Anon;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -8,7 +7,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 
 public class EatCandy : CuteRanaCard
 {
-    public EatCandy() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self) { }
+    public EatCandy() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+    {
+    }
 
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
@@ -21,8 +22,8 @@ public class EatCandy : CuteRanaCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int energy = DynamicVars.Energy.IntValue;
-        int draw = DynamicVars.Cards.IntValue;
+        var energy = DynamicVars.Energy.IntValue;
+        var draw = DynamicVars.Cards.IntValue;
 
         if (energy > 0)
             await PlayerCmd.GainEnergy(energy, Owner);

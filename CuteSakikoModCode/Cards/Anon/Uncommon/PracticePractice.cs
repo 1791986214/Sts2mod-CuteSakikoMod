@@ -13,7 +13,7 @@ public class PracticePractice() : CuteAnonCard(1, CardType.Skill, CardRarity.Unc
 
     // 可无限次在营地强化
     public override int MaxUpgradeLevel => 999;
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
         get { yield return new DynamicVar("Notes", 3); }

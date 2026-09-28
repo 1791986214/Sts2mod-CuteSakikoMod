@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -30,12 +29,12 @@ public sealed class FinallyHerePower : CuteSakikoModPower
         Flash();
 
         // 明确调用单个 Creature 的重载
-        RanaLivePower? result = await PowerCmd.Apply<RanaLivePower>(
+        var result = await PowerCmd.Apply<RanaLivePower>(
             choiceContext,
-            Owner,           
-            Amount,      
-            Owner,           
-            null             
+            Owner,
+            Amount,
+            Owner,
+            null
         );
     }
 }

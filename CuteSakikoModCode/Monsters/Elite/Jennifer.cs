@@ -39,7 +39,7 @@ public class Jennifer : ModMonsterTemplate
     {
         return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(AssetProfile.VisualsScenePath!);
     }
-    
+
     public override async Task AfterAddedToRoom()
     {
         await base.AfterAddedToRoom();
@@ -60,10 +60,10 @@ public class Jennifer : ModMonsterTemplate
 
         // 随机意图分支：
         var randomState = new RandomBranchState("JENNIFER_RANDOM");
-        randomState.AddBranch(whatMove, MoveRepeatType.CanRepeatForever, 0.40f);//重击
-        randomState.AddBranch(unknownMove, MoveRepeatType.CanRepeatForever, 0.30f);//连击
-        randomState.AddBranch(hmmMove, MoveRepeatType.CanRepeatForever, 0.10f);//防御
-        randomState.AddBranch(whatTheMove, MoveRepeatType.CanRepeatForever, 0.20f);//加力
+        randomState.AddBranch(whatMove, MoveRepeatType.CanRepeatForever, 0.40f); //重击
+        randomState.AddBranch(unknownMove, MoveRepeatType.CanRepeatForever, 0.30f); //连击
+        randomState.AddBranch(hmmMove, MoveRepeatType.CanRepeatForever, 0.10f); //防御
+        randomState.AddBranch(whatTheMove, MoveRepeatType.CanRepeatForever, 0.20f); //加力
 
         // 所有动作执行完后回到随机分支，形成循环
         whatMove.FollowUpState = randomState;
@@ -110,8 +110,8 @@ public class Jennifer : ModMonsterTemplate
     private static void PlayRandomSound()
     {
         // 1. 随机文件名
-        int index = System.Random.Shared.Next(2);
-        string file = index == 0 ? "jennifer1.mp3" : "jennifer2.mp3";
+        var index = Random.Shared.Next(2);
+        var file = index == 0 ? "jennifer1.mp3" : "jennifer2.mp3";
 
         // 2. 拼接绝对路径（与 AnonGuitar 完全一致）
         var dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -120,10 +120,11 @@ public class Jennifer : ModMonsterTemplate
             GD.PrintErr("[Jennifer] 无法获取程序集目录，音频播放失败");
             return;
         }
+
         var fullPath = Path.Combine(dir, "audio", file);
         GD.Print($"[Jennifer] 即将播放音效: {fullPath}");
 
         // 3. 调用 AudioManager（内部已处理主线程安全、音量计算等）
-        AudioManager.PlaySound(fullPath,1.2f);
+        AudioManager.PlaySound(fullPath, 1.2f);
     }
 }

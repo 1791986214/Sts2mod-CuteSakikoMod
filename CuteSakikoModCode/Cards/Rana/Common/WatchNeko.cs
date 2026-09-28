@@ -12,19 +12,18 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
 
 public class WatchNeko : CuteRanaCard
 {
-    public WatchNeko() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self) { }
+    public WatchNeko() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+    {
+    }
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int addCount = IsUpgraded ? 2 : 1;
+        var addCount = IsUpgraded ? 2 : 1;
 
         // 从卡池中获取所有“猫咪”卡
         var allNekoCards = ModelDb.CardPool<CuteSakikoTokenCardPool>()
@@ -38,7 +37,7 @@ public class WatchNeko : CuteRanaCard
         var rng = Owner.RunState.Rng.CombatCardGeneration;
 
         // 随机生成猫咪卡并加入手牌（本场战斗 0 费）
-        for (int i = 0; i < addCount; i++)
+        for (var i = 0; i < addCount; i++)
         {
             var template = rng.NextItem(allNekoCards);
             var newCard = combatState.CreateCard(template, Owner);

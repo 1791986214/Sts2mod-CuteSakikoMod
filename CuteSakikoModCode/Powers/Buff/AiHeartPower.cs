@@ -1,5 +1,4 @@
-﻿
-using System.Reflection;
+﻿using System.Reflection;
 using CuteSakikoMod.CuteSakikoModCode.Cards.Mod.Curse;
 using CuteSakikoMod.CuteSakikoModCode.Monsters.Boss;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
@@ -10,7 +9,6 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -34,10 +32,7 @@ public sealed class AiHeartPower : CuteSakikoModPower
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromCard<Regreted>();
-        }
+        get { yield return HoverTipFactory.FromCard<Regreted>(); }
     }
 
     public override async Task AfterApplied(Creature? applier, CardModel? cardSource)
@@ -45,10 +40,7 @@ public sealed class AiHeartPower : CuteSakikoModPower
         await ReplaceVisual();
         PlayMusic();
 
-        if (Owner.Monster is GreyAnon greyAnon)
-        {
-            greyAnon.StartGreyText();
-        }
+        if (Owner.Monster is GreyAnon greyAnon) greyAnon.StartGreyText();
 
         // 将拥有吉他的玩家的一个随机已记忆和弦替换为灰爱音和弦
         var combat = Owner.CombatState;
@@ -58,10 +50,7 @@ public sealed class AiHeartPower : CuteSakikoModPower
             foreach (var player in combat.Players)
             {
                 var guitar = player.Relics.OfType<AnonGuitar>().FirstOrDefault();
-                if (guitar != null)
-                {
-                    guitar.ReplaceRandomEquippedChord(chordId);
-                }
+                if (guitar != null) guitar.ReplaceRandomEquippedChord(chordId);
             }
         }
     }
@@ -88,7 +77,8 @@ public sealed class AiHeartPower : CuteSakikoModPower
         if (combatState == null) return;
 
         var regreted = combatState.CreateCard<Regreted>(dealer.Player);
-        var addResult = await CardPileCmd.AddGeneratedCardToCombat(regreted, PileType.Draw, dealer.Player, CardPilePosition.Random);
+        var addResult =
+            await CardPileCmd.AddGeneratedCardToCombat(regreted, PileType.Draw, dealer.Player, CardPilePosition.Random);
         CardCmd.PreviewCardPileAdd(addResult);
     }
 
@@ -159,8 +149,9 @@ public sealed class AiHeartPower : CuteSakikoModPower
         if (_originalVisual != null && GodotObject.IsInstanceValid(_originalVisual))
         {
             _originalVisual.Visible = true;
-            _originalVisual.Modulate = new Color(1, 1, 1, 1);
+            _originalVisual.Modulate = new Color(1, 1, 1);
         }
+
         _originalVisual = null;
     }
 

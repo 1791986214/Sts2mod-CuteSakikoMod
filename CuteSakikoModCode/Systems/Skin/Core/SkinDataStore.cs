@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using MegaCrit.Sts2.Core.Entities.Players;
+﻿using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Multiplayer.Game.Lobby;
 using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib;
@@ -9,9 +8,8 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 
 public static class SkinDataStore
 {
-    public static PlayerRunSavedData<SkinSelectionState> Data { get; private set; } = null!;
-
     private static bool _registered;
+    public static PlayerRunSavedData<SkinSelectionState> Data { get; private set; } = null!;
 
     public static void Register(string modId)
     {
@@ -22,17 +20,20 @@ public static class SkinDataStore
         {
             var store = RitsuLibFramework.GetRunSavedDataStore(modId);
             Data = store.RegisterPerPlayer(
-                key: "skin_selection_state",
-                defaultFactory: () => new SkinSelectionState(),
-                options: new RunSavedDataOptions
+                "skin_selection_state",
+                () => new SkinSelectionState(),
+                new RunSavedDataOptions
                 {
                     WritePolicy = RunSavedDataWritePolicy.WhenSet,
-                    SyncLobbyOnChange = true,
+                    SyncLobbyOnChange = true
                 });
         }
     }
 
-    private static string Key(Type characterType) => characterType.FullName ?? characterType.Name;
+    private static string Key(Type characterType)
+    {
+        return characterType.FullName ?? characterType.Name;
+    }
 
     public static void ModifyLobbyChoice(StartRunLobby lobby, Type characterType, Action<CharacterSkinChoice> mutator)
     {
@@ -44,6 +45,7 @@ public static class SkinDataStore
                 choice = new CharacterSkinChoice();
                 state.Choices[key] = choice;
             }
+
             mutator(choice);
         });
     }
@@ -74,7 +76,7 @@ public static class SkinDataStore
         if (player == null) return new CharacterSkinChoice();
         return GetRunChoice(player, characterType);
     }
-    
+
     /// <summary>检查某玩家在某角色类型上是否在大厅数据里已有记录。</summary>
     public static bool HasLobbyChoice(StartRunLobby lobby, ulong netId, Type characterType)
     {
@@ -82,5 +84,4 @@ public static class SkinDataStore
         if (!Data.Lobby.TryGet(lobby, netId, out var state) || state == null) return false;
         return state.Choices.ContainsKey(Key(characterType));
     }
-    
 }

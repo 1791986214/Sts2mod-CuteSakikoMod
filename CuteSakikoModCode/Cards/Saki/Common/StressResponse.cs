@@ -37,14 +37,14 @@ public class StressResponse : CuteSakikoModCard
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         if (cardPlay.Target == null) return;
-        
+
         var pressure = Owner.Creature.GetPower<PressurePower>();
         var layers = pressure?.Amount ?? 0;
         if (layers <= 0) return;
 
         // 基础 2 倍，升级后 3 倍
-        int multiplier = IsUpgraded ? 3 : 2;
-        int damage = layers * multiplier;
+        var multiplier = IsUpgraded ? 3 : 2;
+        var damage = layers * multiplier;
 
         await DamageCmd.Attack(damage)
             .FromCard(this, cardPlay)
@@ -64,13 +64,14 @@ public class StressResponse : CuteSakikoModCard
         {
         }
 
-        public override void UpdateCardPreview(CardModel card, CardPreviewMode previewMode, Creature? target, bool runGlobalHooks)
+        public override void UpdateCardPreview(CardModel card, CardPreviewMode previewMode, Creature? target,
+            bool runGlobalHooks)
         {
             base.UpdateCardPreview(card, previewMode, target, runGlobalHooks);
             if (card.Owner == null) return;
 
             var pressurePower = card.Owner.Creature?.GetPower<PressurePower>();
-            int multiplier = card.IsUpgraded ? 3 : 2;
+            var multiplier = card.IsUpgraded ? 3 : 2;
             BaseValue = pressurePower != null ? pressurePower.Amount * multiplier : 0;
         }
     }

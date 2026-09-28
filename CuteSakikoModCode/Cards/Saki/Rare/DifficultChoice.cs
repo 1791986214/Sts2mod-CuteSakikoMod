@@ -17,9 +17,9 @@ public class DifficultChoice() : CuteSakikoModCard(1, CardType.Skill, CardRarity
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new PowerVar<PressurePower>(15m), 
-        new PowerVar<StrengthPower>(1m), 
-        new("Gold", 30m) 
+        new PowerVar<PressurePower>(15m),
+        new PowerVar<StrengthPower>(1m),
+        new("Gold", 30m)
     ];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
@@ -71,10 +71,10 @@ public class DifficultChoice() : CuteSakikoModCard(1, CardType.Skill, CardRarity
     {
         // 升级时增加数值
         if (DynamicVars.TryGetValue("PressurePower", out var pv))
-            pv.UpgradeValueBy(5); 
+            pv.UpgradeValueBy(5);
         if (DynamicVars.TryGetValue("StrengthPower", out var sv))
-            sv.UpgradeValueBy(1); 
+            sv.UpgradeValueBy(1);
         if (DynamicVars.TryGetValue("Gold", out var gv))
-            gv.UpgradeValueBy(10); 
+            gv.UpgradeValueBy(10);
     }
 }

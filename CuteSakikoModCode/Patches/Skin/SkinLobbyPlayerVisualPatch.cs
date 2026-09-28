@@ -1,4 +1,5 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
+﻿using System.Reflection;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Models;
@@ -8,18 +9,19 @@ using MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect;
 namespace CuteSakikoMod.CuteSakikoModCode.Patches.Skin;
 
 /// <summary>
-/// 大厅队友头像：直接读 lobby 暂存里的皮肤选择（远端玩家的选择已经通过
-/// SyncLobbyOnChange 同步过来）。NRemoteLobbyPlayer 只代表队友，本机由原版显示。
+///     大厅队友头像：直接读 lobby 暂存里的皮肤选择（远端玩家的选择已经通过
+///     SyncLobbyOnChange 同步过来）。NRemoteLobbyPlayer 只代表队友，本机由原版显示。
 /// </summary>
 [HarmonyPatch(typeof(NRemoteLobbyPlayer), "RefreshVisuals")]
 public static class SkinLobbyPlayerVisualPatch
 {
-    private static readonly System.Reflection.FieldInfo? CharacterIconField =
+    private static readonly FieldInfo? CharacterIconField =
         AccessTools.Field(typeof(NRemoteLobbyPlayer), "_characterIcon");
-    private static readonly System.Reflection.FieldInfo? CharacterField =
+
+    private static readonly FieldInfo? CharacterField =
         AccessTools.Field(typeof(NRemoteLobbyPlayer), "_character");
 
-    static void Postfix(NRemoteLobbyPlayer __instance)
+    private static void Postfix(NRemoteLobbyPlayer __instance)
     {
         if (CharacterField?.GetValue(__instance) is not CharacterModel character) return;
         var charType = character.GetType();

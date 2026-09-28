@@ -9,7 +9,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Pools.Rana;
 
 public class CuteRanaCardPool : TypeListCardPoolModel, IModColorfulPhilosophersCardPool
 {
-    private static readonly Material? _poolFrameMaterial = MaterialUtils.CreateReplaceHueShaderMaterial(0.467f, 0.867f, 0.467f);
+    private static readonly Material? _poolFrameMaterial =
+        MaterialUtils.CreateReplaceHueShaderMaterial(0.467f, 0.867f, 0.467f);
+
     public override string Title => CuteRana.CharacterId; //This is not a display name.
     public override string EnergyColorName => CuteRana.CharacterId;
     public override string? BigEnergyIconPath => "charui/anon/anon_big_energy.png".ImagePath();

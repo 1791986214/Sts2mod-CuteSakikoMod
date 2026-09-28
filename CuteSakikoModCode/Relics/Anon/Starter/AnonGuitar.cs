@@ -1,6 +1,4 @@
-﻿
-using System.Runtime.CompilerServices;
-using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
+﻿using System.Runtime.CompilerServices;
 using CuteSakikoMod.CuteSakikoModCode.Nodes;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
@@ -29,21 +27,21 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
 {
     // ==================== 静态字段 ====================
     protected static readonly ConditionalWeakTable<Player, PendingChordMigration> _pendingMigrationTable = new();
+    protected List<string> _bonusChords = new();
 
     // ==================== 实例字段 ====================
     protected Dictionary<ChordCategory, List<string>> _equippedChords = new();
-    protected List<string> _learnedChords = new();
-    protected List<string> _bonusChords = new();
-    protected List<string> _temporaryChords = new();
 
     // 脏检查：记录上次解析时的原始字符串指纹
     protected string _lastSyncedRaw = "";
+    protected List<string> _learnedChords = new();
+    protected string _savedBonusChordsData = "";
 
     // 序列化字段
     protected string _savedChordsData = "";
-    protected string _savedBonusChordsData = "";
-    protected string _savedTemporaryChordsData = "";
     protected string _savedLearnedChordsData = "";
+    protected string _savedTemporaryChordsData = "";
+    protected List<string> _temporaryChords = new();
 
     // ==================== 属性 ====================
     public override RelicRarity Rarity => RelicRarity.Starter;
@@ -105,6 +103,31 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
         }
     }
 
+    // ==================== IChordProvider ====================
+    public IReadOnlyList<string> GetAvailableChordIds(Player player)
+    {
+        EnsureInitialized();
+        return GetAllEquippedChords();
+    }
+
+    // ==================== 右键菜单 ====================
+    public bool CanHandleRightClickLocal(ModRightClickContext context)
+    {
+        return true;
+    }
+
+    public async Task OnRightClick(ModRightClickExecutionContext context)
+    {
+        var me = LocalContext.GetMe(RunManager.Instance.DebugOnlyGetState()?.Players);
+        if (me == null || me.NetId != Owner.NetId) return;
+
+        var screen = new ChordManagementScreen();
+        screen.SetGuitar(this);
+        screen.SetReadOnly(true);
+        screen.ShowScreen();
+        await Task.CompletedTask;
+    }
+
     private void AppendChordLine(List<string> lines, string chordId, string prefix)
     {
         if (!ChordManager.AllChords.TryGetValue(chordId, out var def)) return;
@@ -122,21 +145,6 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
         return Owner?.Creature?.CombatState != null
             ? ChordNoteSystem.GetDisplayBonus(Owner)
             : BaseChordBonus;
-    }
-
-    // ==================== 右键菜单 ====================
-    public bool CanHandleRightClickLocal(ModRightClickContext context) => true;
-
-    public async Task OnRightClick(ModRightClickExecutionContext context)
-    {
-        var me = LocalContext.GetMe(RunManager.Instance.DebugOnlyGetState()?.Players);
-        if (me == null || me.NetId != Owner.NetId) return;
-
-        var screen = new ChordManagementScreen();
-        screen.SetGuitar(this);
-        screen.SetReadOnly(true);
-        screen.ShowScreen();
-        await Task.CompletedTask;
     }
 
     // ==================== 生命周期 ====================
@@ -202,6 +210,7 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
             for (var i = 0; i < messyPlay.Amount; i++)
                 await OnNoteGenerated(choiceContext, rng.NextItem(possibleTypes));
         }
+
         messyPlay.ResetNoteCount();
         messyPlay.EndGeneratingNotes();
     }
@@ -228,13 +237,6 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
         ChordSequenceModifierHelper.ClearCardModifiers(Owner);
         SyncToSaved();
         await base.AfterCombatEnd(room);
-    }
-
-    // ==================== IChordProvider ====================
-    public IReadOnlyList<string> GetAvailableChordIds(Player player)
-    {
-        EnsureInitialized();
-        return GetAllEquippedChords();
     }
 
     // ==================== 数据访问 ====================
@@ -295,7 +297,10 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
         return _temporaryChords.AsReadOnly();
     }
 
-    public int GetMaxChordsPerCategory() => MaxLearnedChordsPerCategory;
+    public int GetMaxChordsPerCategory()
+    {
+        return MaxLearnedChordsPerCategory;
+    }
 
     // ==================== 数据修改 ====================
     public void AddEquippedChord(ChordCategory category, string chordId)
@@ -472,24 +477,29 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
                     Enum.IsDefined(typeof(ChordCategory), catInt) && (ChordCategory)catInt != ChordCategory.Bonus)
                     _equippedChords[(ChordCategory)catInt].Add(parts[1]);
             }
+
             hasAnyData = true;
         }
+
         if (!string.IsNullOrEmpty(_savedBonusChordsData))
         {
             _bonusChords = _savedBonusChordsData.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList();
             hasAnyData = true;
         }
+
         if (!string.IsNullOrEmpty(_savedTemporaryChordsData))
         {
             _temporaryChords = _savedTemporaryChordsData.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList();
             hasAnyData = true;
         }
+
         if (!hasAnyData)
         {
             _equippedChords[ChordCategory.Major].Add("C");
             _equippedChords[ChordCategory.Minor].Add("Cm");
             _equippedChords[ChordCategory.Dominant].Add("C7");
         }
+
         if (!string.IsNullOrEmpty(_savedLearnedChordsData))
         {
             _learnedChords = _savedLearnedChordsData.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -501,6 +511,7 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
             if (!_learnedChords.Contains("Cm")) _learnedChords.Add("Cm");
             if (!_learnedChords.Contains("C7")) _learnedChords.Add("C7");
         }
+
         SyncToSaved();
     }
 
@@ -517,7 +528,8 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
         _savedTemporaryChordsData = string.Join(";", _temporaryChords);
         _savedLearnedChordsData = string.Join(";", _learnedChords);
 
-        _lastSyncedRaw = $"{_savedChordsData}|{_savedBonusChordsData}|{_savedTemporaryChordsData}|{_savedLearnedChordsData}";
+        _lastSyncedRaw =
+            $"{_savedChordsData}|{_savedBonusChordsData}|{_savedTemporaryChordsData}|{_savedLearnedChordsData}";
 
         if (Owner != null)
         {
@@ -568,14 +580,14 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
         var chordIds = GetEquippedChordIds();
         if (chordIds.Count == 0) return;
         var rng = Owner.RunState.Rng.CombatCardSelection;
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             await ChordNoteSystem.PlayChordAsync(Owner, rng.NextItem(chordIds), ctx);
         ChordNoteUIManager.UpdateStoredChordDisplay(Owner);
     }
 
     public async Task PlaySpecificChord(PlayerChoiceContext ctx, string chordId, int count = 1)
     {
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
             await ChordNoteSystem.PlayChordAsync(Owner, chordId, ctx);
         ChordNoteUIManager.UpdateStoredChordDisplay(Owner);
     }
@@ -588,7 +600,7 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IModRightClickableRelic
             if (CombatManager.Instance.IsOverOrEnding || Owner?.Creature == null || Owner.Creature.IsDead)
                 break;
 
-            for (int i = 0; i < countPerChord; i++)
+            for (var i = 0; i < countPerChord; i++)
             {
                 // ★ 内层循环也检查，避免单个和弦被重复演奏时战斗结束
                 if (CombatManager.Instance.IsOverOrEnding || Owner.Creature.IsDead)

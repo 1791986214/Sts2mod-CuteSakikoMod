@@ -21,7 +21,6 @@ using STS2RitsuLib.Scaffolding.Godot;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Monsters.Boss;
 
-
 [RegisterMonster]
 public class StarAnon : ModMonsterTemplate
 {
@@ -29,7 +28,7 @@ public class StarAnon : ModMonsterTemplate
     private string _lastMoveName = "";
 
     public override bool ShouldDisappearFromDoom => Creature?.GetPower<RetrogradePower>() == null;
-    
+
     public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 220, 120);
     public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 260, 160);
 

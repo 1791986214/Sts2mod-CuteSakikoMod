@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Reflection;
 using CuteSakikoMod.CuteSakikoModCode.Character;
 using CuteSakikoMod.CuteSakikoModCode.Others.Telemetry;
@@ -17,13 +16,13 @@ namespace CuteSakikoMod.CuteSakikoModCode.Nodes;
 
 public partial class VakuuMoeButton : NButton
 {
-    private bool _alreadyUsed;
-    private AncientEventModel? _eventModel;
-
     // 反射缓存：AncientEventModel 的私有字段 _generatedOptions
     private static readonly FieldInfo? GeneratedOptionsField =
         typeof(AncientEventModel).GetField("_generatedOptions",
             BindingFlags.NonPublic | BindingFlags.Instance);
+
+    private bool _alreadyUsed;
+    private AncientEventModel? _eventModel;
 
     public override void _Ready()
     {
@@ -82,6 +81,7 @@ public partial class VakuuMoeButton : NButton
                 return true;
             type = type.BaseType;
         }
+
         return false;
     }
 
@@ -135,18 +135,18 @@ public partial class VakuuMoeButton : NButton
                 try
                 {
                     CuteSakikoModTelemetry.CaptureRoomButtonClicked(
-                        roomType: "event",
-                        buttonId: "vakuu_moe",
-                        characterId: player.Character.Id.Entry,
-                        floor: CuteSakikoModTelemetry.GetCurrentFloor(player),
-                        extra: new Dictionary<string, object?>
+                        "event",
+                        "vakuu_moe",
+                        player.Character.Id.Entry,
+                        CuteSakikoModTelemetry.GetCurrentFloor(player),
+                        new Dictionary<string, object?>
                         {
                             ["hp_gain"] = 5,
                             ["event_id"] = _eventModel.Id.Entry,
                             ["event_name"] = CuteSakikoModTelemetry.LocalizeEvent(_eventModel.Id.Entry),
                             ["skipped_keys"] = string.Join(",", skippedKeys),
                             ["skipped_names"] = string.Join(",", skippedNames),
-                            ["skipped_count"] = skippedKeys.Count,
+                            ["skipped_count"] = skippedKeys.Count
                         });
                 }
                 catch (Exception ex)
@@ -156,7 +156,8 @@ public partial class VakuuMoeButton : NButton
             }
 
             // 正常结束事件
-            var doneMethod = typeof(AncientEventModel).GetMethod("Done", BindingFlags.NonPublic | BindingFlags.Instance);
+            var doneMethod =
+                typeof(AncientEventModel).GetMethod("Done", BindingFlags.NonPublic | BindingFlags.Instance);
             doneMethod?.Invoke(_eventModel, null);
         }
 
@@ -166,8 +167,8 @@ public partial class VakuuMoeButton : NButton
     }
 
     /// <summary>
-    /// 抓取当前古代事件房里的所有选项（点击按钮等于跳过整间）。
-    /// 返回 (本地化键列表, 显示名列表)。
+    ///     抓取当前古代事件房里的所有选项（点击按钮等于跳过整间）。
+    ///     返回 (本地化键列表, 显示名列表)。
     /// </summary>
     private (List<string> keys, List<string> names) CollectSkippedOptions()
     {
@@ -177,8 +178,7 @@ public partial class VakuuMoeButton : NButton
 
         try
         {
-            if (GeneratedOptionsField?.GetValue(_eventModel) is System.Collections.IEnumerable raw)
-            {
+            if (GeneratedOptionsField?.GetValue(_eventModel) is IEnumerable raw)
                 foreach (var obj in raw)
                 {
                     if (obj is not EventOption opt) continue;
@@ -187,12 +187,17 @@ public partial class VakuuMoeButton : NButton
                     if (string.IsNullOrEmpty(key)) continue;
 
                     var title = "";
-                    try { title = opt.Title?.GetFormattedText() ?? ""; } catch { }
+                    try
+                    {
+                        title = opt.Title?.GetFormattedText() ?? "";
+                    }
+                    catch
+                    {
+                    }
 
                     keys.Add(key);
                     names.Add(title);
                 }
-            }
         }
         catch (Exception ex)
         {

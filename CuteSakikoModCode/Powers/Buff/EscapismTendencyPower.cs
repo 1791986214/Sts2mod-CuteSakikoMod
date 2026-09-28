@@ -1,4 +1,4 @@
-﻿using MegaCrit.Sts2.Core.CardSelection;        // CardSelectorPrefs
+﻿using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+// CardSelectorPrefs
 
 
 namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
@@ -35,7 +36,7 @@ public sealed class EscapismTendencyPower : CuteSakikoModPower
             choiceContext,
             player,
             prefs,
-            null,          // 所有手牌均可选
+            null, // 所有手牌均可选
             this
         );
 

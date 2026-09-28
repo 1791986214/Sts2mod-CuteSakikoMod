@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
+﻿namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 
 public sealed record CharacterSkinDefinition(
     string Id,
@@ -16,10 +14,12 @@ public sealed record CharacterSkinDefinition(
         CharacterPresetSet presets,
         IReadOnlyList<DeckPreset>? deckPresetsOverride = null,
         IReadOnlyList<RelicPreset>? relicPresetsOverride = null)
-        => new(
+    {
+        return new CharacterSkinDefinition(
             id,
             displayNameKey,
             assets,
             deckPresetsOverride ?? presets.DeckPresets,
             relicPresetsOverride ?? presets.RelicPresets);
+    }
 }

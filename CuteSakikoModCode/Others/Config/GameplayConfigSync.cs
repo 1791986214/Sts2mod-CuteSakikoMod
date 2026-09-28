@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using MegaCrit.Sts2.Core.Multiplayer;
 using MegaCrit.Sts2.Core.Multiplayer.Game;
 using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib;
@@ -9,32 +8,12 @@ using STS2RitsuLib.RunData;
 namespace CuteSakikoMod.CuteSakikoModCode.Others.Config;
 
 /// <summary>
-/// 游戏性配置的房主权威同步。
-/// 只同步游戏性开关（彩蛋卡 / 怪物 / 古代事件 / 普通事件），音频设置保持本地。
+///     游戏性配置的房主权威同步。
+///     只同步游戏性开关（彩蛋卡 / 怪物 / 古代事件 / 普通事件），音频设置保持本地。
 /// </summary>
 public static class GameplayConfigSync
 {
     public const string TopicId = "cute_sakiko_gameplay";
-
-    /// <summary>本机是否为权威（单机或房主）。用于广播和 snapshot 判定。</summary>
-    public static bool IsHostAuthority { get; private set; }
-
-    /// <summary>
-    /// 是否锁定游戏性设置 UI（禁止修改）。
-    /// 只有"联机 + 客户端 + 跑局中"三件事同时满足才锁。
-    /// 大厅、主菜单、断连后均不锁，客户端可自由改自己的本地值。
-    /// </summary>
-    public static bool ShouldLockGameplaySettings
-    {
-        get
-        {
-            var rm = RunManager.Instance;
-            var ns = rm?.NetService;
-            if (ns == null) return false;
-            if (ns.Type != NetGameType.Client) return false;
-            return rm!.DebugOnlyGetState() != null;
-        }
-    }
 
     /// <summary>run snapshot 槽位；必须在 Init() 之前由 Entry 注册。</summary>
     public static RunSavedData<RunGameplayConfigData> RunConfigSlot = null!;
@@ -48,9 +27,29 @@ public static class GameplayConfigSync
     private static IDisposable? _sessionUnboundSub;
     private static bool _runStartedSubscribed;
 
+    /// <summary>本机是否为权威（单机或房主）。用于广播和 snapshot 判定。</summary>
+    public static bool IsHostAuthority { get; private set; }
+
     /// <summary>
-    /// Entry.Init() 里调用一次，注册 topic、订阅事件。
-    /// 调用前必须先注册 RunConfigSlot。
+    ///     是否锁定游戏性设置 UI（禁止修改）。
+    ///     只有"联机 + 客户端 + 跑局中"三件事同时满足才锁。
+    ///     大厅、主菜单、断连后均不锁，客户端可自由改自己的本地值。
+    /// </summary>
+    public static bool ShouldLockGameplaySettings
+    {
+        get
+        {
+            var rm = RunManager.Instance;
+            var ns = rm?.NetService;
+            if (ns == null) return false;
+            if (ns.Type != NetGameType.Client) return false;
+            return rm!.DebugOnlyGetState() != null;
+        }
+    }
+
+    /// <summary>
+    ///     Entry.Init() 里调用一次，注册 topic、订阅事件。
+    ///     调用前必须先注册 RunConfigSlot。
     /// </summary>
     public static void Init()
     {
@@ -112,13 +111,12 @@ public static class GameplayConfigSync
     {
         // netService 为 null 视为单机（本地权威）
         IsHostAuthority = netService == null
-            || netService.Type is NetGameType.Singleplayer or NetGameType.Host;
+                          || netService.Type is NetGameType.Singleplayer or NetGameType.Host;
     }
 
     private static void EnsureHandshakeSubscription()
     {
-        _handshakeSub ??= RitsuLibSidecarEvents.OnHandshakeCompleted(
-            _ => BroadcastHostState("handshake"));
+        _handshakeSub ??= RitsuLibSidecarEvents.OnHandshakeCompleted(_ => BroadcastHostState("handshake"));
     }
 
     // ========== RunStartedEvent（房主写 snapshot） ==========
@@ -202,8 +200,8 @@ public static class GameplayConfigSync
     private static bool CanClientRequest(ulong sender, GameplayConfigDelta delta)
     {
         var netService = RunManager.Instance?.NetService;
-        if (netService == null) return true;   // 单机
-        return sender == netService.NetId;     // 仅房主
+        if (netService == null) return true; // 单机
+        return sender == netService.NetId; // 仅房主
     }
 
     private static GameplayConfigDto ApplyDelta(GameplayConfigDto current, GameplayConfigDelta delta)
@@ -217,8 +215,8 @@ public static class GameplayConfigSync
     }
 
     /// <summary>
-    /// 本地游戏性配置改变后调用。房主会刷新 topic 并广播；客户端只落盘。
-    /// 音频等本地设置不要调用此方法。
+    ///     本地游戏性配置改变后调用。房主会刷新 topic 并广播；客户端只落盘。
+    ///     音频等本地设置不要调用此方法。
     /// </summary>
     public static void OnLocalConfigChanged()
     {
@@ -277,6 +275,7 @@ public static class GameplayConfigSync
             Entry.Logger.Warn($"[ConfigSync] 反序列化失败: {ex.Message}");
             return;
         }
+
         if (dto == null) return;
 
         _applyingRemote = true;

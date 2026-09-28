@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Basic;
+﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Enchantments;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
@@ -14,9 +12,9 @@ using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.Saves.Runs;   // SavedProperty / SerializationCondition
+using MegaCrit.Sts2.Core.Saves.Runs;
 using STS2RitsuLib.Keywords;
+// SavedProperty / SerializationCondition
 
 namespace CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 
@@ -59,6 +57,39 @@ public class EmoMask : CuteSakikoEventRelic, IChordNoteHookHandler
         }
     }
 
+    // ---------- 演奏和弦计数 ----------
+    public Task BeforeNoteAdded(Player player, CardType noteType, PlayerChoiceContext? context)
+    {
+        return Task.CompletedTask;
+    }
+
+    public Task AfterNoteAdded(Player player, CardType noteType, PlayerChoiceContext? context)
+    {
+        return Task.CompletedTask;
+    }
+
+    public Task BeforeChordMatched(Player player, string chordId, PlayerChoiceContext? context)
+    {
+        return Task.CompletedTask;
+    }
+
+    public Task AfterChordMatched(Player player, string chordId, PlayerChoiceContext? context)
+    {
+        return Task.CompletedTask;
+    }
+
+    public Task BeforeChordPlayed(Player player, string chordId, int bonus, PlayerChoiceContext? context)
+    {
+        return Task.CompletedTask;
+    }
+
+    public async Task AfterChordPlayed(Player player, string chordId, int bonus, PlayerChoiceContext? context)
+    {
+        if (Owner == null) return;
+        if (player != Owner) return;
+        await IncrementCounter(context);
+    }
+
     // ---------- 压力计数 ----------
     public override async Task AfterPowerAmountChanged(
         PlayerChoiceContext choiceContext,
@@ -73,29 +104,6 @@ public class EmoMask : CuteSakikoEventRelic, IChordNoteHookHandler
         if (applier != Owner.Creature) return;
 
         await IncrementCounter(choiceContext);
-    }
-
-    // ---------- 演奏和弦计数 ----------
-    public Task BeforeNoteAdded(Player player, CardType noteType, PlayerChoiceContext? context)
-        => Task.CompletedTask;
-
-    public Task AfterNoteAdded(Player player, CardType noteType, PlayerChoiceContext? context)
-        => Task.CompletedTask;
-
-    public Task BeforeChordMatched(Player player, string chordId, PlayerChoiceContext? context)
-        => Task.CompletedTask;
-
-    public Task AfterChordMatched(Player player, string chordId, PlayerChoiceContext? context)
-        => Task.CompletedTask;
-
-    public Task BeforeChordPlayed(Player player, string chordId, int bonus, PlayerChoiceContext? context)
-        => Task.CompletedTask;
-
-    public async Task AfterChordPlayed(Player player, string chordId, int bonus, PlayerChoiceContext? context)
-    {
-        if (Owner == null) return;
-        if (player != Owner) return;
-        await IncrementCounter(context);
     }
 
     // ---------- 计数与触发 ----------

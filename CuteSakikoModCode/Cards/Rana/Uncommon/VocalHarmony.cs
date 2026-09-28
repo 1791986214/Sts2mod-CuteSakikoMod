@@ -19,7 +19,7 @@ public class VocalHarmony : CuteRanaCard
     [
         new PowerVar<VocalHarmonyPower>(3m)
     ];
-    
+
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CutesakiKeywords.RanaLive.GetModCardKeyword()
@@ -27,10 +27,7 @@ public class VocalHarmony : CuteRanaCard
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromPower<VocalHarmonyPower>();
-        }
+        get { yield return HoverTipFactory.FromPower<VocalHarmonyPower>(); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 using MegaCrit.Sts2.Core.Commands;
@@ -12,7 +11,6 @@ using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Common;
 
-
 public class StrikeFast() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.Playpiano.GetModCardKeyword()];
@@ -21,7 +19,7 @@ public class StrikeFast() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Com
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(6m, ValueProp.Move), 
+        new DamageVar(6m, ValueProp.Move),
         new RepeatVar(1)
     ];
 
@@ -60,7 +58,7 @@ public class StrikeFast() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Com
 
         // 所有攻击合并在同一个 AttackCommand 里，活力等 buff 自然覆盖全部命中
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .WithHitCount(totalHits)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")

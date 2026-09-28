@@ -27,19 +27,19 @@ public class AreYouShy() : CuteRanaCard(2, CardType.Attack, CardRarity.Common, T
 
         // 造成伤害
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
         // 给予虚弱
-        int weakAmount = DynamicVars["WeakPower"].IntValue;
+        var weakAmount = DynamicVars["WeakPower"].IntValue;
         await PowerCmd.Apply<WeakPower>(choiceContext, cardPlay.Target, weakAmount, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(5m);      // 15 → 20
+        DynamicVars.Damage.UpgradeValueBy(5m); // 15 → 20
         DynamicVars["WeakPower"].UpgradeValueBy(1m); // 1 → 2
     }
 }

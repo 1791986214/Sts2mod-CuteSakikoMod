@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Threading.Tasks;
 using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -14,8 +13,11 @@ namespace CuteSakikoMod.CuteSakikoModCode.Relics.Event.Doll;
 public class TianXiangLuoDoll : CuteSakikoEventRelic, IModRightClickableRelic
 {
     public override RelicRarity Rarity => RelicRarity.Event;
-    
-    public bool CanHandleRightClickLocal(ModRightClickContext context) => true;
+
+    public bool CanHandleRightClickLocal(ModRightClickContext context)
+    {
+        return true;
+    }
 
     public Task OnRightClick(ModRightClickExecutionContext context)
     {

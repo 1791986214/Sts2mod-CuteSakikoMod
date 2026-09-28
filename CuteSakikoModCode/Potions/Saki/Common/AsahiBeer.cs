@@ -1,15 +1,14 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Potions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
-using MegaCrit.Sts2.Core.Entities.Cards;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Potions.Saki.Common;
-
 
 public sealed class AsahiBeer : CuteSakikoModPotion
 {
@@ -39,8 +38,8 @@ public sealed class AsahiBeer : CuteSakikoModPotion
             target,
             DynamicVars["Damage"].BaseValue,
             ValueProp.Move,
-            null,  // 药水没有 CardModel，传 null
-            null    // 药水没有 CardPlay，传 null
+            null, // 药水没有 CardModel，传 null
+            null // 药水没有 CardPlay，传 null
         );
 
         // 给予 15 层压力

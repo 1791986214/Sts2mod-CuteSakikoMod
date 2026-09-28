@@ -16,7 +16,6 @@ using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 using STS2RitsuLib.Scaffolding.Godot;
-using System.Linq;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Monsters.Boss.ChocolateSnail;
 
@@ -71,10 +70,7 @@ public class GiantChocolateSnail : ModMonsterTemplate
         ICombatState combatState)
     {
         if (side != CombatSide.Enemy) return;
-        if (CountAliveSnails() == 0)
-        {
-            SetMoveImmediate(_summonState, true);
-        }
+        if (CountAliveSnails() == 0) SetMoveImmediate(_summonState, true);
     }
 
     private int CountAliveSnails()
@@ -88,7 +84,7 @@ public class GiantChocolateSnail : ModMonsterTemplate
         var combatState = Creature.CombatState;
         var encounter = combatState.Encounter;
 
-        int needed = MaxSnails - CountAliveSnails();
+        var needed = MaxSnails - CountAliveSnails();
         if (needed <= 0) return;
 
         // 过滤出可用的 snail 槽位
@@ -97,8 +93,8 @@ public class GiantChocolateSnail : ModMonsterTemplate
             .Where(s => !combatState.Enemies.Any(e => e.SlotName == s))
             .ToList();
 
-        int summoned = 0;
-        bool usedFallback = false;
+        var summoned = 0;
+        var usedFallback = false;
 
         // 先用专属槽位
         foreach (var slot in snailSlots)
@@ -121,16 +117,13 @@ public class GiantChocolateSnail : ModMonsterTemplate
         }
 
         // 只要用到了回退召唤，就重排一次，让它们竖着站
-        if (usedFallback)
-        {
-            RepositionSlotlessSnailsNearBoss(combatState);
-        }
+        if (usedFallback) RepositionSlotlessSnailsNearBoss(combatState);
     }
-    
+
     /// <summary>
-    /// 把无槽位的小巧克力螺紧贴大螺左侧，按「两行交错」方式排列。
-    /// 索引 0、2、4 … 在上行，1、3、5 … 在下行；
-    /// 索引 0 最靠近大螺，之后的索引依次向左推。
+    ///     把无槽位的小巧克力螺紧贴大螺左侧，按「两行交错」方式排列。
+    ///     索引 0、2、4 … 在上行，1、3、5 … 在下行；
+    ///     索引 0 最靠近大螺，之后的索引依次向左推。
     /// </summary>
     private void RepositionSlotlessSnailsNearBoss(ICombatState combatState)
     {
@@ -154,27 +147,27 @@ public class GiantChocolateSnail : ModMonsterTemplate
         float maxWidth = 0f, maxHeight = 0f;
         foreach (var node in nodes)
         {
-            float w = node.Visuals?.Bounds.Size.X ?? 0;
-            float h = node.Visuals?.Bounds.Size.Y ?? 0;
+            var w = node.Visuals?.Bounds.Size.X ?? 0;
+            var h = node.Visuals?.Bounds.Size.Y ?? 0;
             maxWidth = Mathf.Max(maxWidth, w > 0 ? w : 100f);
             maxHeight = Mathf.Max(maxHeight, h > 0 ? h : 80f);
         }
 
-        float xSpacing = maxWidth + 15f;   // 横向相邻两列的间距
-        float ySpacing = maxHeight + 10f;  // 上下两行的间距
+        var xSpacing = maxWidth + 15f; // 横向相邻两列的间距
+        var ySpacing = maxHeight + 10f; // 上下两行的间距
 
         // 大螺左边缘往左挪一点，就是索引 0 的中心位置
-        float bossHalfWidth = (bossNode.Visuals?.Bounds.Size.X ?? 120f) * 0.5f;
-        float baseX = bossNode.Position.X - bossHalfWidth - maxWidth * 0.5f - 20f;
-        float baseY = bossNode.Position.Y;
+        var bossHalfWidth = (bossNode.Visuals?.Bounds.Size.X ?? 120f) * 0.5f;
+        var baseX = bossNode.Position.X - bossHalfWidth - maxWidth * 0.5f - 20f;
+        var baseY = bossNode.Position.Y;
 
-        for (int i = 0; i < nodes.Length; i++)
+        for (var i = 0; i < nodes.Length; i++)
         {
-            int row = i % 2;   // 0 = 上行，1 = 下行
-            int col = i / 2;   // 0 = 最右（紧贴大螺），1 = 往左一列 …
+            var row = i % 2; // 0 = 上行，1 = 下行
+            var col = i / 2; // 0 = 最右（紧贴大螺），1 = 往左一列 …
 
-            float x = baseX - col * xSpacing - (row == 1 ? xSpacing * 0.5f : 0f);
-            float y = baseY + (row - 0.5f) * ySpacing;
+            var x = baseX - col * xSpacing - (row == 1 ? xSpacing * 0.5f : 0f);
+            var y = baseY + (row - 0.5f) * ySpacing;
 
             nodes[i].Position = new Vector2(x, y);
         }
@@ -192,10 +185,8 @@ public class GiantChocolateSnail : ModMonsterTemplate
             .ToList();
 
         foreach (var snail in snails)
-        {
             await PowerCmd.Apply<StrengthPower>(
                 new ThrowingPlayerChoiceContext(), snail, StrengthAmount, Creature, null);
-        }
     }
 
     private async Task AddCardMove(IReadOnlyList<Creature> targets)

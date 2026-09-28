@@ -3,7 +3,6 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -42,7 +41,7 @@ public class Ha() : CuteAnonCard(1, CardType.Attack, CardRarity.Uncommon, Target
         if (monster == null) return;
 
         // 使用安全方法获取后续状态 ID
-        string? safeFollowUpId = MonsterMoveHelper.GetSafeFollowUpId(monster);
+        var safeFollowUpId = MonsterMoveHelper.GetSafeFollowUpId(monster);
         if (safeFollowUpId == null)
             return; // 无法获取有效后续状态，放弃强制设置
 
@@ -53,7 +52,6 @@ public class Ha() : CuteAnonCard(1, CardType.Attack, CardRarity.Uncommon, Target
             {
                 var players = Owner.Creature.CombatState?.Players.Select(p => p.Creature).ToList();
                 if (players != null && players.Any())
-                {
                     await CreatureCmd.Damage(
                         choiceContext,
                         players,
@@ -62,13 +60,12 @@ public class Ha() : CuteAnonCard(1, CardType.Attack, CardRarity.Uncommon, Target
                         null,
                         null
                     );
-                }
                 // 注意：不再需要手动恢复状态，因为 FollowUpStateId 已指向正确状态
             },
             attackIntent
         )
         {
-            FollowUpStateId = safeFollowUpId  // 使用安全 ID
+            FollowUpStateId = safeFollowUpId // 使用安全 ID
         };
 
         if (targetCreature.IsAlive && targetCreature.Monster != null)
@@ -79,6 +76,4 @@ public class Ha() : CuteAnonCard(1, CardType.Attack, CardRarity.Uncommon, Target
     {
         DynamicVars.Damage.UpgradeValueBy(5m);
     }
-
-  
 }

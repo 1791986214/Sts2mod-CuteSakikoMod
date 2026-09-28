@@ -7,23 +7,21 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Ui;
 
 public static class SkinUiContext
 {
-    private static Type? _currentCharacterType;
+    public static Type? CurrentCharacterType { get; private set; }
 
-    public static Type? CurrentCharacterType => _currentCharacterType;
+    public static ICharacterSkinRegistry? CurrentRegistry
+        => CurrentCharacterType is { } t ? CharacterSkinRegistry.ForCharacter(t) : null;
 
     public static void SetCurrentCharacter(Type? characterType)
     {
-        if (_currentCharacterType == characterType) return;
-        _currentCharacterType = characterType;
+        if (CurrentCharacterType == characterType) return;
+        CurrentCharacterType = characterType;
         SkinSystemEvents.RaiseCurrentCharacterChanged(characterType);
     }
 
-    public static ICharacterSkinRegistry? CurrentRegistry
-        => _currentCharacterType is { } t ? CharacterSkinRegistry.ForCharacter(t) : null;
-
     public static StartRunLobby? GetLobby(Node node)
     {
-        Node? n = node;
+        var n = node;
         while (n != null && n is not NCharacterSelectScreen) n = n.GetParent();
         return (n as NCharacterSelectScreen)?.Lobby;
     }

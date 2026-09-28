@@ -5,9 +5,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Relics.Rana.Starter;
 
 public class BigMatchaParfait : MatchaParfait
 {
-    // 初始杯数由 AfterObtained 决定，不在这里写死
-    protected override int GetInitialCharges() => 0;
-
     public BigMatchaParfait()
     {
         DrawAmount = 2;
@@ -18,6 +15,12 @@ public class BigMatchaParfait : MatchaParfait
         new CardsVar(DrawAmount),
         new EnergyVar(EnergyGain)
     };
+
+    // 初始杯数由 AfterObtained 决定，不在这里写死
+    protected override int GetInitialCharges()
+    {
+        return 0;
+    }
 
     public override async Task AfterObtained()
     {

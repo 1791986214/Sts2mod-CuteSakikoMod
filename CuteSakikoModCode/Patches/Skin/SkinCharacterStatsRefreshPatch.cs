@@ -2,13 +2,15 @@
 using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 using Godot;
 using HarmonyLib;
+using MegaCrit.Sts2.addons.mega_text;
+using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Patches.Skin;
 
 /// <summary>
-/// 让角色选择界面的 HP/Gold 文本跟着皮肤/遗物预设变化。
-/// _hp / _gold 是私有字段，反射拿一次。
+///     让角色选择界面的 HP/Gold 文本跟着皮肤/遗物预设变化。
+///     _hp / _gold 是私有字段，反射拿一次。
 /// </summary>
 public static class SkinCharacterStatsRefreshPatch
 {
@@ -42,19 +44,19 @@ public static class SkinCharacterStatsRefreshPatch
         var charModel = lobby.LocalPlayer.character;
         if (charModel == null) return;
 
-        int hp = charModel.StartingHp;
-        int gold = charModel.StartingGold;
+        var hp = charModel.StartingHp;
+        var gold = charModel.StartingGold;
 
-        if (_hpField?.GetValue(screen) is MegaCrit.Sts2.addons.mega_text.MegaLabel hpLabel)
+        if (_hpField?.GetValue(screen) is MegaLabel hpLabel)
             hpLabel.SetTextAutoSize($"{hp}/{hp}");
-        if (_goldField?.GetValue(screen) is MegaCrit.Sts2.addons.mega_text.MegaLabel goldLabel)
+        if (_goldField?.GetValue(screen) is MegaLabel goldLabel)
             goldLabel.SetTextAutoSize($"{gold}");
     }
 
     private static NCharacterSelectScreen? FindCurrentScreen()
     {
         // NGame.Instance 下所有 children 里找
-        var game = MegaCrit.Sts2.Core.Nodes.NGame.Instance;
+        var game = NGame.Instance;
         if (game == null) return null;
         return FindRecursive(game);
     }
@@ -63,7 +65,8 @@ public static class SkinCharacterStatsRefreshPatch
     {
         if (n is NCharacterSelectScreen s) return s;
         foreach (var c in n.GetChildren())
-            if (FindRecursive(c) is { } found) return found;
+            if (FindRecursive(c) is { } found)
+                return found;
         return null;
     }
 }

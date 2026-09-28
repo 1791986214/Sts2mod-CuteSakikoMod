@@ -16,7 +16,7 @@ public class ThrillingLive() : CuteRanaCard(2, CardType.Attack, CardRarity.Uncom
     [
         new DamageVar(20m, ValueProp.Move)
     ];
-    
+
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
         CutesakiKeywords.RanaLive.GetModCardKeyword()
@@ -33,9 +33,9 @@ public class ThrillingLive() : CuteRanaCard(2, CardType.Attack, CardRarity.Uncom
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int damage = (int)DynamicVars.Damage.BaseValue;
+        var damage = (int)DynamicVars.Damage.BaseValue;
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .TargetingAllOpponents(CombatState)
             .Execute(choiceContext);
     }

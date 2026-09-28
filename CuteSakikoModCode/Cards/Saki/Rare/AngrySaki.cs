@@ -49,15 +49,15 @@ public class AngrySaki() : CuteSakikoModCard(0, CardType.Attack, CardRarity.Rare
         var needPressure = IsUpgradable ? 5 : 8;
         if (targetPressure != null && targetPressure.Amount >= needPressure)
         {
-            extraHits = targetPressure.Amount / needPressure;          // 每5层一次
-            int consumeAmount = extraHits * needPressure;              // 需要消耗的层数
+            extraHits = targetPressure.Amount / needPressure; // 每5层一次
+            var consumeAmount = extraHits * needPressure; // 需要消耗的层数
             await PowerCmd.ModifyAmount(choiceContext, targetPressure, -consumeAmount, Owner.Creature, this);
         }
 
         var totalHits = 1 + extraHits;
 
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .WithHitCount(totalHits)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
@@ -66,6 +66,6 @@ public class AngrySaki() : CuteSakikoModCard(0, CardType.Attack, CardRarity.Rare
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(2m); 
+        DynamicVars.Damage.UpgradeValueBy(2m);
     }
 }

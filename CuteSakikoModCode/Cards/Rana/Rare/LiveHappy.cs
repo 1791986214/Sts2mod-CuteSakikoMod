@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
+﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -26,17 +25,14 @@ public class LiveHappy : CuteRanaCard
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromPower<LiveSweetPower>();
-        }
+        get { yield return HoverTipFactory.FromPower<LiveSweetPower>(); }
     }
 
     protected override bool IsPlayable => Owner != null && Owner.Creature.HasPower<LiveSweetPower>();
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int x = ResolveEnergyXValue();
+        var x = ResolveEnergyXValue();
         if (x <= 0) return;
 
         var combat = Owner.Creature.CombatState;
@@ -47,7 +43,7 @@ public class LiveHappy : CuteRanaCard
         do
         {
             anyKill = false;
-            for (int i = 0; i < x; i++)
+            for (var i = 0; i < x; i++)
             {
                 var enemies = combat.HittableEnemies.ToList();
                 if (enemies.Count == 0) break;
@@ -56,7 +52,7 @@ public class LiveHappy : CuteRanaCard
 
                 // 每次攻击构建一个新的 AttackCommand，并传入 cardPlay
                 var attackCmd = await DamageCmd.Attack(damage)
-                    .FromCard(this, cardPlay)  // 注意第二个参数
+                    .FromCard(this, cardPlay) // 注意第二个参数
                     .Targeting(target)
                     .WithHitFx("vfx/vfx_attack_slash")
                     .Execute(choiceContext);
@@ -70,6 +66,6 @@ public class LiveHappy : CuteRanaCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m); 
+        DynamicVars.Damage.UpgradeValueBy(4m);
     }
 }

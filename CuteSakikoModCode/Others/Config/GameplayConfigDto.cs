@@ -1,8 +1,8 @@
 ﻿namespace CuteSakikoMod.CuteSakikoModCode.Others.Config;
 
 /// <summary>
-/// 联机同步用的游戏性配置快照（Sidecar 用）。
-/// 只包含游戏性开关，音频等本地偏好不在此列。
+///     联机同步用的游戏性配置快照（Sidecar 用）。
+///     只包含游戏性开关，音频等本地偏好不在此列。
 /// </summary>
 public sealed class GameplayConfigDto
 {
@@ -11,13 +11,16 @@ public sealed class GameplayConfigDto
     public bool EnableCustomAncients { get; set; } = true;
     public bool EnableCustomEvents { get; set; } = true;
 
-    public static GameplayConfigDto FromConfig(CuteSakikoModConfigData cfg) => new()
+    public static GameplayConfigDto FromConfig(CuteSakikoModConfigData cfg)
     {
-        EggsCard = cfg.EggsCard,
-        EnableModMonsters = cfg.EnableModMonsters,
-        EnableCustomAncients = cfg.EnableCustomAncients,
-        EnableCustomEvents = cfg.EnableCustomEvents,
-    };
+        return new GameplayConfigDto
+        {
+            EggsCard = cfg.EggsCard,
+            EnableModMonsters = cfg.EnableModMonsters,
+            EnableCustomAncients = cfg.EnableCustomAncients,
+            EnableCustomEvents = cfg.EnableCustomEvents
+        };
+    }
 
     public void ApplyTo(CuteSakikoModConfigData cfg)
     {
@@ -27,13 +30,16 @@ public sealed class GameplayConfigDto
         cfg.EnableCustomEvents = EnableCustomEvents;
     }
 
-    public GameplayConfigDto Clone() => new()
+    public GameplayConfigDto Clone()
     {
-        EggsCard = EggsCard,
-        EnableModMonsters = EnableModMonsters,
-        EnableCustomAncients = EnableCustomAncients,
-        EnableCustomEvents = EnableCustomEvents,
-    };
+        return new GameplayConfigDto
+        {
+            EggsCard = EggsCard,
+            EnableModMonsters = EnableModMonsters,
+            EnableCustomAncients = EnableCustomAncients,
+            EnableCustomEvents = EnableCustomEvents
+        };
+    }
 }
 
 /// <summary>增量更新：null 表示该字段未变化。</summary>

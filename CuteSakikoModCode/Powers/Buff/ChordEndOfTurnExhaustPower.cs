@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MegaCrit.Sts2.Core.CardSelection;
+﻿using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -49,7 +46,7 @@ public class ChordEndOfTurnExhaustPower : CuteSakikoModPower
         }
 
         // 层数决定最大可选牌数，可取消（minCount=0）
-        var prefs = new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, minCount: 0, maxCount: Amount);
+        var prefs = new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, 0, Amount);
         var selected = await CardSelectCmd.FromSimpleGrid(choiceContext, allCards, player, prefs);
 
         foreach (var card in selected)

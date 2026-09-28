@@ -4,12 +4,8 @@ using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.ValueProps;
 using MegaCrit.Sts2.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 
@@ -47,7 +43,7 @@ public sealed class BecomeAshesPower : CuteSakikoModPower
             DynamicVars["PhaseTwoThreshold"].BaseValue = (int)(_initialMaxHp * 0.85);
     }
 
-    public override Task AfterCurrentHpChanged(Creature creature, Decimal delta)
+    public override Task AfterCurrentHpChanged(Creature creature, decimal delta)
     {
         if (creature == Owner)
             UpdateStrengthGain();
@@ -62,7 +58,7 @@ public sealed class BecomeAshesPower : CuteSakikoModPower
         if (side != Owner.Side || !participants.Contains(Owner)) return;
 
         // 减少最大生命值（当前最大生命值的 5%），而不是造成伤害
-        int maxHpLoss = (int)Math.Ceiling(Owner.MaxHp * 0.05);
+        var maxHpLoss = (int)Math.Ceiling(Owner.MaxHp * 0.05);
         if (maxHpLoss > 0)
             await CreatureCmd.LoseMaxHp(choiceContext, Owner, maxHpLoss, false);
 
@@ -77,8 +73,8 @@ public sealed class BecomeAshesPower : CuteSakikoModPower
     {
         if (side != Owner.Side) return;
 
-        float lostPercent = (float)(_initialMaxHp - Owner.CurrentHp) / _initialMaxHp * 100f;
-        int strength = Math.Max(1, (int)Math.Floor(lostPercent / 20f));
+        var lostPercent = (float)(_initialMaxHp - Owner.CurrentHp) / _initialMaxHp * 100f;
+        var strength = Math.Max(1, (int)Math.Floor(lostPercent / 20f));
 
         // 二阶段条件：当前生命值低于初始最大生命值的 85%
         if (Owner.CurrentHp < _initialMaxHp * 0.85)
@@ -109,8 +105,8 @@ public sealed class BecomeAshesPower : CuteSakikoModPower
     {
         if (Owner != null)
         {
-            float lostPercent = (float)(_initialMaxHp - Owner.CurrentHp) / _initialMaxHp * 100f;
-            int strength = Math.Max(2, (int)Math.Floor(lostPercent / 20f));
+            var lostPercent = (float)(_initialMaxHp - Owner.CurrentHp) / _initialMaxHp * 100f;
+            var strength = Math.Max(2, (int)Math.Floor(lostPercent / 20f));
             if (Owner.CurrentHp < _initialMaxHp * 0.85)
                 strength *= 2;
             DynamicVars["StrengthGain"].BaseValue = strength;

@@ -1,11 +1,9 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
+﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Common;
@@ -19,13 +17,13 @@ public class WrongPlay() : CuteAnonCard(1, CardType.Skill, CardRarity.Common, Ta
         get
         {
             yield return new BlockVar(8m, ValueProp.Move);
-            yield return new PowerVar<ChordBonusThisTurnPower>(1m);
+            yield return new PowerVar<ChordBonusPower>(1m);
         }
     }
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get { yield return HoverTipFactory.FromPower<ChordBonusThisTurnPower>(); }
+        get { yield return HoverTipFactory.FromPower<ChordBonusPower>(); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -36,16 +34,16 @@ public class WrongPlay() : CuteAnonCard(1, CardType.Skill, CardRarity.Common, Ta
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
 
         // 本回合获得和弦增幅（回合结束自动移除）
-        await PowerCmd.Apply<ChordBonusThisTurnPower>(
+        await PowerCmd.Apply<ChordBonusPower>(
             choiceContext,
             Owner.Creature,
-            DynamicVars["ChordBonusThisTurnPower"].IntValue,
+            DynamicVars["ChordBonusPower"].IntValue,
             Owner.Creature,
             this);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars["ChordBonusThisTurnPower"].UpgradeValueBy(1m);     // 1 → 2
+        DynamicVars["ChordBonusPower"].UpgradeValueBy(1m); // 1 → 2
     }
 }

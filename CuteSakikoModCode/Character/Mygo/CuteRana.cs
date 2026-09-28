@@ -1,7 +1,6 @@
 using CuteSakikoMod.CuteSakikoModCode.Pools.Rana;
 using Godot;
 using MegaCrit.Sts2.Core.Entities.Characters;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Godot;
@@ -41,15 +40,20 @@ public class CuteRana : CuteSakikoCharacter<CuteRanaCardPool, CuteRanaRelicPool,
     public override float CastAnimDelay => 0f;
 
     protected override NCreatureVisuals? TryCreateCreatureVisuals()
-        => RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(
+    {
+        return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(
             AssetProfile.Scenes!.VisualsPath!);
+    }
 
-    public override List<string> GetArchitectAttackVfx() =>
-    [
-        "vfx/vfx_attack_blunt",
-        "vfx/vfx_heavy_blunt",
-        "vfx/vfx_attack_slash",
-        "vfx/vfx_bloody_impact",
-        "vfx/vfx_rock_shatter"
-    ];
+    public override List<string> GetArchitectAttackVfx()
+    {
+        return
+        [
+            "vfx/vfx_attack_blunt",
+            "vfx/vfx_heavy_blunt",
+            "vfx/vfx_attack_slash",
+            "vfx/vfx_bloody_impact",
+            "vfx/vfx_rock_shatter"
+        ];
+    }
 }

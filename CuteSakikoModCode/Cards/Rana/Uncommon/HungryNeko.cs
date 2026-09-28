@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Rana.Starter;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
@@ -34,10 +33,10 @@ public class HungryNeko : CuteRanaCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int count = DynamicVars.Cards.IntValue;
+        var count = DynamicVars.Cards.IntValue;
         var hand = PileType.Hand.GetPile(Owner);
-        int handCount = hand?.Cards.Count ?? 0;
-        int maxSelect = Math.Min(count, handCount);
+        var handCount = hand?.Cards.Count ?? 0;
+        var maxSelect = Math.Min(count, handCount);
 
         var prefs = new CardSelectorPrefs(
             new LocString("cards", "CUTE_SAKIKO_MOD_CARD_HUNGRY_NEKO.selectionScreenPrompt"),
@@ -45,12 +44,9 @@ public class HungryNeko : CuteRanaCard
 
         var selected = await CardSelectCmd.FromHand(choiceContext, Owner, prefs, null, this);
         var selectedCards = selected.ToList();
-        foreach (var card in selectedCards)
-        {
-            await CardCmd.Exhaust(choiceContext, card);
-        }
+        foreach (var card in selectedCards) await CardCmd.Exhaust(choiceContext, card);
 
-        int eaten = selectedCards.Count;
+        var eaten = selectedCards.Count;
         if (eaten > 0)
             await MatchaParfait.SimulateParfaitEaten(Owner, eaten, choiceContext);
     }

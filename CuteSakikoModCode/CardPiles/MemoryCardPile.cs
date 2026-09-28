@@ -63,6 +63,7 @@ public sealed class MemoryCardPile
             Log.Error($"[MemoryCardPile] Failed to resolve pile: {ex.Message}");
             return null;
         }
+
         if (pile != null) _cachedByPlayer[player] = pile;
         return pile;
     }
@@ -73,6 +74,7 @@ public sealed class MemoryCardPile
         {
             if (!_populatingPiles.Add(pile)) return;
         }
+
         try
         {
             var cardsToRemove = pile.Cards.ToList();
@@ -101,14 +103,13 @@ public sealed class MemoryCardPile
                 .ToList();
 
             foreach (var template in allMemoryCards)
-            {
                 if (!seenIds.Contains(template.Id))
                 {
                     AddSnapshot(player, pile, template, seenIds);
                     count++;
                     if (count % 10 == 0) await Task.Yield();
                 }
-            }
+
             pile.InvokeCardAddFinished();
         }
         finally
@@ -166,8 +167,15 @@ public sealed class MemoryCardPile
     public static void Clear()
     {
         _cachedByPlayer.Clear();
-        lock (_populatingPiles) { _populatingPiles.Clear(); }
-        lock (_uiInitializedPlayerIds) { _uiInitializedPlayerIds.Clear(); }
+        lock (_populatingPiles)
+        {
+            _populatingPiles.Clear();
+        }
+
+        lock (_uiInitializedPlayerIds)
+        {
+            _uiInitializedPlayerIds.Clear();
+        }
     }
 
     public static List<CardModel> GetCanonicalCards(Player player)
@@ -181,7 +189,7 @@ public sealed class MemoryCardPile
             .OrderBy(c => c.Id.Entry, StringComparer.Ordinal)
             .ToList();
     }
-    
+
     public static CardModel CreateCardFromMemorySnapshot(Player owner, CardModel snapshot)
     {
         if (snapshot == null || owner == null) return null;

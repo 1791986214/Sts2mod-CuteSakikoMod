@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Models;
@@ -16,11 +14,11 @@ public class ChordNextAttackCostReductionPower : CuteSakikoModPower
 
     public override bool TryModifyEnergyCostInCombatLate(
         CardModel card,
-        Decimal originalCost,
-        out Decimal modifiedCost)
+        decimal originalCost,
+        out decimal modifiedCost)
     {
         modifiedCost = originalCost;
-        if (card.Owner.Creature != this.Owner || card.Type != CardType.Attack)
+        if (card.Owner.Creature != Owner || card.Type != CardType.Attack)
             return false;
         var pileType = card.Pile?.Type;
         if (pileType != PileType.Hand && pileType != PileType.Play)

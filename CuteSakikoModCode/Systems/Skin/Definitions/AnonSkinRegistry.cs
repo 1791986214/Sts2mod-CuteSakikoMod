@@ -7,25 +7,23 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Definitions;
 
 public sealed class AnonSkinRegistry : ICharacterSkinRegistry
 {
-    public Type CharacterType => typeof(CuteAnon);
-
     // ─────────────────────────────────────────────────────────
     // 共享预设（唯一来源）：该角色所有皮肤默认共用
     // ─────────────────────────────────────────────────────────
     private static readonly CharacterPresetSet SharedPresets = new(
-        DeckPresets:
         [
             new DeckPreset("anon_default", "ANON_DECK_DEFAULT",
             [
                 (typeof(AnonStrike), 4),
                 (typeof(AnonDefend), 4),
-                (typeof(PlayChord),  1),
-            ]),
+                (typeof(PlayChord), 1)
+            ])
         ],
-        RelicPresets:
         [
-            new RelicPreset("anon_starter", "ANON_RELIC_DEFAULT", 70, 99, [typeof(AnonGuitar)]),
+            new RelicPreset("anon_starter", "ANON_RELIC_DEFAULT", 70, 99, [typeof(AnonGuitar)])
         ]);
+
+    public Type CharacterType => typeof(CuteAnon);
 
     // ─────────────────────────────────────────────────────────
     // 皮肤：只写差异化字段（HP / Gold / Assets）
@@ -33,39 +31,39 @@ public sealed class AnonSkinRegistry : ICharacterSkinRegistry
     public IReadOnlyList<CharacterSkinDefinition> AllSkins { get; } =
     [
         CharacterSkinDefinition.FromPresets(
-            id: "anon",
-            displayNameKey: "ANON_SKIN_DEFAULT",
-            assets: new SkinAssets(
-                VisualsPath:       "res://CuteSakikoMod/scenes/char/anon/anon.tscn",
-                EnergyCounterPath: "res://CuteSakikoMod/scenes/char/anon/anon_energy_counter.tscn",
-                MerchantPath:      "res://CuteSakikoMod/scenes/char/anon/anon_merchant.tscn",
-                RestSitePath:      "res://CuteSakikoMod/scenes/char/anon/anon_rest_site.tscn",
-                IconTexturePath:        "res://CuteSakikoMod/images/charui/anon/character_icon_anon.png",
-                IconOutlineTexturePath: "res://CuteSakikoMod/images/charui/anon/character_icon_anon_outline.png",
-                IconPath:               "res://CuteSakikoMod/scenes/char/anon/anon_icon.tscn",
-                TrailPath:              "res://CuteSakikoMod/scenes/ui/card_trail_anon.tscn",
-                ArmPointingPath: "res://CuteSakikoMod/images/charui/saki/multiplayer_hand_point.png",
-                ArmRockPath:     "res://CuteSakikoMod/images/charui/saki/multiplayer_hand_rock.png",
-                ArmPaperPath:    "res://CuteSakikoMod/images/charui/saki/multiplayer_hand_paper.png",
-                ArmScissorsPath: "res://CuteSakikoMod/images/charui/saki/multiplayer_hand_scissors.png"),
-            presets: SharedPresets),
-        
+            "anon",
+            "ANON_SKIN_DEFAULT",
+            new SkinAssets(
+                "res://CuteSakikoMod/scenes/char/anon/anon.tscn",
+                "res://CuteSakikoMod/scenes/char/anon/anon_energy_counter.tscn",
+                "res://CuteSakikoMod/scenes/char/anon/anon_merchant.tscn",
+                "res://CuteSakikoMod/scenes/char/anon/anon_rest_site.tscn",
+                "res://CuteSakikoMod/images/charui/anon/character_icon_anon.png",
+                "res://CuteSakikoMod/images/charui/anon/character_icon_anon_outline.png",
+                "res://CuteSakikoMod/scenes/char/anon/anon_icon.tscn",
+                "res://CuteSakikoMod/scenes/ui/card_trail_anon.tscn",
+                "res://CuteSakikoMod/images/charui/saki/multiplayer_hand_point.png",
+                "res://CuteSakikoMod/images/charui/saki/multiplayer_hand_rock.png",
+                "res://CuteSakikoMod/images/charui/saki/multiplayer_hand_paper.png",
+                "res://CuteSakikoMod/images/charui/saki/multiplayer_hand_scissors.png"),
+            SharedPresets),
+
         CharacterSkinDefinition.FromPresets(
-            id: "tenday_anon",
-            displayNameKey: "ANON_SKIN_TENDAY",
-            assets: new SkinAssets(
-                VisualsPath:       "res://CuteSakikoMod/scenes/skin/anon/tenday/tendayanon.tscn",
-                EnergyCounterPath: "res://CuteSakikoMod/scenes/char/anon/anon_energy_counter.tscn",
-                MerchantPath:      "res://CuteSakikoMod/scenes/skin/anon/tenday/tendayanon_merchant.tscn",
-                RestSitePath:      "res://CuteSakikoMod/scenes/skin/anon/tenday/tendayanon_rest_site.tscn",
-                IconTexturePath:        "res://CuteSakikoMod/images/skin/anon/tenday/character_icon_anon.png",
-                IconOutlineTexturePath: "res://CuteSakikoMod/images/skin/anon/tenday/character_icon_anon_outline.png",
-                IconPath:               "res://CuteSakikoMod/scenes/skin/anon/tenday/tendayanon_icon.tscn",
-                TrailPath:              "res://CuteSakikoMod/scenes/ui/card_trail_anon.tscn",
-                ArmPointingPath: "res://CuteSakikoMod/images/skin/anon/tenday/multiplayer_hand_point.png",
-                ArmRockPath:     "res://CuteSakikoMod/images/skin/anon/tenday/multiplayer_hand_rock.png",
-                ArmPaperPath:    "res://CuteSakikoMod/images/skin/anon/tenday/multiplayer_hand_paper.png",
-                ArmScissorsPath: "res://CuteSakikoMod/images/skin/anon/tenday/multiplayer_hand_scissors.png"),
-            presets: SharedPresets),
+            "tenday_anon",
+            "ANON_SKIN_TENDAY",
+            new SkinAssets(
+                "res://CuteSakikoMod/scenes/skin/anon/tenday/tendayanon.tscn",
+                "res://CuteSakikoMod/scenes/char/anon/anon_energy_counter.tscn",
+                "res://CuteSakikoMod/scenes/skin/anon/tenday/tendayanon_merchant.tscn",
+                "res://CuteSakikoMod/scenes/skin/anon/tenday/tendayanon_rest_site.tscn",
+                "res://CuteSakikoMod/images/skin/anon/tenday/character_icon_anon.png",
+                "res://CuteSakikoMod/images/skin/anon/tenday/character_icon_anon_outline.png",
+                "res://CuteSakikoMod/scenes/skin/anon/tenday/tendayanon_icon.tscn",
+                "res://CuteSakikoMod/scenes/ui/card_trail_anon.tscn",
+                "res://CuteSakikoMod/images/skin/anon/tenday/multiplayer_hand_point.png",
+                "res://CuteSakikoMod/images/skin/anon/tenday/multiplayer_hand_rock.png",
+                "res://CuteSakikoMod/images/skin/anon/tenday/multiplayer_hand_paper.png",
+                "res://CuteSakikoMod/images/skin/anon/tenday/multiplayer_hand_scissors.png"),
+            SharedPresets)
     ];
 }

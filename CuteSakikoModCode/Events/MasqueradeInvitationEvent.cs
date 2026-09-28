@@ -24,7 +24,10 @@ public sealed class MasqueradeInvitationEvent : CuteSakikoEvent
 
     public override bool IsShared => false;
 
-    protected override bool IsAllowedInternal(IRunState runState) => true;
+    protected override bool IsAllowedInternal(IRunState runState)
+    {
+        return true;
+    }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
@@ -42,10 +45,11 @@ public sealed class MasqueradeInvitationEvent : CuteSakikoEvent
             new(this, Refuse, ModOptionKey("SECOND", "REFUSE"))
         };
 
-        if (HasOblivionisPlayer())
+        if (HasSakiPlayer())
         {
             _relicHoverTips ??= HoverTipFactory.FromRelic<MasqueradeRhapsody>().ToArray();
-            options.Add(new(this, BlindPerformance, ModOptionKey("SECOND", "BLIND_PERFORMANCE"), _relicHoverTips));
+            options.Add(new EventOption(this, BlindPerformance, ModOptionKey("SECOND", "BLIND_PERFORMANCE"),
+                _relicHoverTips));
         }
         else
         {
@@ -57,10 +61,10 @@ public sealed class MasqueradeInvitationEvent : CuteSakikoEvent
         return Task.CompletedTask;
     }
 
-    private bool HasOblivionisPlayer()
+    private bool HasSakiPlayer()
     {
         if (Owner?.RunState == null) return false;
-        return Owner.RunState.Players.Any(p =>  p.Character is CuteSaki);
+        return Owner.RunState.Players.Any(p => p.Character is CuteSaki);
     }
 
     private async Task Accept()
@@ -74,26 +78,22 @@ public sealed class MasqueradeInvitationEvent : CuteSakikoEvent
     {
         var lossAmount = Owner!.Creature.MaxHp * 0.05m;
         await CreatureCmd.Damage
-            (
-                new ThrowingPlayerChoiceContext(),
-                Owner!.Creature,
-                lossAmount,
-                ValueProp.Unblockable | ValueProp.Unpowered,
-                null,
-                null
-            );
-        
-        
+        (
+            new ThrowingPlayerChoiceContext(),
+            Owner!.Creature,
+            lossAmount,
+            ValueProp.Unblockable | ValueProp.Unpowered,
+            null,
+            null
+        );
+
 
         var selected = await CardSelectCmd.FromDeckForRemoval(
             Owner,
             new CardSelectorPrefs(CardSelectorPrefs.RemoveSelectionPrompt, 1)
         );
         var card = selected.FirstOrDefault();
-        if (card != null)
-        {
-            await CardPileCmd.RemoveFromDeck(card);
-        }
+        if (card != null) await CardPileCmd.RemoveFromDeck(card);
 
         SetEventFinished(PageDescription("REFUSE_SUCCESS"));
     }

@@ -4,7 +4,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.ValueProps;
-using System.Linq;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Uncommon;
 
@@ -32,7 +31,7 @@ public class FastStudy : CuteRanaCard
         var enemies = combatState.Enemies.Where(e => e.IsAlive).ToList();
         if (enemies.Count == 0) return;
 
-        int totalDamage = 0;
+        var totalDamage = 0;
 
         foreach (var enemy in enemies)
         {
@@ -41,18 +40,16 @@ public class FastStudy : CuteRanaCard
 
             AttackIntent firstAttack = null;
             foreach (var intent in move.Intents)
-            {
                 if (intent is AttackIntent attackIntent && attackIntent.DamageCalc != null)
                 {
                     firstAttack = attackIntent;
                     break; // 只取第一个攻击意图
                 }
-            }
 
             if (firstAttack != null)
             {
-                decimal rawDamage = firstAttack.DamageCalc();
-                int repeats = firstAttack.Repeats; // 总攻击次数
+                var rawDamage = firstAttack.DamageCalc();
+                var repeats = firstAttack.Repeats; // 总攻击次数
                 totalDamage += (int)(rawDamage * repeats);
             }
         }
@@ -61,7 +58,7 @@ public class FastStudy : CuteRanaCard
         {
             DynamicVars.Damage.BaseValue = totalDamage;
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-                .FromCard(this,cardPlay)
+                .FromCard(this, cardPlay)
                 .TargetingAllOpponents(combatState)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);

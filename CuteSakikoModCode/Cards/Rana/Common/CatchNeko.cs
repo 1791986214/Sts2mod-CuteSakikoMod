@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Basic;
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -11,27 +10,25 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Keywords;
-using STS2RitsuLib.Utils;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Common;
 
 public class CatchNeko : CuteRanaCard
 {
-    public CatchNeko() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy) { }
+    public CatchNeko() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+    {
+    }
 
     protected override HashSet<CardTag> CanonicalTags => new() { CardTag.Strike };
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars => new[]
     {
         new DamageVar(8m, ValueProp.Move)
     };
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -39,15 +36,15 @@ public class CatchNeko : CuteRanaCard
         // 造成伤害
         if (cardPlay.Target != null)
         {
-            int damage = (int)DynamicVars.Damage.BaseValue;
+            var damage = (int)DynamicVars.Damage.BaseValue;
             await DamageCmd.Attack(damage)
-                .FromCard(this,cardPlay)
+                .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target)
                 .Execute(choiceContext);
         }
 
         // 从所有牌堆中打出猫咪（升级前1只，升级后2只）
-        int catCount = IsUpgraded ? 2 : 1;
+        var catCount = IsUpgraded ? 2 : 1;
         await PlayCatsFromAllPiles(choiceContext, Owner, catCount);
     }
 
@@ -67,7 +64,7 @@ public class CatchNeko : CuteRanaCard
             if (pile == null) continue;
             var cards = pile.Cards.Where(c => c.Keywords.Contains(targetKeyword)).ToList();
             if (cards.Count == 0) continue;
-            int need = count - allNekoCards.Count;
+            var need = count - allNekoCards.Count;
             if (cards.Count <= need)
                 allNekoCards.AddRange(cards);
             else
@@ -97,7 +94,8 @@ public class CatchNeko : CuteRanaCard
         {
             TargetType.Self => player.Creature,
             TargetType.AnyEnemy => combatState.HittableEnemies.Any()
-                ? combatState.HittableEnemies.ElementAt(player.RunState.Rng.CombatTargets.NextInt(combatState.HittableEnemies.Count()))
+                ? combatState.HittableEnemies.ElementAt(
+                    player.RunState.Rng.CombatTargets.NextInt(combatState.HittableEnemies.Count()))
                 : null,
             TargetType.AllEnemies => null,
             _ => null

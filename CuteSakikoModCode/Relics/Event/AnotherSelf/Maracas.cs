@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using MegaCrit.Sts2.Core.Combat;
+﻿using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Rooms;
@@ -9,10 +8,10 @@ namespace CuteSakikoMod.CuteSakikoModCode.Relics.Event.AnotherSelf;
 
 public class Maracas : CuteSakikoEventRelic, IModRightClickableRelic
 {
-    public override RelicRarity Rarity => RelicRarity.Ancient;
+    private bool _pendingExtraTurn;
 
     private bool _usedThisCombat;
-    private bool _pendingExtraTurn;
+    public override RelicRarity Rarity => RelicRarity.Ancient;
 
     private bool UsedThisCombat
     {
@@ -34,20 +33,13 @@ public class Maracas : CuteSakikoEventRelic, IModRightClickableRelic
         }
     }
 
-    // 进入战斗 / 拾取时状态重置
-    public override Task AfterObtained()
-    {
-        Status = RelicStatus.Normal;
-        return Task.CompletedTask;
-    }
-
     // 本地预检：未使用过、未激活时才允许右键
     public bool CanHandleRightClickLocal(ModRightClickContext context)
     {
         return CombatManager.Instance.IsInProgress
-            && !UsedThisCombat
-            && !PendingExtraTurn
-            && Status != RelicStatus.Disabled;
+               && !UsedThisCombat
+               && !PendingExtraTurn
+               && Status != RelicStatus.Disabled;
     }
 
     public Task OnRightClick(ModRightClickExecutionContext context)
@@ -58,6 +50,13 @@ public class Maracas : CuteSakikoEventRelic, IModRightClickableRelic
         PendingExtraTurn = true;
         Status = RelicStatus.Active; // 已就绪，高亮
         Flash();
+        return Task.CompletedTask;
+    }
+
+    // 进入战斗 / 拾取时状态重置
+    public override Task AfterObtained()
+    {
+        Status = RelicStatus.Normal;
         return Task.CompletedTask;
     }
 

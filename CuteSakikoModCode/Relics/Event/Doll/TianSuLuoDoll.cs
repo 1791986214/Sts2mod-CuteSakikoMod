@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Threading.Tasks;
 using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -18,13 +17,13 @@ public class TianSuLuoDoll : CuteSakikoEventRelic, IModRightClickableRelic
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.Static(StaticHoverTip.Block);
-        }
+        get { yield return HoverTipFactory.Static(StaticHoverTip.Block); }
     }
 
-    public bool CanHandleRightClickLocal(ModRightClickContext context) => true;
+    public bool CanHandleRightClickLocal(ModRightClickContext context)
+    {
+        return true;
+    }
 
     public Task OnRightClick(ModRightClickExecutionContext context)
     {

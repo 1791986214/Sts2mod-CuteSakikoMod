@@ -11,16 +11,25 @@ public static class SkinResolver
 
     public static ulong LocalNetId { get; private set; }
 
-    public static void SetLocalNetId(ulong netId) => LocalNetId = netId;
+    public static void SetLocalNetId(ulong netId)
+    {
+        LocalNetId = netId;
+    }
 
     public static CharacterSkinChoice GetLocalChoice(Type characterType)
-        => _localCache.TryGetValue(characterType, out var c) ? c : new CharacterSkinChoice();
+    {
+        return _localCache.TryGetValue(characterType, out var c) ? c : new CharacterSkinChoice();
+    }
 
     public static CharacterSkinDefinition? GetLocalSkin(Type characterType)
-        => CharacterSkinRegistry.GetSkin(characterType, GetLocalChoice(characterType).ArtSkinIndex);
+    {
+        return CharacterSkinRegistry.GetSkin(characterType, GetLocalChoice(characterType).ArtSkinIndex);
+    }
 
     public static void SetLocalChoice(Type characterType, CharacterSkinChoice choice)
-        => _localCache[characterType] = choice;
+    {
+        _localCache[characterType] = choice;
+    }
 
     public static void ModifyLocalChoice(Type characterType, Action<CharacterSkinChoice> mutator)
     {
@@ -30,7 +39,9 @@ public static class SkinResolver
     }
 
     public static bool HasRemote(ulong netId, Type characterType)
-        => _remoteCache.TryGetValue(netId, out var m) && m.ContainsKey(characterType);
+    {
+        return _remoteCache.TryGetValue(netId, out var m) && m.ContainsKey(characterType);
+    }
 
     public static CharacterSkinDefinition? GetSkinForPlayer(ulong netId, Type characterType)
     {
@@ -51,11 +62,14 @@ public static class SkinResolver
         perChar[characterType] = choice;
     }
 
-    public static void ClearRemoteCache() => _remoteCache.Clear();
+    public static void ClearRemoteCache()
+    {
+        _remoteCache.Clear();
+    }
 
     /// <summary>
-    /// 跑局开始时遍历所有玩家。★ 强制覆盖本机缓存——因为客机 join 存档时不会走大厅，
-    /// 唯一的本机皮肤来源就是 run snapshot。
+    ///     跑局开始时遍历所有玩家。★ 强制覆盖本机缓存——因为客机 join 存档时不会走大厅，
+    ///     唯一的本机皮肤来源就是 run snapshot。
     /// </summary>
     public static void SyncFromRun(RunState run, ulong localNetId)
     {
@@ -70,13 +84,13 @@ public static class SkinResolver
             foreach (var registry in CharacterSkinRegistry.GetAll())
             {
                 var choice = SkinDataStore.GetRunChoice(player, registry.CharacterType);
-                bool isLocal = (netId == localNetId);
+                var isLocal = netId == localNetId;
 
                 GD.Print($"[SkinResolver]   player={netId} char={registry.CharacterType.Name} " +
                          $"art={choice.ArtSkinIndex} isLocal={isLocal}");
 
                 if (isLocal)
-                    _localCache[registry.CharacterType] = choice.Clone();  // ★ 强制覆盖
+                    _localCache[registry.CharacterType] = choice.Clone(); // ★ 强制覆盖
                 else
                     CacheRemote(netId, registry.CharacterType, choice);
             }
@@ -84,9 +98,9 @@ public static class SkinResolver
     }
 
     /// <summary>
-    /// 从大厅数据同步（用于角色选择界面）。
-    /// forceResetLocal = true：进入角色选择界面时调用，清空并重建本机缓存。
-    /// forceResetLocal = false：事件回调时调用，只更新远端缓存。
+    ///     从大厅数据同步（用于角色选择界面）。
+    ///     forceResetLocal = true：进入角色选择界面时调用，清空并重建本机缓存。
+    ///     forceResetLocal = false：事件回调时调用，只更新远端缓存。
     /// </summary>
     public static void SyncFromLobby(StartRunLobby lobby, bool forceResetLocal = false)
     {
@@ -125,8 +139,12 @@ public static class SkinResolver
     }
 
     public static Type? GetCurrentCharacterTypeFromLobby(StartRunLobby? lobby)
-        => lobby?.LocalPlayer.character?.GetType();
+    {
+        return lobby?.LocalPlayer.character?.GetType();
+    }
 
     public static IReadOnlyList<ICharacterSkinRegistry> GetAllRegistries()
-        => CharacterSkinRegistry.GetAll();
+    {
+        return CharacterSkinRegistry.GetAll();
+    }
 }

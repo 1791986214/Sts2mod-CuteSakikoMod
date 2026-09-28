@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using CuteSakikoMod.CuteSakikoModCode.Nodes;
+﻿using CuteSakikoMod.CuteSakikoModCode.Nodes;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Context;

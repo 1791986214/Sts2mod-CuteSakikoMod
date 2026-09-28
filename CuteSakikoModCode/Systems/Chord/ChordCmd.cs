@@ -15,7 +15,7 @@ public static class ChordCmd
         PlayerChoiceContext context,
         Player player,
         int count,
-        int multiplier = 0)  // 新增 multiplier 参数，默认为 0 表示基础值
+        int multiplier = 0) // 新增 multiplier 参数，默认为 0 表示基础值
     {
         var runManager = RunManager.Instance;
         var sync = runManager.PlayerChoiceSynchronizer;
@@ -79,11 +79,11 @@ public static class ChordCmd
         if (guitar?.Owner == null) return 0;
 
         var existing = guitar.GetTemporaryChords().ToList();
-        int currentCount = existing.Count;
+        var currentCount = existing.Count;
         if (currentCount >= targetCount) return 0;
 
-        int needed = targetCount - currentCount;
-        int added = 0;
+        var needed = targetCount - currentCount;
+        var added = 0;
         var rng = guitar.Owner.RunState.Rng.UpFront;
 
         // 1. 获取所有可学习和弦（全量池）
@@ -107,8 +107,8 @@ public static class ChordCmd
         {
             var chordId = rng.NextItem(available);
             guitar.AddTemporaryChord(chordId);
-            guitar.LearnChord(chordId);      // 永久学习
-            available.Remove(chordId);       // 防止重复
+            guitar.LearnChord(chordId); // 永久学习
+            available.Remove(chordId); // 防止重复
             // 注意：该和弦现在已加入 owned，但我们不更新 owned 集合，因为 fallback 会从已学集合取，不影响
             added++;
         }
@@ -136,11 +136,12 @@ public static class ChordCmd
         if (guitar?.Owner == null) return new List<string>();
 
         var pool = new List<string>();
-        foreach (ChordCategory cat in new[] { ChordCategory.Major, ChordCategory.Minor, ChordCategory.Dominant })
+        foreach (var cat in new[] { ChordCategory.Major, ChordCategory.Minor, ChordCategory.Dominant })
             pool.AddRange(ChordManager.GetLearnableChordIds(cat));
 
         var alreadyKnown = new HashSet<string>(guitar.GetLearnedChords());
-        var available = pool.Where(id => !alreadyKnown.Contains(id) && !ChordManager.AllChords[id].IsTemporaryOnly).ToList();
+        var available = pool.Where(id => !alreadyKnown.Contains(id) && !ChordManager.AllChords[id].IsTemporaryOnly)
+            .ToList();
 
         if (available.Count == 0) return new List<string>();
 

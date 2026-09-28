@@ -1,5 +1,5 @@
-﻿using MegaCrit.Sts2.Core.Models;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
+using MegaCrit.Sts2.Core.Models;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Character;
 

@@ -11,6 +11,7 @@ public class Regreted : ModCurseCard
     public Regreted() : base(0, CardType.Curse, CardRarity.Ancient, TargetType.Self)
     {
     }
+
     public override int MaxUpgradeLevel => 0;
 
     public override IEnumerable<CardKeyword> CanonicalKeywords
@@ -24,7 +25,7 @@ public class Regreted : ModCurseCard
 
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
-        get { yield return new DamageVar(2m,ValueProp.Unpowered | ValueProp.Move); }
+        get { yield return new DamageVar(2m, ValueProp.Unpowered | ValueProp.Move); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

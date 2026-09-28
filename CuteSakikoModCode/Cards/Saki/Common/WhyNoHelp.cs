@@ -4,7 +4,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 
-
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Common;
 
 public class WhyNoHelp : CuteSakikoModCard
@@ -24,11 +23,11 @@ public class WhyNoHelp : CuteSakikoModCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
+        ArgumentNullException.ThrowIfNull(cardPlay.Target);
 
         // 造成伤害
         var results = await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
@@ -38,15 +37,12 @@ public class WhyNoHelp : CuteSakikoModCard
             .SelectMany(r => r)
             .Any(r => r.WasTargetKilled);
 
-        if (killed)
-        {
-            await PlayerCmd.GainEnergy((decimal)DynamicVars.Energy.IntValue, Owner);
-        }
+        if (killed) await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue, Owner);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(10m); 
-        DynamicVars.Energy.UpgradeValueBy(1m); 
+        DynamicVars.Damage.UpgradeValueBy(10m);
+        DynamicVars.Energy.UpgradeValueBy(1m);
     }
 }

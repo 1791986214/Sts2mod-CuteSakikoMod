@@ -11,10 +11,11 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Uncommon;
 public class CurtainCall() : CuteAnonCard(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => new() { CardTag.Strike };
-    
+
     public override IEnumerable<CardKeyword> CanonicalKeywords
     {
-        get { 
+        get
+        {
             yield return CardKeyword.Exhaust;
             yield return CutesakiKeywords.Playguitar.GetModCardKeyword();
         }
@@ -32,7 +33,7 @@ public class CurtainCall() : CuteAnonCard(0, CardType.Attack, CardRarity.Uncommo
 
         var damage = DynamicVars.Damage.BaseValue;
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
@@ -40,6 +41,6 @@ public class CurtainCall() : CuteAnonCard(0, CardType.Attack, CardRarity.Uncommo
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m); 
+        DynamicVars.Damage.UpgradeValueBy(4m);
     }
 }

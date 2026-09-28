@@ -7,7 +7,11 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 
 public enum ChordCategory
 {
-    Major, Minor, Dominant, Bonus, Anon
+    Major,
+    Minor,
+    Dominant,
+    Bonus,
+    Anon
 }
 
 public class ChordDefinition
@@ -23,7 +27,7 @@ public class ChordDefinition
 
     // 新版委托：bonus 为加算数值
     public Func<PlayerChoiceContext, Creature, int, Task> Effect { get; set; }
-    
+
     public string GetConditionText()
     {
         var parts = new List<string>();
@@ -32,27 +36,29 @@ public class ChordDefinition
             string text;
 
             if (type == Entry.AnyNote)
-            {
                 text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_ANY").GetFormattedText();
-            }
-            else switch (type)
-            {
-                case CardType.Attack:
-                    text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_ATTACK").GetFormattedText();
-                    break;
-                case CardType.Skill:
-                    text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_SKILL").GetFormattedText();
-                    break;
-                case CardType.Power:
-                    text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_POWER").GetFormattedText();
-                    break;
-                default:
-                    text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_STATUS").GetFormattedText();
-                    break;
-            }
+            else
+                switch (type)
+                {
+                    case CardType.Attack:
+                        text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_ATTACK")
+                            .GetFormattedText();
+                        break;
+                    case CardType.Skill:
+                        text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_SKILL").GetFormattedText();
+                        break;
+                    case CardType.Power:
+                        text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_POWER").GetFormattedText();
+                        break;
+                    default:
+                        text = new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_CONDITION_STATUS")
+                            .GetFormattedText();
+                        break;
+                }
 
             parts.Add($"{text}");
         }
+
         return string.Join(" ", parts);
     }
 }

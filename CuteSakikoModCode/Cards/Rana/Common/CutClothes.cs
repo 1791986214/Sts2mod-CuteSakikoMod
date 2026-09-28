@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -23,7 +21,7 @@ public class CutClothes : CuteRanaCard
             yield return new CalculationBaseVar(0m);
             yield return new ExtraDamageVar(1m);
             yield return new CalculatedDamageVar(ValueProp.Move)
-                .WithMultiplier((card, _) => (decimal)card.Owner.Creature.Block);
+                .WithMultiplier((card, _) => card.Owner.Creature.Block);
         }
     }
 
@@ -32,16 +30,14 @@ public class CutClothes : CuteRanaCard
         if (cardPlay.Target == null) return;
 
         // 1. 记录减半/清除前的格挡值（用于后续伤害）
-        int preBlockDamage = Owner.Creature.Block;
+        var preBlockDamage = Owner.Creature.Block;
 
         if (IsUpgraded)
         {
             // 升级后：清除所有敌人的全部格挡
             foreach (var enemy in CombatState.Enemies.Where(e => e.IsAlive))
-            {
                 if (enemy.Block > 0)
                     await CreatureCmd.LoseBlock(choiceContext, enemy, enemy.Block, enemy);
-            }
         }
         else
         {
@@ -53,7 +49,7 @@ public class CutClothes : CuteRanaCard
 
             foreach (var creature in targetsToLoseBlock)
             {
-                int loseAmount = creature.Block / 2;
+                var loseAmount = creature.Block / 2;
                 if (loseAmount > 0)
                     await CreatureCmd.LoseBlock(choiceContext, creature, loseAmount, creature);
             }
@@ -61,13 +57,11 @@ public class CutClothes : CuteRanaCard
 
         // 2. 用减半/清除前的格挡值造成伤害（伤害数字在减格挡之后出现）
         if (preBlockDamage > 0)
-        {
             await DamageCmd.Attack(preBlockDamage)
                 .FromCard(this, cardPlay)
                 .Targeting(cardPlay.Target)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);
-        }
     }
 
     protected override void OnUpgrade()

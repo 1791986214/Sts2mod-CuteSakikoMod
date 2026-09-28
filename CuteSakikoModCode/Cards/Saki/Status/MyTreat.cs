@@ -36,6 +36,6 @@ public class MyTreat() : ModStatusCard(0, CardType.Status, CardRarity.Status, Ta
 
     protected override void OnUpgrade()
     {
-      DynamicVars.Gold.UpgradeValueBy(-2);
+        DynamicVars.Gold.UpgradeValueBy(-2);
     }
 }

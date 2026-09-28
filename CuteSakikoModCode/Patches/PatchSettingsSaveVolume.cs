@@ -1,13 +1,13 @@
-﻿using HarmonyLib;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems;
+using HarmonyLib;
 using MegaCrit.Sts2.Core.Saves;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Patches;
 
 [HarmonyPatch(typeof(SettingsSave), "set_VolumeMaster")]
 public static class PatchSettingsSaveVolumeMaster
 {
-    static void Postfix()
+    private static void Postfix()
     {
         AudioManager.RefreshMusicVolume();
     }
@@ -16,7 +16,7 @@ public static class PatchSettingsSaveVolumeMaster
 [HarmonyPatch(typeof(SettingsSave), "set_VolumeBgm")]
 public static class PatchSettingsSaveVolumeBgm
 {
-    static void Postfix()
+    private static void Postfix()
     {
         AudioManager.RefreshMusicVolume();
     }

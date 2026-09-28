@@ -14,7 +14,7 @@ public class Parry() : CuteSakikoModCard(1, CardType.Power, CardRarity.Uncommon,
     [
         new PowerVar<SakiParryPower>(6m)
     ];
-    
+
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get

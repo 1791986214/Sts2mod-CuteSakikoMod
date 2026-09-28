@@ -28,7 +28,7 @@ public class LiveCraving : CuteRanaCard
     {
         if (cardPlay.Target == null) return;
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
@@ -36,6 +36,6 @@ public class LiveCraving : CuteRanaCard
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(3m); 
+        DynamicVars.Damage.UpgradeValueBy(3m);
     }
 }

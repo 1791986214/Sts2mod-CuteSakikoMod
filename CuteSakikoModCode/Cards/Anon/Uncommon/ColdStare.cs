@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -17,7 +16,7 @@ public class ColdStare() : CuteAnonCard(1, CardType.Attack, CardRarity.Uncommon,
             yield return new RepeatVar(1);
         }
     }
-    
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
@@ -25,14 +24,14 @@ public class ColdStare() : CuteAnonCard(1, CardType.Attack, CardRarity.Uncommon,
 
         var damage = DynamicVars.Damage.BaseValue;
         var hits = DynamicVars.Repeat.IntValue;
-        
+
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .WithHitCount(hits)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
-        
+
         DynamicVars.Repeat.UpgradeValueBy(1);
     }
 

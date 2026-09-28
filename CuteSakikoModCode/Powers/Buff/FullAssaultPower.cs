@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Systems;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -17,14 +16,10 @@ public class FullAssaultPower : CuteSakikoModPower, IChordSequenceModifierProvid
     public IEnumerable<ChordSequenceModifier> GetModifiers(Creature owner, ChordDefinition chordDef)
     {
         if (_upgraded)
-        {
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
                 yield return new ReplaceNoteModifier(i, CardType.Attack);
-        }
         else
-        {
             yield return new ReplaceNoteModifier(0, CardType.Attack);
-        }
     }
 
     public IEnumerable<ChordCategory>? AffectedCategories => null; // 影响所有类别

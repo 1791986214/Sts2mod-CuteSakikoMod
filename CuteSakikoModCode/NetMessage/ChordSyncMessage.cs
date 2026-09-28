@@ -6,10 +6,10 @@ namespace CuteSakikoMod.CuteSakikoModCode.NetMessage;
 
 public class ChordSyncMessage : INetMessage
 {
-    public ulong PlayerNetId;
-    public string ChordsData;
     public string BonusChordsData;
+    public string ChordsData;
     public string LearnedChordsData;
+    public ulong PlayerNetId;
 
     public bool ShouldBroadcast => true; // 关键：允许广播
     public NetTransferMode Mode => NetTransferMode.Reliable;

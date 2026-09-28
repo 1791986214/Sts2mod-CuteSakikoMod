@@ -18,28 +18,22 @@ public class NekoPet : CuteRanaCard
 
     public override IEnumerable<CardKeyword> CanonicalKeywords
     {
-        get
-        {
-            yield return CardKeyword.Exhaust;
-        }
+        get { yield return CardKeyword.Exhaust; }
     }
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Neko.GetModCardKeyword()); }
     }
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars => new[]
     {
-        new DynamicVar("Neko",1)
+        new DynamicVar("Neko", 1)
     };
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int addCount = DynamicVars["Neko"].IntValue;
+        var addCount = DynamicVars["Neko"].IntValue;
         if (addCount <= 0) return;
 
         // 获取所有 Neko 卡模板
@@ -52,17 +46,17 @@ public class NekoPet : CuteRanaCard
         var combatState = Owner.Creature.CombatState!;
         var rng = Owner.RunState.Rng.CombatCardGeneration;
 
-        for (int i = 0; i < addCount; i++)
+        for (var i = 0; i < addCount; i++)
         {
             var template = rng.NextItem(allNekoCards);
             if (template != null)
             {
                 var newCard = combatState.CreateCard(template, Owner);
                 newCard.EnergyCost.SetThisCombat(0, true); // 本场战斗免费
-                await CardPileCmd.AddGeneratedCardToCombat(newCard, PileType.Draw, Owner,CardPilePosition.Random);
+                await CardPileCmd.AddGeneratedCardToCombat(newCard, PileType.Draw, Owner, CardPilePosition.Random);
             }
         }
-        
+
         // 收集所有牌堆中的猫咪
         var allPiles = new[]
         {
@@ -88,12 +82,8 @@ public class NekoPet : CuteRanaCard
 
         // 升级所有猫咪
         foreach (var card in nekocards)
-        {
             if (card.IsUpgradable)
-            {
                 CardCmd.Upgrade(card);
-            }
-        }
 
         // 等待一帧让升级动画/UI更新（可选）
         await Task.CompletedTask;

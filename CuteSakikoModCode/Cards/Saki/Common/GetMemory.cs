@@ -1,12 +1,9 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.CardPiles;
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Extensions;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -18,7 +15,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Common;
 public class GetMemory() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     public override bool GainsBlock => true;
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new BlockVar(7m, ValueProp.Move)
@@ -38,11 +35,10 @@ public class GetMemory() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Commo
     {
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
 
-        await MemoryCmd.Recall(choiceContext, Owner, allowChoose: false, count: 1, upgraded: IsUpgraded, source: this);
+        await MemoryCmd.Recall(choiceContext, Owner, false, 1, upgraded: IsUpgraded, source: this);
     }
 
     protected override void OnUpgrade()
     {
-
     }
 }

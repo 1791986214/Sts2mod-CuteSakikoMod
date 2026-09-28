@@ -1,5 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -27,17 +26,17 @@ public class KeepCenter() : CuteAnonCard(3, CardType.Attack, CardRarity.Uncommon
 
         var damage = DynamicVars.Damage.BaseValue;
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
         var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
         ChordNoteSystem.Activate(Owner);
-            var noteCount = (int)DynamicVars["Notes"].BaseValue;
-            for (var i = 0; i < noteCount; i++)
-                await ChordNoteSystem.AddNoteAsync(Owner, CardType.Attack, choiceContext);
-       
+        var noteCount = (int)DynamicVars["Notes"].BaseValue;
+        for (var i = 0; i < noteCount; i++)
+            await ChordNoteSystem.AddNoteAsync(Owner, CardType.Attack, choiceContext);
+
         ChordNoteUIManager.UpdateNoteDisplay(Owner);
         ChordNoteUIManager.UpdateStoredChordDisplay(Owner);
     }

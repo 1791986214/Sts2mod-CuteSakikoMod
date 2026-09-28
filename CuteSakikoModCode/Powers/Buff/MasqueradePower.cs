@@ -12,18 +12,20 @@ namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 
 public sealed class MasqueradePower : CuteSakikoModPower
 {
-    private readonly List<(Creature creature, PowerModel power, int amount)> _removedPowers = new();
-
     // 使用 ICombatState 作为键类型，兼容 Owner.CombatState 的接口返回类型
     private static readonly AttachedState<ICombatState, bool> _isActive = new(() => false);
-
-    public static bool IsActiveFor(ICombatState? combat) => combat != null && _isActive[combat];
+    private readonly List<(Creature creature, PowerModel power, int amount)> _removedPowers = new();
 
     public static bool IsActive =>
         CombatManager.Instance.DebugOnlyGetState() is { } cs && IsActiveFor(cs);
 
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Single;
+
+    public static bool IsActiveFor(ICombatState? combat)
+    {
+        return combat != null && _isActive[combat];
+    }
 
     // ========== 死亡阻止逻辑 ==========
     public override bool ShouldDie(Creature creature)
@@ -40,7 +42,10 @@ public sealed class MasqueradePower : CuteSakikoModPower
         return base.ShouldDieLate(creature);
     }
 
-    public override bool ShouldStopCombatFromEnding() => true;
+    public override bool ShouldStopCombatFromEnding()
+    {
+        return true;
+    }
 
     public override async Task AfterPreventingDeath(Creature creature)
     {
@@ -64,7 +69,7 @@ public sealed class MasqueradePower : CuteSakikoModPower
     }
 
     /// <summary>
-    /// 移除场上所有其他能力（保留 MasqueradePower 和 SandpitPower）。
+    ///     移除场上所有其他能力（保留 MasqueradePower 和 SandpitPower）。
     /// </summary>
     public Task RemoveAllPowers(PlayerChoiceContext choiceContext)
     {
@@ -98,7 +103,7 @@ public sealed class MasqueradePower : CuteSakikoModPower
     {
         _removedPowers.Sort(static (a, b) =>
         {
-            int c = string.CompareOrdinal(GetCreatureKey(a.creature), GetCreatureKey(b.creature));
+            var c = string.CompareOrdinal(GetCreatureKey(a.creature), GetCreatureKey(b.creature));
             if (c != 0) return c;
             return string.CompareOrdinal(a.power.Id.Entry, b.power.Id.Entry);
         });
@@ -130,7 +135,7 @@ public sealed class MasqueradePower : CuteSakikoModPower
                 amount,
                 Owner,
                 null,
-                silent: true
+                true
             );
         }
 

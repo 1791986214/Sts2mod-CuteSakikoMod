@@ -1,6 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Pools.Anon;
-using CuteSakikoMod.CuteSakikoModCode.Pools.Rana;
 using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using STS2RitsuLib.Interop.AutoRegistration;

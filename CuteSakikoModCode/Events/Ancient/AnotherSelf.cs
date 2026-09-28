@@ -9,7 +9,7 @@ using STS2RitsuLib.Utils;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Events.Ancient;
 
-[RegisterActAncient(typeof(Hive))] 
+[RegisterActAncient(typeof(Hive))]
 public class AnotherSelf : CuteSakikoAncientEvent
 {
     public override Color ButtonColor => new(0f, 0.09f, 0.2f, 0.75f);
@@ -35,12 +35,12 @@ public class AnotherSelf : CuteSakikoAncientEvent
     private IReadOnlyList<EventOption> Pool2 => new[]
     {
         CreateModRelicOption<AutoDrinkMachine>(),
-        CreateModRelicOption<Maracas>(),
+        CreateModRelicOption<Maracas>()
     };
 
     private WeightedList<EventOption> Pool3 => new()
     {
-        CreateModRelicOption<SandCastle>(),
+        CreateModRelicOption<SandCastle>()
     };
 
     // 所有可能的选项（用于调试/历史）

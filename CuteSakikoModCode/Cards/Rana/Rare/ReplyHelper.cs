@@ -39,6 +39,7 @@ public class ReplyHelper() : CuteRanaCard(1, CardType.Skill, CardRarity.Rare, Ta
             newCard.UpgradeInternal();
             newCard.FinalizeUpgradeInternal();
         }
+
         await CardPileCmd.AddGeneratedCardToCombat(newCard, PileType.Hand, targetPlayer);
     }
 

@@ -1,4 +1,7 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Singletons;
+﻿using System.Collections;
+using System.Reflection;
+using CuteSakikoMod.CuteSakikoModCode.Cards.Mod.Event;
+using CuteSakikoMod.CuteSakikoModCode.Singletons;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -7,10 +10,8 @@ using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using STS2RitsuLib.Combat.Ui.ExtraCornerAmountLabels;
-using System.Reflection;
-using CuteSakikoMod.CuteSakikoModCode.Cards.Mod.Event;
 using MegaCrit.Sts2.Core.Runs;
+using STS2RitsuLib.Combat.Ui.ExtraCornerAmountLabels;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 
@@ -130,12 +131,17 @@ public sealed class LastRetrogradePower : CuteSakikoModPower,
 
         while (true)
         {
-            var pending = field.GetValue(sync) as System.Collections.IEnumerable;
+            var pending = field.GetValue(sync) as IEnumerable;
             if (pending == null) break;
 
             // 如果集合中没有元素，则退出循环
             var hasAny = false;
-            foreach (var _ in pending) { hasAny = true; break; }
+            foreach (var _ in pending)
+            {
+                hasAny = true;
+                break;
+            }
+
             if (!hasAny) break;
 
             await Cmd.Wait(0.1f);

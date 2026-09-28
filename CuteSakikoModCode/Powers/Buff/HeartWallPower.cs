@@ -1,22 +1,19 @@
 ﻿using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MegaCrit.Sts2.Core.Entities.Cards;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 
 public sealed class HeartWallPower : CuteSakikoModPower
 {
-    private readonly HashSet<ModelId> _immuneCardIds = new();
     private readonly HashSet<ModelId> _damagingCardsThisPlay = new();
-    
+    private readonly HashSet<ModelId> _immuneCardIds = new();
+
 
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Single;
@@ -39,10 +36,10 @@ public sealed class HeartWallPower : CuteSakikoModPower
             cardTitles = "- 无";
         ((StringVar)DynamicVars["ImmuneCards"]).StringValue = cardTitles;
     }
-    
+
     // 伤害结算时检查是否免疫
-    public override Decimal ModifyHpLostAfterOsty(
-        Creature target, Decimal amount, ValueProp props,
+    public override decimal ModifyHpLostAfterOsty(
+        Creature target, decimal amount, ValueProp props,
         Creature? dealer, CardModel? cardSource)
     {
         if (target != Owner || amount <= 0) return amount;
@@ -74,6 +71,7 @@ public sealed class HeartWallPower : CuteSakikoModPower
             _immuneCardIds.Add(card.Id);
             UpdateImmuneCardsDisplay();
         }
+
         _damagingCardsThisPlay.Remove(card.Id); // 清理当前卡牌标记
     }
 

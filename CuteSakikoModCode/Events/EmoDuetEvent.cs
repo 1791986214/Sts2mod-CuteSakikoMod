@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Character.Mujica;
+﻿using CuteSakikoMod.CuteSakikoModCode.Character.Mujica;
 using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 using MegaCrit.Sts2.Core.CardSelection;
@@ -29,7 +28,10 @@ public sealed class EmoDuetEvent : CuteSakikoEvent
 
     public override bool IsShared => false;
 
-    protected override bool IsAllowedInternal(IRunState runState) => true;
+    protected override bool IsAllowedInternal(IRunState runState)
+    {
+        return true;
+    }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
@@ -50,25 +52,21 @@ public sealed class EmoDuetEvent : CuteSakikoEvent
             new(this, SlipAway, ModOptionKey("SECOND", "SLIP_AWAY"))
         };
 
-        if (HasSakiOrObAndAnon())
-        {
-            options.Add(new(this, AskWhatIsEmo, ModOptionKey("SECOND", "ASK_WHAT_IS_EMO"), _relicTips));
-        }
+        if (HasSakiAndAnon())
+            options.Add(new EventOption(this, AskWhatIsEmo, ModOptionKey("SECOND", "ASK_WHAT_IS_EMO"), _relicTips));
         else
-        {
             options.Add(new EventOption(this, null, ModOptionKey("SECOND", "ASK_WHAT_IS_EMO_LOCKED")));
-        }
 
         SetEventState(PageDescription("SECOND"), options);
         return Task.CompletedTask;
     }
 
-    private bool HasSakiOrObAndAnon()
+    private bool HasSakiAndAnon()
     {
         if (Owner?.RunState == null) return false;
-        var hasSakiOrOb = Owner.RunState.Players.Any(p => p.Character is CuteSaki);
+        var hasSaki = Owner.RunState.Players.Any(p => p.Character is CuteSaki);
         var hasAnon = Owner.RunState.Players.Any(p => p.Character is CuteAnon);
-        return hasSakiOrOb && hasAnon;
+        return hasSaki && hasAnon;
     }
 
     // 选项1：听完整场争论 → 附魔“华彩”（Glam）
@@ -80,7 +78,10 @@ public sealed class EmoDuetEvent : CuteSakikoEvent
             RequireManualConfirmation = false
         };
 
-        bool Filter(CardModel card) => card.Enchantment == null;
+        bool Filter(CardModel card)
+        {
+            return card.Enchantment == null;
+        }
 
         var selected = await CardSelectCmd.FromDeckForEnchantment(
             Owner!, canonicalEnchantment, 1, Filter, prefs);
@@ -111,10 +112,7 @@ public sealed class EmoDuetEvent : CuteSakikoEvent
             new CardSelectorPrefs(CardSelectorPrefs.RemoveSelectionPrompt, 1)
         );
         var card = selected.FirstOrDefault();
-        if (card != null)
-        {
-            await CardPileCmd.RemoveFromDeck(card);
-        }
+        if (card != null) await CardPileCmd.RemoveFromDeck(card);
 
         SetEventFinished(PageDescription("SLIP_AWAY_DESC"));
     }
@@ -126,5 +124,8 @@ public sealed class EmoDuetEvent : CuteSakikoEvent
         SetEventFinished(PageDescription("ASK_WHAT_IS_EMO_DESC"));
     }
 
-    private LocString PageDescription(string pageKey) => L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    private LocString PageDescription(string pageKey)
+    {
+        return L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    }
 }

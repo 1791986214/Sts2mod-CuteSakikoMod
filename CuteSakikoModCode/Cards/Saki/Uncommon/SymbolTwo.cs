@@ -11,7 +11,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Uncommon;
 
 public class SymbolTwo() : CuteSakikoModCard(3, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
-    
     // 动态变量：伤害值（基础1，升级2）
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
@@ -60,7 +59,7 @@ public class SymbolTwo() : CuteSakikoModCard(3, CardType.Attack, CardRarity.Unco
 
         // 对同一目标造成 layers 次 damage 伤害
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitCount(layers)
             .WithHitFx("vfx/vfx_attack_slash")

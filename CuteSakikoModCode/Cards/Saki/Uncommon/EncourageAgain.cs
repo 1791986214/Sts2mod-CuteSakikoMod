@@ -1,8 +1,6 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Others;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -49,7 +47,7 @@ public class EncourageAgain() : CuteSakikoModCard(1, CardType.Attack, CardRarity
     {
         // 1. 造成伤害
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
@@ -66,7 +64,7 @@ public class EncourageAgain() : CuteSakikoModCard(1, CardType.Attack, CardRarity
         await PowerCmd.ModifyAmount(choiceContext, targetPressure, -requiredPressure, Owner.Creature, this);
 
         // 4. 从记忆牌堆选择1张牌（允许选择，升级跟随本牌）
-        await MemoryCmd.Recall(choiceContext, Owner, allowChoose: true, count: 1, upgraded: IsUpgraded, source: this);
+        await MemoryCmd.Recall(choiceContext, Owner, true, 1, upgraded: IsUpgraded, source: this);
     }
 
     protected override void OnUpgrade()

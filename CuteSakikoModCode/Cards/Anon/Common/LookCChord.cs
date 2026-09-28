@@ -41,7 +41,7 @@ public class LookCchord() : CuteAnonCard(1, CardType.Skill, CardRarity.Common, T
 
         var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
         if (guitar == null) return;
-        
+
         const string chordId = "AnonCChord";
         // 若临时槽中还未拥有该和弦，则添加临时槽位；否则直接储存一个和弦
         var temporaryChords = guitar.GetTemporaryChords(); // 需公开此方法，见下方说明
@@ -49,7 +49,7 @@ public class LookCchord() : CuteAnonCard(1, CardType.Skill, CardRarity.Common, T
             await ChordNoteSystem.AddStoredChordAsync(Owner, chordId, 1, choiceContext);
         else
             guitar.AddTemporaryChord(chordId);
-        
+
         // 播放特定和弦音效
         var sfxPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "audio",
             "look_cchord.mp3");

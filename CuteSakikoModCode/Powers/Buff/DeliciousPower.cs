@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -19,7 +18,7 @@ public sealed class DeliciousPower : CuteSakikoModPower
     {
         if (creature != Owner) return;
 
-        int healAmount = Amount;
+        var healAmount = Amount;
         if (healAmount <= 0) return;
 
         var combatState = Owner.CombatState;

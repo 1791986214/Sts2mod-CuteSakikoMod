@@ -13,12 +13,9 @@ public class CalmnessLady() : CuteSakikoModCard(1, CardType.Power, CardRarity.Ra
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromPower<CalmnessLadyPower>();
-        }
+        get { yield return HoverTipFactory.FromPower<CalmnessLadyPower>(); }
     }
-    
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var layers = IsUpgraded ? 2 : 1;

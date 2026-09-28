@@ -1,6 +1,5 @@
-﻿using MegaCrit.Sts2.Core.Models;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Systems;
@@ -8,12 +7,12 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems;
 public static class MonsterMoveHelper
 {
     /// <summary>
-    /// 原始方法保持不变（可能用于其他场景）。
+    ///     原始方法保持不变（可能用于其他场景）。
     /// </summary>
     public static string? GetEffectiveFollowUpId(MonsterModel monster)
     {
         var move = monster.NextMove;
-        for (int i = 0; i < 5 && move != null; i++)
+        for (var i = 0; i < 5 && move != null; i++)
         {
             if (move.Id != "STUNNED")
                 return move.Id;
@@ -21,26 +20,25 @@ public static class MonsterMoveHelper
                 return move.FollowUpStateId;
             break;
         }
+
         return null;
     }
 
     /// <summary>
-    /// 安全获取一个在状态机中已注册的有效后续状态 ID。
-    /// 优先使用原始方法的结果，但如果该 ID 未注册或指向自定义状态，则从状态机中选取一个默认状态。
+    ///     安全获取一个在状态机中已注册的有效后续状态 ID。
+    ///     优先使用原始方法的结果，但如果该 ID 未注册或指向自定义状态，则从状态机中选取一个默认状态。
     /// </summary>
     public static string? GetSafeFollowUpId(MonsterModel monster)
     {
         // 尝试原始方法
-        string? rawId = GetEffectiveFollowUpId(monster);
+        var rawId = GetEffectiveFollowUpId(monster);
 
         // 获取状态机（通过反射或假定属性）
         var machine = GetMoveStateMachine(monster);
         if (machine != null && rawId != null)
-        {
             // 如果原始 ID 已在状态机中注册且不是自定义 ID，则直接使用
             if (machine.States.ContainsKey(rawId) && rawId != "HA_ATTACK")
                 return rawId;
-        }
 
         // 否则从状态机中选取一个安全状态（排除 STUNNED 和 HA_ATTACK）
         if (machine != null)
@@ -49,10 +47,8 @@ public static class MonsterMoveHelper
             // 首选状态列表（可根据怪物类型调整）
             string[] preferred = { "HEAVY_ATTACK_1", "PERFORM", "MONOLOGUE", "HEAVY_ATTACK_2" };
             foreach (var pref in preferred)
-            {
                 if (states.Contains(pref))
                     return pref;
-            }
             // 返回第一个非 STUNNED 且非 HA_ATTACK 的状态
             return states.FirstOrDefault(id => id != "STUNNED" && id != "HA_ATTACK");
         }

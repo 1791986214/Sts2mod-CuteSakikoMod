@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Systems;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using Godot;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Nodes.HoverTips;
@@ -16,12 +15,12 @@ public partial class ChordDragSource : Control
         _chordId = chordId;
         _screen = screen;
         CustomMinimumSize = new Vector2(80, 80);
-        MouseFilter = Control.MouseFilterEnum.Pass;
+        MouseFilter = MouseFilterEnum.Pass;
 
         SetDragForwarding(
             Callable.From((Vector2 atPosition) => OnGetDragData(atPosition)),
-            default(Callable),
-            default(Callable)
+            default,
+            default
         );
 
         var texture = ChordDisplayHelper.GetChordTexture(chordId);
@@ -32,7 +31,7 @@ public partial class ChordDragSource : Control
                 Texture = texture,
                 ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
                 StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered,
-                MouseFilter = Control.MouseFilterEnum.Ignore
+                MouseFilter = MouseFilterEnum.Ignore
             };
             img.SetAnchorsPreset(LayoutPreset.FullRect);
             AddChild(img);

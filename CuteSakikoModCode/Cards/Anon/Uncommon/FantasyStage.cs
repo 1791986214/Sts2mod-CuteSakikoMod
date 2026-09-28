@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -21,7 +20,7 @@ public class FantasyStage() : CuteAnonCard(2, CardType.Attack, CardRarity.Uncomm
 
         // 演奏所有储存的和弦
         ChordNoteSystem.Activate(Owner);
-        await ChordNoteSystem.PlayAllStoredChordsAsync(Owner, choiceContext,2);
+        await ChordNoteSystem.PlayAllStoredChordsAsync(Owner, choiceContext, 2);
 
         // 对所有敌人造成伤害
         var enemies = Owner.Creature.CombatState?.Enemies;
@@ -29,7 +28,7 @@ public class FantasyStage() : CuteAnonCard(2, CardType.Attack, CardRarity.Uncomm
         {
             var damage = DynamicVars.Damage.BaseValue;
             await DamageCmd.Attack(damage)
-                .FromCard(this,cardPlay)
+                .FromCard(this, cardPlay)
                 .TargetingAllOpponents(CombatState)
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);
@@ -38,6 +37,6 @@ public class FantasyStage() : CuteAnonCard(2, CardType.Attack, CardRarity.Uncomm
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(4m); 
+        DynamicVars.Damage.UpgradeValueBy(4m);
     }
 }

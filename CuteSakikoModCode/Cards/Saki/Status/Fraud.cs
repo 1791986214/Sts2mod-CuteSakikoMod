@@ -11,7 +11,7 @@ public class Fraud() : ModStatusCard(1, CardType.Status, CardRarity.Status, Targ
 {
     // 不能被打出，虚无
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
-    
+
     // 动态变量：能量损失值（固定1）
     protected override IEnumerable<DynamicVar> CanonicalVars => [new EnergyVar(1)];
 
@@ -22,7 +22,7 @@ public class Fraud() : ModStatusCard(1, CardType.Status, CardRarity.Status, Targ
         await Cmd.Wait(0.25f);
         await PlayerCmd.LoseEnergy(DynamicVars.Energy.IntValue, Owner);
     }
-    
+
     protected override void OnUpgrade()
     {
         EnergyCost.UpgradeBy(-1);

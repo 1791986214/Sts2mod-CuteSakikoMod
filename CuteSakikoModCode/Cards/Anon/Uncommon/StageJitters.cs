@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Systems;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -38,7 +37,7 @@ public class StageJitters() : CuteAnonCard(0, CardType.Attack, CardRarity.Uncomm
 
         // 使用计算后的伤害值（会自动应用染色和实时计算）
         await DamageCmd.Attack(DynamicVars.CalculatedDamage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);

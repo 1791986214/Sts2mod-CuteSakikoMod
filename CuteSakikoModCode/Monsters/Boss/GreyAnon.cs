@@ -4,8 +4,8 @@ using Godot;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Ascension;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization;
@@ -15,11 +15,11 @@ using MegaCrit.Sts2.Core.MonsterMoves.Intents;
 using MegaCrit.Sts2.Core.MonsterMoves.MonsterMoveStateMachine;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using MegaCrit.Sts2.Core.Rooms;
 using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 using STS2RitsuLib.Scaffolding.Godot;
-using MegaCrit.Sts2.Core.Rooms;
 using Timer = Godot.Timer;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Monsters.Boss;
@@ -27,12 +27,12 @@ namespace CuteSakikoMod.CuteSakikoModCode.Monsters.Boss;
 [RegisterMonster]
 public class GreyAnon : ModMonsterTemplate
 {
-    private bool _isPhaseTwo;
-    private MoveState _performState;
     private Timer? _greyTextTimer;
-    private int _monologueIndex = 0;
+    private bool _isPhaseTwo;
+    private Vector2 _lastGreyTextPosition = new(-1000, -1000); // 记录上一次位置，避免重叠
+    private int _monologueIndex;
     private List<string> _monologueKeys = new();
-    private Vector2 _lastGreyTextPosition = new Vector2(-1000, -1000); // 记录上一次位置，避免重叠
+    private MoveState _performState;
 
     public override int MinInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 950, 850);
     public override int MaxInitialHp => AscensionHelper.GetValueIfAscension(AscensionLevel.ToughEnemies, 1030, 930);
@@ -112,7 +112,7 @@ public class GreyAnon : ModMonsterTemplate
 
         _greyTextTimer = new Timer
         {
-            WaitTime = 4.0f,          // 4 秒间隔
+            WaitTime = 4.0f, // 4 秒间隔
             OneShot = false,
             Autostart = true
         };
@@ -131,6 +131,7 @@ public class GreyAnon : ModMonsterTemplate
                 _greyTextTimer.Timeout -= SpawnMonologueSequentially;
                 _greyTextTimer.QueueFree();
             }
+
             _greyTextTimer = null;
         }
     }
@@ -150,7 +151,7 @@ public class GreyAnon : ModMonsterTemplate
         var locString = LocManager.Instance.GetTable("monsters").GetLocString(key);
         if (locString != null && !locString.IsEmpty)
         {
-            string text = locString.GetFormattedText();
+            var text = locString.GetFormattedText();
             GreyTextManager.Spawn(text, GetRandomGreyTextPosition());
         }
 
@@ -162,12 +163,12 @@ public class GreyAnon : ModMonsterTemplate
     {
         const float minDistance = 300f;
         Vector2 newPos;
-        int attempts = 0;
+        var attempts = 0;
         do
         {
             newPos = new Vector2(
-                (float)GD.RandRange(450, 1280),
-                (float)GD.RandRange(300, 750)
+                GD.RandRange(450, 1280),
+                GD.RandRange(300, 750)
             );
             attempts++;
         } while (attempts < 20 && _lastGreyTextPosition.DistanceTo(newPos) < minDistance);
@@ -176,7 +177,8 @@ public class GreyAnon : ModMonsterTemplate
         return newPos;
     }
 
-    public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
+    public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature,
+        bool wasRemovalPrevented, float deathAnimLength)
     {
         StopGreyTextTimer();
         await base.AfterDeath(choiceContext, creature, wasRemovalPrevented, deathAnimLength);
@@ -266,8 +268,10 @@ public class GreyAnon : ModMonsterTemplate
                         var combatCard = combatState.CreateCard(canonical, player);
                         drawPile.AddInternal(combatCard);
                     }
+
                     drawPile.RandomizeOrderInternal(player, rng, combatState);
                 }
+
                 await CreatureCmd.TriggerAnim(player.Creature, "idle_loop", 0f);
             }
         }
@@ -317,8 +321,10 @@ public class GreyAnon : ModMonsterTemplate
                         var combatCard = combatState.CreateCard(canonical, player);
                         drawPile.AddInternal(combatCard);
                     }
+
                     drawPile.RandomizeOrderInternal(player, rng, combatState);
                 }
+
                 await CreatureCmd.TriggerAnim(player.Creature, "idle_loop", 0f);
             }
         }

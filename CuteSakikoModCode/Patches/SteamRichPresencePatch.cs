@@ -1,13 +1,12 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.RegularExpressions;
 using CuteSakikoMod.CuteSakikoModCode.Character;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Map;
-using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Rooms;
+using MegaCrit.Sts2.Core.Runs;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Patches;
 
@@ -16,6 +15,7 @@ public static class RichPresencePatch
 {
     private static readonly MethodInfo? _setRichPresenceMethod;
     private static readonly PropertyInfo? _stateProp;
+
     private static readonly Type CuteSakikoCharacterGeneric =
         typeof(CuteSakikoCharacter<,,>).GetGenericTypeDefinition();
 
@@ -25,7 +25,7 @@ public static class RichPresencePatch
         { RoomType.Event, "LEGEND_EVENT.title" },
         { RoomType.RestSite, "LEGEND_REST.title" },
         { RoomType.Shop, "LEGEND_MERCHANT.title" },
-        { RoomType.Treasure, "LEGEND_TREASURE.title" },
+        { RoomType.Treasure, "LEGEND_TREASURE.title" }
     };
 
     // MapPointType → map.json 本地化键映射
@@ -34,17 +34,15 @@ public static class RichPresencePatch
         { MapPointType.Unknown, "LEGEND_UNKNOWN.title" },
         { MapPointType.Shop, "LEGEND_MERCHANT.title" },
         { MapPointType.Treasure, "LEGEND_TREASURE.title" },
-        { MapPointType.RestSite, "LEGEND_REST.title" },
+        { MapPointType.RestSite, "LEGEND_REST.title" }
     };
 
     static RichPresencePatch()
     {
         var steamFriendsType = AccessTools.TypeByName("Steamworks.SteamFriends");
         if (steamFriendsType != null)
-        {
             _setRichPresenceMethod = AccessTools.Method(steamFriendsType, "SetRichPresence",
                 new[] { typeof(string), typeof(string) });
-        }
         _stateProp = AccessTools.DeclaredProperty(typeof(RunManager), "State");
     }
 
@@ -58,7 +56,7 @@ public static class RichPresencePatch
     }
 
     [HarmonyPostfix]
-    [HarmonyPatch("EnterRoomInternal", new Type[] { typeof(AbstractRoom), typeof(bool) })]
+    [HarmonyPatch("EnterRoomInternal", typeof(AbstractRoom), typeof(bool))]
     public static void EnterRoomInternal_Postfix(RunManager __instance)
     {
         var state = __instance.DebugOnlyGetState();
@@ -91,7 +89,9 @@ public static class RichPresencePatch
             _setRichPresenceMethod.Invoke(null, new object[] { "Character", "REGENT" });
             _setRichPresenceMethod.Invoke(null, new object[] { "Act", "OVERGROWTH" });
         }
-        catch { }
+        catch
+        {
+        }
     }
 
     private static bool IsCuteSakikoCharacter(Type type)
@@ -102,6 +102,7 @@ public static class RichPresencePatch
                 return true;
             type = type.BaseType;
         }
+
         return false;
     }
 
@@ -164,6 +165,7 @@ public static class RichPresencePatch
                 if (title.Exists())
                     return StripBBCode(title.GetFormattedText());
             }
+
             return null;
         }
 

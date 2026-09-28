@@ -16,10 +16,7 @@ public class MakeSimpler : CuteAnonCard
 
     public override IEnumerable<CardKeyword> CanonicalKeywords
     {
-        get
-        {
-            yield return CutesakiKeywords.AnonNote.GetModCardKeyword();
-        }
+        get { yield return CutesakiKeywords.AnonNote.GetModCardKeyword(); }
     }
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips

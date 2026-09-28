@@ -3,7 +3,6 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-
 using MegaCrit.Sts2.Core.ValueProps;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
@@ -23,13 +22,13 @@ public sealed class RainfallOmenPower : CuteSakikoModPower
         if (!participants.Contains(Owner)) return;
 
         // 检查是否有敌人意图为攻击
-        bool anyEnemyIntendsToAttack = Owner.CombatState?.HittableEnemies
+        var anyEnemyIntendsToAttack = Owner.CombatState?.HittableEnemies
             .Any(e => e.Monster != null && e.Monster.IntendsToAttack) ?? false;
 
         if (anyEnemyIntendsToAttack)
         {
             // 获得的格挡量等于本能力的层数
-            int blockAmount = Amount;
+            var blockAmount = Amount;
             if (blockAmount > 0)
                 await CreatureCmd.GainBlock(Owner, blockAmount, ValueProp.Move, null);
         }

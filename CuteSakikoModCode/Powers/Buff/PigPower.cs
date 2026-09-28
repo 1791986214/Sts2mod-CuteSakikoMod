@@ -118,9 +118,7 @@ public sealed class PigPower : CuteSakikoModPower
         _pigVisual = _pigScene.Instantiate<Node2D>();
         // ★ 禁用新视觉中所有 Control 的鼠标交互
         foreach (var control in _pigVisual.FindChildrenOfType<Control>())
-        {
             control.MouseFilter = Control.MouseFilterEnum.Ignore;
-        }
 
         creatureNode.AddChild(_pigVisual);
 

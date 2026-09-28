@@ -10,7 +10,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Rana.Ancient;
 
 public class ParfaitTreat() : CuteRanaCard(2, CardType.Power, CardRarity.Ancient, TargetType.Self)
 {
-    
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
         get

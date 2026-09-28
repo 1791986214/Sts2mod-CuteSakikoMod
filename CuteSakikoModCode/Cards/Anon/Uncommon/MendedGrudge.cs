@@ -19,10 +19,7 @@ public class MendedGrudge : CuteAnonCard
 
     public override IEnumerable<CardKeyword> CanonicalKeywords
     {
-        get
-        {
-            yield return CardKeyword.Retain;
-        }
+        get { yield return CardKeyword.Retain; }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -35,13 +32,11 @@ public class MendedGrudge : CuteAnonCard
         // 对所有敌人造成伤害
         var enemies = combat.Enemies;
         if (enemies != null && enemies.Any())
-        {
             await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
                 .FromCard(this, cardPlay)
-                .TargetingAllOpponents(combat)            // 修正为全体目标
+                .TargetingAllOpponents(combat) // 修正为全体目标
                 .WithHitFx("vfx/vfx_attack_slash")
                 .Execute(choiceContext);
-        }
 
         // 收集并移除手牌中的所有状态卡
         var hand = PileType.Hand.GetPile(Owner);

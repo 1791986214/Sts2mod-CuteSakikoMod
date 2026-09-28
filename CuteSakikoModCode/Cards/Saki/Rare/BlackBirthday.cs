@@ -14,10 +14,7 @@ public sealed class BlackBirthday() : CuteSakikoModCard(1, CardType.Power, CardR
 {
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
-        get
-        {
-            yield return new PowerVar<BlackRebirthPower>(2);
-        }
+        get { yield return new PowerVar<BlackRebirthPower>(2); }
     }
 
 
@@ -33,7 +30,8 @@ public sealed class BlackBirthday() : CuteSakikoModCard(1, CardType.Power, CardR
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await PowerCmd.Apply<BlackRebirthPower>(choiceContext, Owner.Creature, DynamicVars["BlackRebirthPower"].IntValue, Owner.Creature, this);
+        await PowerCmd.Apply<BlackRebirthPower>(choiceContext, Owner.Creature,
+            DynamicVars["BlackRebirthPower"].IntValue, Owner.Creature, this);
 
         var creature = Owner.Creature;
         var currentHp = creature.CurrentHp;

@@ -1,4 +1,5 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
+﻿using System.Reflection;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Nodes.Multiplayer;
@@ -6,16 +7,16 @@ using MegaCrit.Sts2.Core.Nodes.Multiplayer;
 namespace CuteSakikoMod.CuteSakikoModCode.Patches.Skin;
 
 /// <summary>
-/// 跑局顶栏玩家状态头像：按该玩家的皮肤替换 icon 贴图。
-/// 只对远端玩家生效；本机玩家由 RitsuLib 的 AssetProfile 处理。
+///     跑局顶栏玩家状态头像：按该玩家的皮肤替换 icon 贴图。
+///     只对远端玩家生效；本机玩家由 RitsuLib 的 AssetProfile 处理。
 /// </summary>
 [HarmonyPatch(typeof(NMultiplayerPlayerState), nameof(NMultiplayerPlayerState._Ready))]
 public static class SkinMultiplayerPlayerStatePatch
 {
-    private static readonly System.Reflection.FieldInfo? CharacterIconField =
+    private static readonly FieldInfo? CharacterIconField =
         AccessTools.Field(typeof(NMultiplayerPlayerState), "_characterIcon");
 
-    static void Postfix(NMultiplayerPlayerState __instance)
+    private static void Postfix(NMultiplayerPlayerState __instance)
     {
         var player = __instance.Player;
         if (player == null) return;

@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Others.Config;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others.Config;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
@@ -13,14 +12,14 @@ using STS2RitsuLib.Scaffolding.Content;
 namespace CuteSakikoMod.CuteSakikoModCode.Events;
 
 [RegisterSharedEvent]
-public sealed class StarAnonEvent : CuteSakikoEvent 
+public sealed class StarAnonEvent : CuteSakikoEvent
 {
     public override EventAssetProfile AssetProfile => new(
         InitialPortraitPath: "res://CuteSakikoMod/images/events/star_anon.png"
     );
-    
+
     public override bool IsShared => true;
-    
+
     protected override bool IsAllowedInternal(IRunState runState)
     {
         return ModConfig.EnableModMonsters;

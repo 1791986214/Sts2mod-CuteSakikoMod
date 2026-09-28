@@ -1,5 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Status;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -37,7 +36,7 @@ public class PlayedTerribly() : CuteAnonCard(0, CardType.Attack, CardRarity.Comm
 
         // 一次多段随机攻击
         await DamageCmd.Attack(damage)
-            .FromCard(this,cardPlay)
+            .FromCard(this, cardPlay)
             .TargetingRandomOpponents(combat)
             .WithHitCount(hitCount)
             .WithHitFx("vfx/vfx_attack_slash")
@@ -50,6 +49,7 @@ public class PlayedTerribly() : CuteAnonCard(0, CardType.Attack, CardRarity.Comm
             layFlatCard.UpgradeInternal();
             layFlatCard.FinalizeUpgradeInternal();
         }
+
         await CardPileCmd.AddGeneratedCardToCombat(layFlatCard, PileType.Hand, Owner);
     }
 

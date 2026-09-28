@@ -7,13 +7,11 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others.Config;
 // CuteSakikoModCode/Others/Config/CuteSakikoModConfigData.cs
 public class CuteSakikoModConfigData
 {
+    private bool _enableAudio = true;
     private float _modBgmVolume = 0.40f;
-    private float _modSfxVolume = 0.40f;
 
     public bool EggsCard { get; set; }
     public bool EnableModMonsters { get; set; } = true;
-
-    private bool _enableAudio = true;
 
     public bool EnableAudio
     {
@@ -23,10 +21,7 @@ public class CuteSakikoModConfigData
             if (_enableAudio != value)
             {
                 _enableAudio = value;
-                if (!value)
-                {
-                    AudioManager.StopMusic();
-                }
+                if (!value) AudioManager.StopMusic();
             }
         }
     }
@@ -41,27 +36,23 @@ public class CuteSakikoModConfigData
         }
     }
 
-    public float ModSfxVolume
-    {
-        get => _modSfxVolume;
-        set => _modSfxVolume = value;
-    }
+    public float ModSfxVolume { get; set; } = 0.40f;
 
     public bool EnableCustomAncients { get; set; } = true;
     public bool EnableCustomEvents { get; set; } = true;
 
     /// <summary>
-    /// 是否启用模组表情贴纸替换（本地视觉设置，不参与联机同步）。
+    ///     是否启用模组表情贴纸替换（本地视觉设置，不参与联机同步）。
     /// </summary>
     public bool EnableReactionReplacement { get; set; } = true;
 
     /// <summary>
-    /// 反应轮盘整体放大倍数（1.0 = 原版大小）。
+    ///     反应轮盘整体放大倍数（1.0 = 原版大小）。
     /// </summary>
     public float ReactionWheelScale { get; set; } = 1.0f;
 
     /// <summary>
-    /// 飘出表情的放大倍数（3.0 = 原版三倍）。
+    ///     飘出表情的放大倍数（3.0 = 原版三倍）。
     /// </summary>
     public float ReactionEmoteScale { get; set; } = 3.0f;
 }

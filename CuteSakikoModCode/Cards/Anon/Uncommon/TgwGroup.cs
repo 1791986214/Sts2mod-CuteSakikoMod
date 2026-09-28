@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -50,7 +49,7 @@ public class TgwGroup() : CuteAnonCard(1, CardType.Skill, CardRarity.Uncommon, T
 
     protected override void OnUpgrade()
     {
-        DynamicVars["BaseGold"].UpgradeValueBy(5m); 
+        DynamicVars["BaseGold"].UpgradeValueBy(5m);
     }
 
     /// <summary>嵌套动态变量，实时计算总金币</summary>

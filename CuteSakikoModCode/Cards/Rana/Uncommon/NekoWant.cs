@@ -30,11 +30,11 @@ public class NekoWant : CuteRanaCard
         var original = chosen.FirstOrDefault();
         if (original == null) return;
 
-        int copies = DynamicVars.Cards.IntValue;
-        for (int i = 0; i < copies; i++)
+        var copies = DynamicVars.Cards.IntValue;
+        for (var i = 0; i < copies; i++)
         {
-            var clone = original.CreateClone();      // 完美克隆：保留升级、附魔等所有状态
-            clone.AddKeyword(CardKeyword.Exhaust);   // 额外赋予消耗
+            var clone = original.CreateClone(); // 完美克隆：保留升级、附魔等所有状态
+            clone.AddKeyword(CardKeyword.Exhaust); // 额外赋予消耗
             await CardPileCmd.AddGeneratedCardToCombat(clone, PileType.Hand, Owner);
         }
     }

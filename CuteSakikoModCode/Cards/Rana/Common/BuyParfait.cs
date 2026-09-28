@@ -1,6 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
-using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Rana.Starter;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -17,10 +15,7 @@ public class BuyParfait() : CuteRanaCard(0, CardType.Skill, CardRarity.Common, T
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
-        get
-        {
-            yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Parfait.GetModCardKeyword());
-        }
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Parfait.GetModCardKeyword()); }
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
@@ -33,7 +28,7 @@ public class BuyParfait() : CuteRanaCard(0, CardType.Skill, CardRarity.Common, T
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int cost = DynamicVars.Gold.IntValue;
+        var cost = DynamicVars.Gold.IntValue;
         await PlayerCmd.LoseGold(cost, Owner);
 
         var parfait = Owner.Relics.OfType<MatchaParfait>().FirstOrDefault();

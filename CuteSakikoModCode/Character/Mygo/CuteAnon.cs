@@ -1,7 +1,6 @@
 using CuteSakikoMod.CuteSakikoModCode.Pools.Anon;
 using Godot;
 using MegaCrit.Sts2.Core.Entities.Characters;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Godot;
@@ -25,7 +24,7 @@ public class CuteAnon : CuteSakikoCharacter<CuteAnonCardPool, CuteAnonRelicPool,
 
     protected override string? MapMarkerPath =>
         "res://CuteSakikoMod/images/charui/anon/map_marker_anon.png";
-    
+
     public override Color EnergyLabelOutlineColor => new(0f, 0.2f, 0.4f);
 
     public override Color NameColor => Color;
@@ -41,15 +40,20 @@ public class CuteAnon : CuteSakikoCharacter<CuteAnonCardPool, CuteAnonRelicPool,
     public override float CastAnimDelay => 0f;
 
     protected override NCreatureVisuals? TryCreateCreatureVisuals()
-        => RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(
+    {
+        return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(
             AssetProfile.Scenes!.VisualsPath!);
+    }
 
-    public override List<string> GetArchitectAttackVfx() =>
-    [
-        "vfx/vfx_attack_blunt",
-        "vfx/vfx_heavy_blunt",
-        "vfx/vfx_attack_slash",
-        "vfx/vfx_bloody_impact",
-        "vfx/vfx_rock_shatter"
-    ];
+    public override List<string> GetArchitectAttackVfx()
+    {
+        return
+        [
+            "vfx/vfx_attack_blunt",
+            "vfx/vfx_heavy_blunt",
+            "vfx/vfx_attack_slash",
+            "vfx/vfx_bloody_impact",
+            "vfx/vfx_rock_shatter"
+        ];
+    }
 }

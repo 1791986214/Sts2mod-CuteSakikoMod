@@ -1,6 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -14,6 +12,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Common;
 public class SmoothPlay : CuteAnonCard
 {
     private bool _eventSubscribed;
+
     // 标记本回合是否被外部效果（如 Splash）设为免费
     private bool _externallyFreeThisTurn;
 
@@ -40,11 +39,8 @@ public class SmoothPlay : CuteAnonCard
         SubscribeAndRefresh();
 
         // 检测外部免费效果：若当前费用已被其他效果降到0（音符此时还没生效），标记本回合跳过更新
-        int currentCost = EnergyCost.GetWithModifiers(CostModifiers.Local);
-        if (currentCost == 0)
-        {
-            _externallyFreeThisTurn = true;
-        }
+        var currentCost = EnergyCost.GetWithModifiers(CostModifiers.Local);
+        if (currentCost == 0) _externallyFreeThisTurn = true;
     }
 
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -61,6 +57,7 @@ public class SmoothPlay : CuteAnonCard
             ChordNoteSystem.PlayerNotesChanged += OnPlayerNotesChanged;
             _eventSubscribed = true;
         }
+
         UpdateCost();
     }
 
@@ -79,7 +76,7 @@ public class SmoothPlay : CuteAnonCard
         var attackCount = ChordNoteSystem.GetCurrentNotes(Owner)
             .Count(n => n == CardType.Attack);
 
-        int targetCost = Math.Max(0, 4 - attackCount);
+        var targetCost = Math.Max(0, 4 - attackCount);
         // 使用不带 reduceOnly 的 SetThisTurn，保证音符变化时费用能升降
         EnergyCost.SetThisTurn(targetCost);
     }

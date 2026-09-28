@@ -8,7 +8,6 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 
 public static class ChordDisplayHelper
 {
-
     public static Texture2D GetChordTexture(string chord)
     {
         if (ChordManager.AllChords.TryGetValue(chord, out var def))
@@ -16,6 +15,7 @@ public static class ChordDisplayHelper
             var path = $"res://CuteSakikoMod/images/ui/chords/{def.IconName}.png";
             return GD.Load<Texture2D>(path);
         }
+
         return null;
     }
 
@@ -44,6 +44,7 @@ public static class ChordDisplayHelper
             var descText = GetFormattedDescription(def, multiplier);
             return new HoverTip(title, descText);
         }
+
         return new HoverTip(new LocString("card_keywords", "CUTESAKIKOMOD-CCHORD.title"), "未知和弦");
     }
 
@@ -51,16 +52,16 @@ public static class ChordDisplayHelper
     {
         string key;
         if (type == Entry.AnyNote)
-        {
             key = "CUTESAKIKOMOD_NOTE_ANY";
-        }
-        else switch (type)
-        {
-            case CardType.Attack: key = "CUTESAKIKOMOD_NOTE_ATTACK"; break;
-            case CardType.Skill: key = "CUTESAKIKOMOD_NOTE_SKILL"; break;
-            case CardType.Power: key = "CUTESAKIKOMOD_NOTE_POWER"; break;
-            default: key = "CUTESAKIKOMOD_NOTE_SPECIAL"; break;
-        }
+        else
+            switch (type)
+            {
+                case CardType.Attack: key = "CUTESAKIKOMOD_NOTE_ATTACK"; break;
+                case CardType.Skill: key = "CUTESAKIKOMOD_NOTE_SKILL"; break;
+                case CardType.Power: key = "CUTESAKIKOMOD_NOTE_POWER"; break;
+                default: key = "CUTESAKIKOMOD_NOTE_SPECIAL"; break;
+            }
+
         var title = new LocString("static_hover_tips", $"{key}.title");
         var desc = new LocString("static_hover_tips", $"{key}.description");
         return new HoverTip(title, desc);
@@ -80,6 +81,7 @@ public static class ChordDisplayHelper
 
             return new HoverTip(title, fullDesc);
         }
+
         return new HoverTip(new LocString("card_keywords", "UNKNOWN"), "未知和弦");
     }
 }

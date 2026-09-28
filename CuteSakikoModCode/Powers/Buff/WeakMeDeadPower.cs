@@ -1,12 +1,13 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
-using MegaCrit.Sts2.Core.Entities.Cards; // 新增，用于 CardPlay
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
+// 新增，用于 CardPlay
 
 namespace CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 
@@ -22,7 +23,7 @@ public sealed class WeakMeDeadPower : CuteSakikoModPower
         ValueProp props,
         Creature? dealer,
         CardModel? cardSource,
-        CardPlay? cardPlay)  // 补上缺失的参数
+        CardPlay? cardPlay) // 补上缺失的参数
     {
         if (dealer == Owner && target != null && target.GetPower<BreakDownPower>() != null) return 2m;
         return 1m;

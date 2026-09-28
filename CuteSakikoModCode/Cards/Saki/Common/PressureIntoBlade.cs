@@ -15,13 +15,14 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Common;
 
 public class PressureIntoBlade() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Common, TargetType.AnyEnemy)
 {
-    // 出鞘关键词 + 消耗
-    public override IEnumerable<CardKeyword> CanonicalKeywords =>
-        [CutesakiKeywords.Sword.GetModCardKeyword(), CardKeyword.Exhaust];
+    private int _bonusAmount;
 
     // 本次操作中，要附加到哪把剑、附加多少
     private KnightSword? _bonusTarget;
-    private int _bonusAmount;
+
+    // 出鞘关键词 + 消耗
+    public override IEnumerable<CardKeyword> CanonicalKeywords =>
+        [CutesakiKeywords.Sword.GetModCardKeyword(), CardKeyword.Exhaust];
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
     {
@@ -38,7 +39,7 @@ public class PressureIntoBlade() : CuteSakikoModCard(1, CardType.Skill, CardRari
     {
         // 1. 当前压力层数
         var pressure = Owner.Creature.GetPower<PressurePower>();
-        int pressureAmount = pressure?.Amount ?? 0;
+        var pressureAmount = pressure?.Amount ?? 0;
 
         // 2. 手牌中的骑士之剑（出鞘逻辑已在 BeforeCardPlayed 保证其存在）
         var hand = PileType.Hand.GetPile(Owner);

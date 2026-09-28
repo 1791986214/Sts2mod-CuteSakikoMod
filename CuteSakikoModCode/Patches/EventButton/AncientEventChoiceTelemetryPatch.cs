@@ -1,4 +1,4 @@
-﻿
+﻿using System.Collections;
 using System.Reflection;
 using CuteSakikoMod.CuteSakikoModCode.Others.Telemetry;
 using HarmonyLib;
@@ -8,8 +8,8 @@ using MegaCrit.Sts2.Core.Models;
 namespace CuteSakikoMod.CuteSakikoModCode.Patches.EventButton;
 
 /// <summary>
-/// 在远古事件结束时，抓取所有选项的选中/跳过状态并上传遥测。
-/// UpdateRunHistory 在 Done() 内被调用，此时 GeneratedOptions 的 WasChosen 已确定。
+///     在远古事件结束时，抓取所有选项的选中/跳过状态并上传遥测。
+///     UpdateRunHistory 在 Done() 内被调用，此时 GeneratedOptions 的 WasChosen 已确定。
 /// </summary>
 [HarmonyPatch(typeof(AncientEventModel), "UpdateRunHistory")]
 public static class AncientEventModelUpdateRunHistoryPatch
@@ -34,42 +34,50 @@ public static class AncientEventModelUpdateRunHistoryPatch
             // 抓取所有选项
             var choices = new List<(string key, string title, bool chosen)>();
 
-            if (GeneratedOptionsField?.GetValue(__instance) is System.Collections.IEnumerable rawOptions)
-            {
+            if (GeneratedOptionsField?.GetValue(__instance) is IEnumerable rawOptions)
                 foreach (var obj in rawOptions)
                 {
                     if (obj is not EventOption opt) continue;
 
-                    string key = opt.TextKey ?? "";
-                    string title = "";
-                    try { title = opt.Title?.GetFormattedText() ?? ""; } catch { }
+                    var key = opt.TextKey ?? "";
+                    var title = "";
+                    try
+                    {
+                        title = opt.Title?.GetFormattedText() ?? "";
+                    }
+                    catch
+                    {
+                    }
 
-                    bool chosen = opt.WasChosen;
+                    var chosen = opt.WasChosen;
                     choices.Add((key, title, chosen));
                 }
-            }
 
             // 回退：如果拿不到 GeneratedOptions，就从 RunState 的历史记录读
             if (choices.Count == 0)
             {
                 var entry = player.RunState.CurrentMapPointHistoryEntry?.GetEntry(player.NetId);
                 if (entry?.AncientChoices != null)
-                {
                     foreach (var c in entry.AncientChoices)
                     {
-                        string key = c.Title?.LocEntryKey ?? "";
-                        string title = "";
-                        try { title = c.Title?.GetFormattedText() ?? ""; } catch { }
+                        var key = c.Title?.LocEntryKey ?? "";
+                        var title = "";
+                        try
+                        {
+                            title = c.Title?.GetFormattedText() ?? "";
+                        }
+                        catch
+                        {
+                        }
+
                         choices.Add((key, title, c.WasChosen));
                     }
-                }
             }
 
             if (choices.Count == 0) return;
 
             // 发送完整选项信息（包含被跳过的）
             CuteSakikoModTelemetry.CaptureEventChoices(eventId, characterId, floor, choices);
-            
         }
         catch (Exception ex)
         {

@@ -1,5 +1,5 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Token;
-using CuteSakikoMod.CuteSakikoModCode.CardPiles;
+﻿using CuteSakikoMod.CuteSakikoModCode.CardPiles;
+using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Token;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
@@ -34,7 +34,7 @@ public class Unsheathe() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Commo
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         // 1. 获得压力
-        int pressureAmount = DynamicVars["PressurePower"].IntValue;
+        var pressureAmount = DynamicVars["PressurePower"].IntValue;
         await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
 
         // 2. 手牌已有剑则跳过（避免与 SwordManager 重复）
@@ -66,6 +66,7 @@ public class Unsheathe() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Commo
                 forgetPile.RemoveInternal(sword);
                 await CardPileCmd.Add(sword, PileType.Hand);
             }
+
             if (swords.Count > 0)
                 forgetPile.InvokeContentsChanged();
         }

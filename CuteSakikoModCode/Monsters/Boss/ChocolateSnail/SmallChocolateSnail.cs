@@ -38,7 +38,7 @@ public class SmallChocolateSnail : ModMonsterTemplate
         await base.AfterAddedToRoom();
         // 随机 1~10 层美味
         var rng = Creature.CombatState.RunState.Rng.Shuffle;
-        int deliciousAmount = rng.NextInt(1, 11);
+        var deliciousAmount = rng.NextInt(1, 11);
         await PowerCmd.Apply<DeliciousPower>(
             new ThrowingPlayerChoiceContext(), Creature, deliciousAmount, Creature, null);
     }

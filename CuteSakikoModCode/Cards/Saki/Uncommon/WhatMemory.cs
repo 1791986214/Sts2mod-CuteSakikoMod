@@ -15,7 +15,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Uncommon;
 public class WhatMemory() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
-    
+
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
         get { yield return new CardsVar(2); }

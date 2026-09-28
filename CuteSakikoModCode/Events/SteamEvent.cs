@@ -1,5 +1,4 @@
-﻿
-using CuteSakikoMod.CuteSakikoModCode.Character.Mujica;
+﻿using CuteSakikoMod.CuteSakikoModCode.Character.Mujica;
 using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 using MegaCrit.Sts2.Core.CardSelection;
@@ -27,7 +26,10 @@ public sealed class SteamEvent : CuteSakikoEvent
 
     public override bool IsShared => false;
 
-    protected override bool IsAllowedInternal(IRunState runState) => true;
+    protected override bool IsAllowedInternal(IRunState runState)
+    {
+        return true;
+    }
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
@@ -60,25 +62,21 @@ public sealed class SteamEvent : CuteSakikoEvent
             new(this, TakePhoto, ModOptionKey("THIRD", "TAKE_PHOTO"))
         };
 
-        if (HasAnonAndSakiOrOb())
-        {
-            options.Add(new(this, GiveMaskToAnon, ModOptionKey("THIRD", "GIVE_MASK_TO_ANON"), _relicTips));
-        }
+        if (HasAnonAndSaki())
+            options.Add(new EventOption(this, GiveMaskToAnon, ModOptionKey("THIRD", "GIVE_MASK_TO_ANON"), _relicTips));
         else
-        {
             options.Add(new EventOption(this, null, ModOptionKey("THIRD", "GIVE_MASK_TO_ANON_LOCKED")));
-        }
 
         SetEventState(PageDescription("THIRD"), options);
         return Task.CompletedTask;
     }
 
-    private bool HasAnonAndSakiOrOb()
+    private bool HasAnonAndSaki()
     {
         if (Owner?.RunState == null) return false;
         var hasAnon = Owner.RunState.Players.Any(p => p.Character is CuteAnon);
-        var hasSakiOrOb = Owner.RunState.Players.Any(p => p.Character is CuteSaki );
-        return hasAnon && hasSakiOrOb;
+        var hasSaki = Owner.RunState.Players.Any(p => p.Character is CuteSaki);
+        return hasAnon && hasSaki;
     }
 
     // 选项1：在池边坐下泡脚 → 恢复 20% 最大生命值
@@ -106,10 +104,7 @@ public sealed class SteamEvent : CuteSakikoEvent
             new CardSelectorPrefs(CardSelectorPrefs.RemoveSelectionPrompt, 1)
         );
         var card = selected.FirstOrDefault();
-        if (card != null)
-        {
-            await CardPileCmd.RemoveFromDeck(card);
-        }
+        if (card != null) await CardPileCmd.RemoveFromDeck(card);
 
         SetEventFinished(PageDescription("TAKE_PHOTO_DESC"));
     }
@@ -133,5 +128,8 @@ public sealed class SteamEvent : CuteSakikoEvent
         return Task.CompletedTask;
     }
 
-    private LocString PageDescription(string pageKey) => L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    private LocString PageDescription(string pageKey)
+    {
+        return L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+    }
 }

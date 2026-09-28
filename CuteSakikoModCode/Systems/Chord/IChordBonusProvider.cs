@@ -1,8 +1,8 @@
 ﻿// Systems/IChordBonusProvider.cs
-namespace CuteSakikoMod.CuteSakikoModCode.Systems.Chord
+
+namespace CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+
+public interface IChordBonusProvider
 {
-    public interface IChordBonusProvider
-    {
-        int GetBonus();
-    }
+    int GetBonus();
 }

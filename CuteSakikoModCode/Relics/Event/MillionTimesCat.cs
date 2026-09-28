@@ -1,5 +1,4 @@
-﻿
-using MegaCrit.Sts2.Core.Commands;
+﻿using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -11,9 +10,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 public class MillionTimesCat : CuteSakikoEventRelic
 {
     private const decimal ReviveHealPercent = 0.3m; // 阻止死亡后恢复最大生命值的30%
-
-    private bool _wasUsed = false;
     private decimal _healthAtStart;
+
+    private bool _wasUsed;
 
     public override RelicRarity Rarity => RelicRarity.Event;
 
@@ -49,7 +48,7 @@ public class MillionTimesCat : CuteSakikoEventRelic
         Flash();
         WasUsed = true;
         // 阻止死亡后恢复 30% 最大生命值
-        decimal healAmount = creature.MaxHp * ReviveHealPercent;
+        var healAmount = creature.MaxHp * ReviveHealPercent;
         await CreatureCmd.Heal(creature, healAmount);
     }
 
@@ -66,7 +65,6 @@ public class MillionTimesCat : CuteSakikoEventRelic
         await base.AfterCombatVictory(room);
 
         if (!WasUsed && Owner != null && !Owner.Creature.IsDead)
-        {
             // 如果当前生命值小于战斗开始时的生命值，说明受过伤
             if (Owner.Creature.CurrentHp < _healthAtStart)
             {
@@ -74,6 +72,5 @@ public class MillionTimesCat : CuteSakikoEventRelic
                 // 战后恢复固定 3 点（由 HealVar 控制）
                 await CreatureCmd.Heal(Owner.Creature, DynamicVars.Heal.BaseValue);
             }
-        }
     }
 }

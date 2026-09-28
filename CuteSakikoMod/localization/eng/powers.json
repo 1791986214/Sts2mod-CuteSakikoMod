@@ -11,7 +11,6 @@
   "CUTE_SAKIKO_MOD_POWER_DELICIOUS_POWER.title": "Delicious",
   "CUTE_SAKIKO_MOD_POWER_DELICIOUS_POWER.description": "When the owner dies, heal all creatures on the field for HP equal to the number of stacks.",
   "CUTE_SAKIKO_MOD_POWER_DELICIOUS_POWER.smartDescription": "On death, heal all creatures on the field for [green]{Amount}[/green] HP.",
-  
   "CUTE_SAKIKO_MOD_POWER_VOCAL_HARMONY_POWER.title": "Vocal Harmony",
   "CUTE_SAKIKO_MOD_POWER_VOCAL_HARMONY_POWER.description": "Whenever you play a [gold]Live[/gold] card, deal damage equal to the number of stacks to ALL enemies.",
   "CUTE_SAKIKO_MOD_POWER_VOCAL_HARMONY_POWER.smartDescription": "Whenever you play a [gold]Live[/gold] card, deal [blue]{Amount}[/blue] damage to ALL enemies.",
@@ -54,7 +53,6 @@
   "CUTE_SAKIKO_MOD_POWER_MAKE_SIMPLER_POWER.title": "Let's Keep It Simple",
   "CUTE_SAKIKO_MOD_POWER_MAKE_SIMPLER_POWER.description": "Change random [img]CuteSakikoMod/images/ui/text/text_note.png[/img] in [pink]Memorized Chords[/pink] into an [img]CuteSakikoMod/images/ui/text/text_anon.png[/img].",
   "CUTE_SAKIKO_MOD_POWER_MAKE_SIMPLER_POWER.smartDescription": "Change [blue]{Amount}[/blue] random [img]CuteSakikoMod/images/ui/text/text_note.png[/img] in [pink]Memorized Chords[/pink] into an [img]CuteSakikoMod/images/ui/text/text_anon.png[/img].",
-  
   "CUTE_SAKIKO_MOD_POWER_PRESSURE_POWER.title": "Pressure",
   "CUTE_SAKIKO_MOD_POWER_PRESSURE_POWER.description": "Each stack of [gold]Pressure[/gold] increases damage taken by 1%.\nWhen stacks reach your current HP, clear all [gold]Pressure[/gold] and apply 1 [gold]Collapse[/gold].",
   "CUTE_SAKIKO_MOD_POWER_PRESSURE_POWER.smartDescription": "Increases damage taken by {Amount}%.\nWhen stacks reach your current HP, clear all [gold]Pressure[/gold] and apply 1 [gold]Collapse[/gold].",
@@ -213,7 +211,6 @@
   "HBK_BANK_POWER.chooseToken": "Choose a Gold trading method",
   "CUTE_SAKIKO_MOD_POWER_HBK_BANK_POWER.description": "At the start of each turn, choose a Gold trading method.",
   "CUTE_SAKIKO_MOD_POWER_HBK_BANK_POWER.smartDescription": "At the start of each turn, choose a Gold trading method.\nCurrent Gold Price: [blue]{GoldPrice}[/blue].",
-
   "CUTE_SAKIKO_MOD_POWER_NEKO_TRANCE_POWER.title": "Spacing Out with Cats",
   "CUTE_SAKIKO_MOD_POWER_NEKO_TRANCE_POWER.description": "Your [gold]Cats[/gold] gain [gold]Retain[/gold].",
   "CUTE_SAKIKO_MOD_POWER_NEKO_TRANCE_POWER.smartDescription": "Your [gold]Cats[/gold] gain [gold]Retain[/gold].",

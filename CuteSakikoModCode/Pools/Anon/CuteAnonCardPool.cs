@@ -9,7 +9,9 @@ namespace CuteSakikoMod.CuteSakikoModCode.Pools.Anon;
 
 public class CuteAnonCardPool : TypeListCardPoolModel, IModColorfulPhilosophersCardPool
 {
-    private static readonly Material? _poolFrameMaterial = MaterialUtils.CreateReplaceHueShaderMaterial(1.0f, 0.53f, 0.6f);
+    private static readonly Material? _poolFrameMaterial =
+        MaterialUtils.CreateReplaceHueShaderMaterial(1.0f, 0.53f, 0.6f);
+
     public override string Title => CuteAnon.CharacterId; //This is not a display name.
     public override string EnergyColorName => CuteAnon.CharacterId;
     public override string? BigEnergyIconPath => "charui/anon/anon_big_energy.png".ImagePath();

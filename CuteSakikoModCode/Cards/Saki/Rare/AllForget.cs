@@ -32,23 +32,21 @@ public class AllForget() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Rare,
         var handCards = handPile.Cards.ToList();
         if (handCards.Count == 0) return;
 
-        int count = handCards.Count;
+        var count = handCards.Count;
 
         // 遗忘所有手牌
         await MemoryCmd.Forget(choiceContext, handCards, this);
 
         // 每遗忘一张牌，获得一张回忆（升级后获得回忆+）
         if (count > 0)
-        {
             await MemoryCmd.Recall(
                 choiceContext,
                 Owner,
-                allowChoose: false,
-                count: count,
+                false,
+                count,
                 upgraded: IsUpgraded,
                 source: this,
                 allowDuplicates: true);
-        }
     }
 
     protected override void OnUpgrade()
