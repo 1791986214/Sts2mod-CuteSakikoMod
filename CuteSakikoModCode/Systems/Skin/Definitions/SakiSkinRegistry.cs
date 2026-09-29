@@ -8,7 +8,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Definitions;
 public sealed class SakiSkinRegistry : ICharacterSkinRegistry
 {
     // ─────────────────────────────────────────────────────────
-    // 共享预设（唯一来源）：同一个角色的所有皮肤默认共用
+    //                      牌组/遗物血量
     // ─────────────────────────────────────────────────────────
     private static readonly CharacterPresetSet SharedPresets = new(
         [
@@ -33,7 +33,7 @@ public sealed class SakiSkinRegistry : ICharacterSkinRegistry
     public Type CharacterType => typeof(CuteSaki);
 
     // ─────────────────────────────────────────────────────────
-    // 皮肤：只写差异化字段（HP / Gold / Assets）
+    //                         皮肤
     // ─────────────────────────────────────────────────────────
     public IReadOnlyList<CharacterSkinDefinition> AllSkins { get; } =
     [
@@ -71,6 +71,25 @@ public sealed class SakiSkinRegistry : ICharacterSkinRegistry
                 "res://CuteSakikoMod/images/skin/saki/ob/multiplayer_hand_rock.png",
                 "res://CuteSakikoMod/images/skin/saki/ob/multiplayer_hand_paper.png",
                 "res://CuteSakikoMod/images/skin/saki/ob/multiplayer_hand_scissors.png"),
-            SharedPresets)
+            SharedPresets),
+        
+        CharacterSkinDefinition.FromPresets(
+        "tenday_saki",
+        "SAKI_SKIN_TENDAY",
+        new SkinAssets(
+            "res://CuteSakikoMod/scenes/skin/saki/tenday/tendaysaki.tscn",
+            "res://CuteSakikoMod/scenes/char/saki/saki_energy_counter.tscn",
+            "res://CuteSakikoMod/scenes/skin/saki/tenday/tendaysaki_merchant.tscn",
+            "res://CuteSakikoMod/scenes/skin/saki/tenday/tendaysaki_rest_site.tscn",
+            "res://CuteSakikoMod/images/skin/saki/tenday/character_icon_saki.png",
+            "res://CuteSakikoMod/images/skin/saki/tenday/character_icon_saki_outline.png",
+            "res://CuteSakikoMod/scenes/skin/saki/tenday/tendaysaki_icon.tscn",
+            "res://CuteSakikoMod/scenes/ui/card_trail_sakiko.tscn",
+            "res://CuteSakikoMod/images/skin/saki/tenday/multiplayer_hand_point.png",
+            "res://CuteSakikoMod/images/skin/saki/tenday/multiplayer_hand_rock.png",
+            "res://CuteSakikoMod/images/skin/saki/tenday/multiplayer_hand_paper.png",
+            "res://CuteSakikoMod/images/skin/saki/tenday/multiplayer_hand_scissors.png"),
+        SharedPresets)
+        
     ];
 }
