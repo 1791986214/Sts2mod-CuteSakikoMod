@@ -687,7 +687,7 @@ public static class ChordManager
         AddTemporaryChord("AnonCChord", ChordCategory.Anon,
             new[] { CardType.Skill, CardType.Skill, CardType.Skill },
             "CUTE_SAKIKO_MOD_ANONCCHORD.title", "CUTE_SAKIKO_MOD_ANONCCHORD.description", "anon_c_chord",
-            new[] { 1 }, // 基础升级张数
+            new[] { 2 }, // 基础升级张数
             async (ctx, owner, bonus) =>
             {
                 var combat = owner.CombatState;
@@ -708,8 +708,8 @@ public static class ChordManager
                     var upgradable = allCards.Where(c => c.IsUpgradable).ToList();
                     if (upgradable.Count == 0) continue;
 
-                    // 升级 1 + bonus 张牌（每人，不够则全升）
-                    var count = 1 + bonus;
+                    // 升级 2 + bonus 张牌（每人，不够则全升）
+                    var count = 2 + bonus;
                     var chosen = upgradable
                         .OrderBy(_ => rng.NextInt())
                         .Take(count)
@@ -771,14 +771,14 @@ public static class ChordManager
         AddTemporaryChord("AnonFChord", ChordCategory.Anon,
             new[] { CardType.Attack, CardType.Attack, CardType.Attack, CardType.Attack },
             "CUTE_SAKIKO_MOD_ANONFCHORD.title", "CUTE_SAKIKO_MOD_ANONFCHORD.description", "anon_f_chord",
-            new[] { 20, 1 }, // 伤害, 虚弱
+            new[] { 15, 1 }, // 伤害, 虚弱
             async (ctx, owner, bonus) =>
             {
                 var combat = owner.CombatState;
                 if (combat == null) return;
                 var enemies = combat.Enemies;
                 if (enemies != null && enemies.Any())
-                    await CreatureCmd.Damage(ctx, enemies, new DamageVar(20 + bonus, ValueProp.Move), owner, null,
+                    await CreatureCmd.Damage(ctx, enemies, new DamageVar(15 + bonus, ValueProp.Move), owner, null,
                         null);
                 var allies = combat.Players.Select(p => p.Creature) ?? new[] { owner };
                 foreach (var ally in allies)

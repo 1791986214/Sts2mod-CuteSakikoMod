@@ -1,10 +1,13 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
+using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Common;
 
@@ -16,9 +19,15 @@ public class SlowerBeat() : CuteAnonCard(2, CardType.Skill, CardRarity.Common, T
     {
         get
         {
-            yield return new BlockVar(10m, ValueProp.Move);
+            yield return new BlockVar(7m, ValueProp.Move);
             yield return new DynamicVar("BlockNextTurn", 5m);
+            yield return new DynamicVar("notes", 1);
         }
+    }
+    
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips
+    {
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Noteify.GetModCardKeyword()); }
     }
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -33,9 +42,10 @@ public class SlowerBeat() : CuteAnonCard(2, CardType.Skill, CardRarity.Common, T
 
         ChordNoteSystem.Activate(Owner);
 
-        var manualNoteCount = IsUpgraded ? 3 : 2;
-        for (var i = 0; i < manualNoteCount; i++)
-            await ChordNoteSystem.AddNoteAsync(Owner, CardType.Skill, choiceContext);
+        var manualNoteCount = DynamicVars["notes"].IntValue;
+        for (var i = 0; i < manualNoteCount; i++){
+            await ChordNoteSystem.AddNoteAsync(Owner, CardType.Skill, choiceContext,true);
+        }
 
         ChordNoteUIManager.UpdateNoteDisplay(Owner);
         ChordNoteUIManager.UpdateStoredChordDisplay(Owner);
@@ -43,7 +53,7 @@ public class SlowerBeat() : CuteAnonCard(2, CardType.Skill, CardRarity.Common, T
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(3m);
+        DynamicVars["notes"].UpgradeValueBy(1);
         DynamicVars["BlockNextTurn"].UpgradeValueBy(2m);
     }
 }

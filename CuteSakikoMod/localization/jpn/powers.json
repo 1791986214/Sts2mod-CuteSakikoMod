@@ -1,4 +1,7 @@
 {
+  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.title": "めちゃくちゃに弾いた",
+  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.description": "一定数の[img]CuteSakikoMod/images/ui/text/text_note.png[/img]を得るたび、追加でランダムな[img]CuteSakikoMod/images/ui/text/text_note.png[/img]を生成し、対応する効果を発動する。",
+  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.smartDescription": "[blue]{Amount}[/blue]個の追加[img]CuteSakikoMod/images/ui/text/text_note.png[/img]を得て、対応する効果を発動できる。\n進捗：{NoteCount}/{Threshold}",
   "CUTE_SAKIKO_MOD_POWER_BOW_TO_ME_POWER.title": "我にひれ伏せ",
   "CUTE_SAKIKO_MOD_POWER_BOW_TO_ME_POWER.description": "自身の[gold]騎士の剣[/gold]がダメージを与えるたび、その値に等しい[gold]重圧[/gold]を敵に付与する。",
   "CUTE_SAKIKO_MOD_POWER_BOW_TO_ME_POWER.smartDescription": "自身の[gold]騎士の剣[/gold]がダメージを与えるたび、その値に等しい[gold]重圧[/gold]を敵に付与する。",
@@ -77,9 +80,6 @@
   "CUTE_SAKIKO_MOD_POWER_QUARREL_SELF_POWER.title": "口論",
   "CUTE_SAKIKO_MOD_POWER_QUARREL_SELF_POWER.description": "次のターン、その分の重圧を失う。",
   "CUTE_SAKIKO_MOD_POWER_QUARREL_SELF_POWER.smartDescription": "次のターン開始時、[blue]{Amount}[/blue]層の[gold]重圧[/gold]を失う。",
-  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.title": "めちゃくちゃに弾いた",
-  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.description": "一定数の[img]CuteSakikoMod/images/ui/text/text_note.png[/img]を得るたび、追加でランダムな[img]CuteSakikoMod/images/ui/text/text_note.png[/img]を生成する。",
-  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.smartDescription": "追加の[img]CuteSakikoMod/images/ui/text/text_note.png[/img]を{Amount}個得られる。\n進捗：{NoteCount}/{Threshold}",
   "CUTE_SAKIKO_MOD_POWER_ESCAPISM_TENDENCY_POWER.title": "逃避癖",
   "CUTE_SAKIKO_MOD_POWER_ESCAPISM_TENDENCY_POWER.description": "毎ターン開始時、[gold]手札[/gold]から1枚選んで[gold]捨てる[/gold]。ターン終了時、層数に等しいブロックを得る。",
   "CUTE_SAKIKO_MOD_POWER_ESCAPISM_TENDENCY_POWER.smartDescription": "毎ターン開始時、[gold]手札[/gold]から1枚選んで[gold]捨てる[/gold]。ターン終了時、[blue]{Amount}[/blue]ブロックを得る。",

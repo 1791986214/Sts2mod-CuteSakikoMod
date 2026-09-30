@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -18,11 +19,7 @@ public class PerfectPlay : CuteAnonCard
 
     protected override IEnumerable<DynamicVar> CanonicalVars
     {
-        get
-        {
-            // 随机演奏数量，升级后 +4
-            yield return new DynamicVar("ChordCount", 6);
-        }
+        get { yield return new DynamicVar("ChordCount", 6); }
     }
 
     protected override IEnumerable<IHoverTip> AdditionalHoverTips
@@ -37,10 +34,10 @@ public class PerfectPlay : CuteAnonCard
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         TriggerBanter();
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
-        var learned = guitar.GetLearnedChords().ToList();
+        var learned = chords.GetLearnedChords().ToList();
         if (learned.Count == 0) return;
 
         var targetCount = DynamicVars["ChordCount"].IntValue;
@@ -48,15 +45,20 @@ public class PerfectPlay : CuteAnonCard
         var rng = Owner.RunState.Rng.CombatCardGeneration;
         var selected = new List<string>(targetCount);
         for (var i = 0; i < targetCount; i++)
-            // 允许重复：随机从已学习和弦中抽取
             selected.Add(learned[rng.NextInt(learned.Count)]);
 
-        await guitar.PlaySpecificChords(choiceContext, selected);
+        foreach (var chordId in selected)
+        {
+            if (CombatManager.Instance.IsOverOrEnding || Owner.Creature.IsDead)
+                break;
+
+            await ChordNoteSystem.PlayChordAsync(Owner, chordId, choiceContext);
+        }
     }
 
     protected override void OnUpgrade()
     {
         AddKeyword(CardKeyword.Innate);
-        DynamicVars["ChordCount"].UpgradeValueBy(4); // 6 → 10
+        DynamicVars["ChordCount"].UpgradeValueBy(4);
     }
 }

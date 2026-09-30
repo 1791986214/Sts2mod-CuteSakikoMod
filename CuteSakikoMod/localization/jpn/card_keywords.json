@@ -1,4 +1,8 @@
 {
+  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.title": "コード",
+  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.description": "戦闘開始時、自動的に除去され、一時的な追加[gold]コード[/gold]スロットを得る。\n重複した[gold]コード[/gold]カードを持っている場合、戦闘開始時に直接[gold]演奏[/gold]される。",
+  "CUTE_SAKIKO_MOD_KEYWORD_NOTEIFY.title": "音符効果",
+  "CUTE_SAKIKO_MOD_KEYWORD_NOTEIFY.description": "[img]CuteSakikoMod/images/ui/text/text_attack.png[/img]：すべての敵に4ダメージを与える。\n[img]CuteSakikoMod/images/ui/text/text_skill.png[/img]：すべての味方は3ブロックを得る。\n[img]CuteSakikoMod/images/ui/text/text_power.png[/img]：すべての味方はカードを1枚引く。\n[img]CuteSakikoMod/images/ui/text/text_special.png[/img]：すべての味方は1エナジーを得る。",
   "CUTE_SAKIKO_MOD_KEYWORD_PRESSURE.title": "重圧",
   "CUTE_SAKIKO_MOD_KEYWORD_PRESSURE.description": "[gold]重圧[/gold]1層につき、受けるダメージが1%増加する。",
   "CUTE_SAKIKO_MOD_KEYWORD_MEMORY.title": "メモリー",
@@ -23,8 +27,6 @@
   "CUTE_SAKIKO_MOD_KEYWORD_REMEMBER_CHORD.title": "愛音のコード",
   "CUTE_SAKIKO_MOD_KEYWORD_PLAYGUITAR.title": "ギター奏",
   "CUTE_SAKIKO_MOD_KEYWORD_PLAYGUITAR.description": "愛音専用の特殊攻撃。",
-  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.title": "コード",
-  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.description": "初めてプレイした時、一時的な追加[gold]コード[/gold]スロットを得る。\n再度プレイすると、対応する[gold]コード[/gold]を1つストックする。",
   "CUTE_SAKIKO_MOD_KEYWORD_EQUIPPED_CHORDS.title": "記憶済みコード",
   "CUTE_SAKIKO_MOD_KEYWORD_EQUIPPED_CHORDS.description": "[pink]ギター[/pink]に装備し、戦闘中に[img]CuteSakikoMod/images/ui/text/text_note.png[/img]で構成できる[pink]コード[/pink]。",
   "CUTE_SAKIKO_MOD_KEYWORD_LEARNED_CHORDS.title": "学習済みコード",

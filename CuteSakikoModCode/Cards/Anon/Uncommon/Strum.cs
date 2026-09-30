@@ -1,9 +1,10 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Token;
 using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Keywords;
 
@@ -14,14 +15,19 @@ public class Strum() : CuteAnonCard(2, CardType.Skill, CardRarity.Uncommon, Targ
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
         [CutesakiKeywords.NoNote.GetModCardKeyword()];
 
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips
+    {
+        get { yield return HoverTipFactory.FromKeyword(CutesakiKeywords.Noteify.GetModCardKeyword()); }
+    }
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         TriggerBanter();
         var combatState = Owner.Creature.CombatState;
         if (combatState == null) return;
 
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
         for (var i = 0; i < 3; i++)
         {
@@ -29,13 +35,13 @@ public class Strum() : CuteAnonCard(2, CardType.Skill, CardRarity.Uncommon, Targ
             {
                 combatState.CreateCard<AtkNote>(Owner),
                 combatState.CreateCard<SkillNote>(Owner),
-                combatState.CreateCard<PowerNote>(Owner)
+                combatState.CreateCard<PowerNote>(Owner),
+                combatState.CreateCard<SpeNote>(Owner)
             };
 
             var selected = await CardSelectCmd.FromChooseACardScreen(choiceContext, options, Owner);
             if (selected != null)
-                // ★ 完全复用打牌逻辑，包括溢出和自动播放
-                await guitar.OnNoteGenerated(choiceContext, selected.Type);
+                await chords.OnNoteGenerated(choiceContext, Owner, selected.Type, triggerEffect: IsUpgraded);
 
             foreach (var option in options)
                 combatState.RemoveCard(option);
@@ -44,6 +50,5 @@ public class Strum() : CuteAnonCard(2, CardType.Skill, CardRarity.Uncommon, Targ
 
     protected override void OnUpgrade()
     {
-        EnergyCost.UpgradeBy(-1);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -31,7 +30,6 @@ public class BiteGuitar : CuteAnonCard
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
         TriggerBanter();
 
-        // 伤害
         var damage = DynamicVars.Damage.IntValue;
         await DamageCmd.Attack(damage)
             .FromCard(this, cardPlay)
@@ -39,9 +37,8 @@ public class BiteGuitar : CuteAnonCard
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
-        // 随机化已记忆和弦（独立随机每个和弦的音符，带权重）
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
         var combat = Owner.Creature.CombatState;
         if (combat == null) return;
@@ -54,26 +51,23 @@ public class BiteGuitar : CuteAnonCard
             (CardType.Power, 0.04)
         };
 
-        foreach (var chordId in guitar.GetEquippedChordIds())
+        foreach (var chordId in chords.GetEquippedChordIds())
         {
             if (!ChordManager.AllChords.TryGetValue(chordId, out var def)) continue;
 
-            // 长度不变，每个位置按权重独立随机选取类型
             var shuffled = def.NoteSequence.Select(_ => PickRandomWeighted(rng, weightedPool)).ToList();
             ChordSequenceModifierHelper.SetCardModifier(Owner, chordId, new ShuffleNotesModifier(shuffled));
         }
 
-        // 刷新吉他 UI
         ChordNoteUIManager.UpdateNoteDisplay(Owner);
         ChordNoteUIManager.UpdateStoredChordDisplay(Owner);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Damage.UpgradeValueBy(5m); // 15 → 20
+        DynamicVars.Damage.UpgradeValueBy(5m);
     }
 
-    /// <summary> 根据权重随机选取一个 CardType </summary>
     private static CardType PickRandomWeighted(Rng rng, (CardType type, double weight)[] pool)
     {
         var totalWeight = pool.Sum(w => w.weight);

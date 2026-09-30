@@ -367,11 +367,11 @@ public class Entry
                         if (state == null) return;
                         var player = state.Players.FirstOrDefault(p => p.NetId == msg.PlayerNetId);
                         if (player == null) return;
-                        var guitar = player.Relics.OfType<AnonGuitar>().FirstOrDefault();
-                        if (guitar == null) return;
+                        var chords = player.GetChords();
+                        if (chords == null) return;
 
-                        guitar.RestoreChordData(msg.ChordsData, msg.BonusChordsData, "");
-                        guitar.SetLearnedChordsFromString(msg.LearnedChordsData);
+                        chords.RestoreChordData(msg.ChordsData, msg.BonusChordsData, "");
+                        chords.SetLearnedChordsFromString(msg.LearnedChordsData);
                     }));
 
                     netService.RegisterMessageHandler(new MessageHandlerDelegate<SkinSyncMessage>((msg, senderId) =>

@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -11,9 +10,11 @@ using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Common;
 
-public class LookCchord() : CuteAnonCard(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+public class LookCchord() : CuteAnonCard(0, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
-    public override string ChordId => "AnonCChord";
+    private const string MyChordId = "AnonCChord";
+
+    public override string ChordId => MyChordId;
 
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
     [
@@ -24,10 +25,16 @@ public class LookCchord() : CuteAnonCard(1, CardType.Skill, CardRarity.Common, T
     {
         get
         {
-            if (ChordManager.AllChords.TryGetValue("AnonCChord", out var def))
+            if (ChordManager.AllChords.TryGetValue(ChordId, out var def))
             {
                 var condition = def.GetConditionText();
-                var effectDesc = ChordDisplayHelper.GetFormattedDescription(def, 1);
+
+                // ★ 这张卡自身升级时，和弦战斗内 +1
+                // GetFormattedDescription 会用 def.BaseValues[i] + bonus 替换 {0} {1}...
+                // 每张卡使用自己对应的 BaseValues
+                var bonus = IsUpgraded ? 1 : 0;
+
+                var effectDesc = ChordDisplayHelper.GetFormattedDescription(def, bonus);
                 var fullDesc = $"{condition}\n{effectDesc}";
                 var title = new LocString("card_keywords", def.TitleKey);
                 yield return new HoverTip(title, fullDesc);
@@ -39,25 +46,21 @@ public class LookCchord() : CuteAnonCard(1, CardType.Skill, CardRarity.Common, T
     {
         TriggerBanter();
 
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
-        const string chordId = "AnonCChord";
-        // 若临时槽中还未拥有该和弦，则添加临时槽位；否则直接储存一个和弦
-        var temporaryChords = guitar.GetTemporaryChords(); // 需公开此方法，见下方说明
-        if (temporaryChords.Contains(chordId))
-            await ChordNoteSystem.AddStoredChordAsync(Owner, chordId, 1, choiceContext);
+        var temporaryChords = chords.GetTemporaryChords();
+        if (temporaryChords.Contains(ChordId))
+            await ChordNoteSystem.PlayChordAsync(Owner, MyChordId, choiceContext);
         else
-            guitar.AddTemporaryChord(chordId);
+            chords.AddTemporaryChord(ChordId);
 
-        // 播放特定和弦音效
         var sfxPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "audio",
             "look_cchord.mp3");
-        AudioManager.PlaySound(sfxPath); // 1.0 是基础音量
+        AudioManager.PlaySound(sfxPath);
     }
 
     protected override void OnUpgrade()
     {
-        EnergyCost.UpgradeBy(-1);
     }
 }

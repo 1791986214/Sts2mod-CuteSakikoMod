@@ -60,21 +60,20 @@ public partial class ChordSlotDropTarget : Control
 
     private void DropImpl(Vector2 atPosition, Variant data)
     {
-        if (_screen.Guitar == null || _screen._readOnly) return;
+        if (_screen.Chords == null || _screen._readOnly) return;
         var newChordId = (string)data;
-
-        // 直接使用构造函数传入的槽位索引
         _screen.SetTempSlot(_slotCategory, _slotIndex, newChordId);
     }
 
     private void OnMouseEntered()
     {
-        if (!string.IsNullOrEmpty(_currentChordId) && _screen?.Guitar?.Owner?.Creature != null)
+        var player = _screen?.Chords?.HostPlayer;
+        if (!string.IsNullOrEmpty(_currentChordId) && player?.Creature != null && _screen != null)
         {
             var tip = ChordDisplayHelper.GetDynamicChordHoverTip(
                 _currentChordId,
-                _screen.Guitar.Owner.Creature,
-                _screen.Guitar.GetDisplayBonus());
+                player.Creature,
+                _screen.Chords.GetDisplayBonus());
             var tipSet = NHoverTipSet.CreateAndShow(this, tip);
             if (tipSet == null) return;
 

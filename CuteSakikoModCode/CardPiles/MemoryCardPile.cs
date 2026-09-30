@@ -84,7 +84,7 @@ public sealed class MemoryCardPile
             var seenIds = new HashSet<ModelId>();
             var count = 0;
 
-            // 【修正点1】使用 AllCardPools 替代不存在的 GetAll<CardPoolModel>()
+            // 1. Token 池里带 Memory 的卡
             var targetPool = ModelDb.AllCardPools
                 .OfType<CuteSakikoTokenCardPool>()
                 .FirstOrDefault();
@@ -95,20 +95,33 @@ public sealed class MemoryCardPile
                 return;
             }
 
-            // 【修正点2】从目标卡池中筛选
-            // 查看反编译代码可知 CardPoolModel 有 AllCards 属性（见 Preload 方法中：allCard.Pool 和 p.AllCards）
-            var allMemoryCards = targetPool.AllCards
+            var poolMemoryCards = targetPool.AllCards
                 .Where(c => c.Keywords.Contains(CutesakiKeywords.Memory.GetModCardKeyword()))
-                .OrderBy(c => c.Id.Entry, StringComparer.Ordinal) // 必须保留 Ordinal 排序，确保联机一致性
+                .ToList();
+
+            // 2. 玩家牌组里带 Memory 的卡
+            var deckMemoryCards = player.Deck.Cards
+                .Where(c => c.Keywords.Contains(CutesakiKeywords.Memory.GetModCardKeyword()))
+                .Select(c => ModelDb.GetById<CardModel>(c.Id))
+                .Where(c => c != null)
+                .Cast<CardModel>()
+                .ToList();
+
+            // 3. 合并去重，保持 Ordinal 排序确保联机一致
+            var allMemoryCards = poolMemoryCards
+                .Concat(deckMemoryCards)
+                .GroupBy(c => c.Id)
+                .Select(g => g.First())
+                .OrderBy(c => c.Id.Entry, StringComparer.Ordinal)
                 .ToList();
 
             foreach (var template in allMemoryCards)
-                if (!seenIds.Contains(template.Id))
-                {
-                    AddSnapshot(player, pile, template, seenIds);
-                    count++;
-                    if (count % 10 == 0) await Task.Yield();
-                }
+            {
+                if (seenIds.Contains(template.Id)) continue;
+                AddSnapshot(player, pile, template, seenIds);
+                count++;
+                if (count % 10 == 0) await Task.Yield();
+            }
 
             pile.InvokeCardAddFinished();
         }

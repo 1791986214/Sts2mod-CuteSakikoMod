@@ -1,5 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -11,7 +11,6 @@ public class PracticePractice() : CuteAnonCard(1, CardType.Skill, CardRarity.Unc
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.NoNote.GetModCardKeyword()];
 
-    // 可无限次在营地强化
     public override int MaxUpgradeLevel => 999;
 
     protected override IEnumerable<DynamicVar> CanonicalVars
@@ -25,19 +24,18 @@ public class PracticePractice() : CuteAnonCard(1, CardType.Skill, CardRarity.Unc
         var amount = DynamicVars["Notes"].IntValue;
         var rng = Owner.RunState.Rng.CombatCardSelection;
         var noteTypes = new[] { CardType.Attack, CardType.Skill, CardType.Power };
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
         for (var i = 0; i < amount; i++)
         {
             var type = rng.NextItem(noteTypes);
-            await guitar.OnNoteGenerated(choiceContext, type);
+            await chords.OnNoteGenerated(choiceContext, Owner, type);
         }
     }
 
     protected override void OnUpgrade()
     {
-        // 等差增长：每次升级增加 3 * CurrentUpgradeLevel
         var additionalNotes = 3 * CurrentUpgradeLevel;
         DynamicVars["Notes"].UpgradeValueBy(additionalNotes);
     }

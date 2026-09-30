@@ -1,4 +1,6 @@
 {
+  "CUTE_SAKIKO_MOD_HOVER_TIP_INSTRUMENT.title": "楽器",
+  "CUTE_SAKIKO_MOD_HOVER_TIP_INSTRUMENT.description": "異なるタイプのカードをプレイして[img]CuteSakikoMod/images/ui/text/text_note.png[/img]を集め、[gold]コード[/gold]を構成できる。",
   "CUTESAKIKOMOD_NOTE_ATTACK.title": "攻撃音符",
   "CUTESAKIKOMOD_NOTE_ATTACK.description": "プレイしたアタックは[img]CuteSakikoMod/images/ui/text/text_attack.png[/img]を蓄積する。",
   "CUTESAKIKOMOD_NOTE_SKILL.title": "スキル音符",

@@ -27,10 +27,10 @@ public class MakeSimplerPower : CuteSakikoModPower, IChordSequenceModifierProvid
             yield break;
         }
 
-        var guitar = owner.Player?.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) yield break;
-
-        var allChordIds = guitar.GetEquippedChordIds();
+        var chords = owner.Player?.GetChords();
+        if (chords == null) yield break;
+        
+        var allChordIds = chords.GetEquippedChordIds();
         if (!allChordIds.Contains(chordDef.Id)) yield break;
 
         var noteCount = chordDef.NoteSequence.Length;

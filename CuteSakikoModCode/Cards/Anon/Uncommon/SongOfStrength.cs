@@ -1,5 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -28,10 +27,10 @@ public class SongOfStrength() : CuteAnonCard(-1, CardType.Power, CardRarity.Unco
     {
         TriggerBanter();
 
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
-        var chordIds = guitar.GetEquippedChordIds();
+        var chordIds = chords.GetEquippedChordIds();
         if (chordIds.Count == 0) return;
 
         var attackCount = 0;
@@ -59,6 +58,5 @@ public class SongOfStrength() : CuteAnonCard(-1, CardType.Power, CardRarity.Unco
 
     protected override void OnUpgrade()
     {
-        // 效果已在IsUpgraded中处理
     }
 }

@@ -1,4 +1,8 @@
 ﻿{
+  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.title": "Chord",
+  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.description": "At the start of combat, automatically removed and gain a temporary extra [gold]Chord[/gold] slot.\nHaving duplicate [gold]Chord[/gold] cards will cause them to be directly [gold]Performed[/gold] at the start of combat.",
+  "CUTE_SAKIKO_MOD_KEYWORD_NOTEIFY.title": "Note Effects",
+  "CUTE_SAKIKO_MOD_KEYWORD_NOTEIFY.description": "[img]CuteSakikoMod/images/ui/text/text_attack.png[/img]: Deal 4 damage to ALL enemies.\n[img]CuteSakikoMod/images/ui/text/text_skill.png[/img]: All allies gain 3 Block.\n[img]CuteSakikoMod/images/ui/text/text_power.png[/img]: All allies draw 1 card.\n[img]CuteSakikoMod/images/ui/text/text_special.png[/img]: All allies gain 1 Energy.",
   "CUTE_SAKIKO_MOD_KEYWORD_PRESSURE.title": "Pressure",
   "CUTE_SAKIKO_MOD_KEYWORD_PRESSURE.description": "Each stack of [gold]Pressure[/gold] increases damage taken by 1%.",
   "CUTE_SAKIKO_MOD_KEYWORD_MEMORY.title": "Memory",
@@ -23,8 +27,6 @@
   "CUTE_SAKIKO_MOD_KEYWORD_REMEMBER_CHORD.title": "Anon's Chords",
   "CUTE_SAKIKO_MOD_KEYWORD_PLAYGUITAR.title": "Guitar Performance",
   "CUTE_SAKIKO_MOD_KEYWORD_PLAYGUITAR.description": "A special Attack belonging to Anon.",
-  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.title": "Chord",
-  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.description": "The first time you play it, gain a temporary extra [gold]Chord[/gold] slot.\nPlaying it again will store a corresponding [gold]Chord[/gold].",
   "CUTE_SAKIKO_MOD_KEYWORD_EQUIPPED_CHORDS.title": "Memorized Chords",
   "CUTE_SAKIKO_MOD_KEYWORD_EQUIPPED_CHORDS.description": "Equipped to your [pink]guitar[/pink], these [pink]Chords[/pink] can be formed by [img]CuteSakikoMod/images/ui/text/text_note.png[/img] during combat.",
   "CUTE_SAKIKO_MOD_KEYWORD_LEARNED_CHORDS.title": "Learned Chords",

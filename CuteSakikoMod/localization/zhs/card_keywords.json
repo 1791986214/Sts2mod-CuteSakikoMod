@@ -1,4 +1,8 @@
 {
+  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.title": "和弦",
+  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.description": "战斗开始时，自动移除并获得临时额外[gold]和弦[/gold]槽位。\n拥有重复的[gold]和弦[/gold]卡将会在战斗开始时直接被[gold]演奏[/gold]。",
+  "CUTE_SAKIKO_MOD_KEYWORD_NOTEIFY.title": "音符效果",
+  "CUTE_SAKIKO_MOD_KEYWORD_NOTEIFY.description": "[img]CuteSakikoMod/images/ui/text/text_attack.png[/img]：对所有敌人造成4点伤害。\n[img]CuteSakikoMod/images/ui/text/text_skill.png[/img]：所有友方获得3点格挡。\n[img]CuteSakikoMod/images/ui/text/text_power.png[/img]：所有友方抽1张牌。\n[img]CuteSakikoMod/images/ui/text/text_special.png[/img]：所有友方获得1点能量。",
   "CUTE_SAKIKO_MOD_KEYWORD_PRESSURE.title": "压力",
   "CUTE_SAKIKO_MOD_KEYWORD_PRESSURE.description": "每层[gold]压力[/gold]使受到的伤害增加1%。",
   "CUTE_SAKIKO_MOD_KEYWORD_MEMORY.title": "回忆",
@@ -23,8 +27,6 @@
   "CUTE_SAKIKO_MOD_KEYWORD_REMEMBER_CHORD.title": "爱音的和弦",
   "CUTE_SAKIKO_MOD_KEYWORD_PLAYGUITAR.title": "弦奏",
   "CUTE_SAKIKO_MOD_KEYWORD_PLAYGUITAR.description": "属于爱音的特殊打击。",
-  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.title": "和弦",
-  "CUTE_SAKIKO_MOD_KEYWORD_CHORD.description": "第一次打出会获得临时额外[gold]和弦[/gold]槽位。\n再次打出会储存一个相应[gold]和弦[/gold]。",
   "CUTE_SAKIKO_MOD_KEYWORD_EQUIPPED_CHORDS.title": "已记忆和弦",
   "CUTE_SAKIKO_MOD_KEYWORD_EQUIPPED_CHORDS.description": "装备在[pink]吉他[/pink]上，在战斗内可以通过[img]CuteSakikoMod/images/ui/text/text_note.png[/img]构成的[pink]和弦[/pink]。",
   "CUTE_SAKIKO_MOD_KEYWORD_LEARNED_CHORDS.title": "已学习和弦",

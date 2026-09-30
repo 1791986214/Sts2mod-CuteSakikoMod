@@ -1,5 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -35,16 +34,15 @@ public class FollowBeat() : CuteAnonCard(2, CardType.Attack, CardRarity.Uncommon
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
-        var majorChords = guitar.GetCategorySlots(ChordCategory.Major);
+        var majorChords = chords.GetCategorySlots(ChordCategory.Major);
         if (majorChords.Count == 0) return;
         var majorChordId = majorChords[0];
 
         for (var i = 0; i < 3; i++)
             await ChordNoteSystem.AddStoredChordAsync(Owner, majorChordId, 1, choiceContext);
-        ;
 
         ChordNoteUIManager.UpdateStoredChordDisplay(Owner);
     }

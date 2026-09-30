@@ -29,8 +29,13 @@ namespace CuteSakikoMod.CuteSakikoModCode.Others;
 [RegisterOwnedCardKeyword(nameof(RanaLive),
     CardDescriptionPlacement = ModKeywordCardDescriptionPlacement.BeforeCardDescription)]
 [RegisterOwnedCardKeyword(nameof(Pancake))]
+[RegisterOwnedCardKeyword(nameof(Noteify))]
+
+
 public class CutesakiKeywords
 {
+    public static readonly string Noteify =
+        ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Noteify));
     public static readonly string Pressure = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Pressure));
     public static readonly string Memory = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Memory));
     public static readonly string Sword = ModContentRegistry.GetQualifiedKeywordId(Entry.ModId, nameof(Sword));

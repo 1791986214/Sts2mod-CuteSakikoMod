@@ -1,5 +1,4 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -9,7 +8,7 @@ using STS2RitsuLib.Keywords;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Uncommon;
 
-public class HandleTheTeamOutfits() : CuteAnonCard(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+public class HandleTheTeamOutfits() : CuteAnonCard(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     public override string ChordId => "AnonEChord";
 
@@ -22,10 +21,16 @@ public class HandleTheTeamOutfits() : CuteAnonCard(2, CardType.Skill, CardRarity
     {
         get
         {
-            if (ChordManager.AllChords.TryGetValue("AnonEChord", out var def))
+            if (ChordManager.AllChords.TryGetValue(ChordId, out var def))
             {
                 var condition = def.GetConditionText();
-                var effectDesc = ChordDisplayHelper.GetFormattedDescription(def, 1);
+
+                // ★ 这张卡自身升级时，和弦战斗内 +1
+                // GetFormattedDescription 会用 def.BaseValues[i] + bonus 替换 {0} {1}...
+                // 每张卡使用自己对应的 BaseValues
+                var bonus = IsUpgraded ? 1 : 0;
+
+                var effectDesc = ChordDisplayHelper.GetFormattedDescription(def, bonus);
                 var fullDesc = $"{condition}\n{effectDesc}";
                 var title = new LocString("card_keywords", def.TitleKey);
                 yield return new HoverTip(title, fullDesc);
@@ -37,20 +42,18 @@ public class HandleTheTeamOutfits() : CuteAnonCard(2, CardType.Skill, CardRarity
     {
         TriggerBanter();
 
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
         const string chordId = "AnonEChord";
-        // 若临时槽中还未拥有该和弦，则添加临时槽位；否则直接储存一个和弦
-        var temporaryChords = guitar.GetTemporaryChords(); // 需公开此方法，见下方说明
+        var temporaryChords = chords.GetTemporaryChords();
         if (temporaryChords.Contains(chordId))
-            await ChordNoteSystem.AddStoredChordAsync(Owner, chordId, 1, choiceContext);
+            await ChordNoteSystem.PlayChordAsync(Owner, chordId, choiceContext);
         else
-            guitar.AddTemporaryChord(chordId);
+            chords.AddTemporaryChord(chordId);
     }
 
     protected override void OnUpgrade()
     {
-        EnergyCost.UpgradeBy(-1); // 2 → 1
     }
 }

@@ -1,5 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
-using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+﻿using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -19,11 +18,11 @@ public class SmartAnon : CuteAnonCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
         var count = DynamicVars["Count"].IntValue;
-        ChordCmd.LearnRandomChords(guitar, count);
+        ChordCmd.LearnRandomChords(chords, count);
     }
 
     protected override void OnUpgrade()

@@ -1,4 +1,6 @@
 {
+  "CUTE_SAKIKO_MOD_HOVER_TIP_INSTRUMENT.title": "乐器",
+  "CUTE_SAKIKO_MOD_HOVER_TIP_INSTRUMENT.description": "可以通过打出不同类型的牌收集[img]CuteSakikoMod/images/ui/text/text_note.png[/img]构成[gold]和弦[/gold]。",
   "CUTESAKIKOMOD_NOTE_ATTACK.title": "攻击音符",
   "CUTESAKIKOMOD_NOTE_ATTACK.description": "打出的攻击牌会累积[img]CuteSakikoMod/images/ui/text/text_attack.png[/img]。",
   "CUTESAKIKOMOD_NOTE_SKILL.title": "技能音符",

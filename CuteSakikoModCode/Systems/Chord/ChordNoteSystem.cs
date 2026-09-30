@@ -1,12 +1,13 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Uncommon;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
 using STS2RitsuLib.Utils;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
@@ -67,21 +68,12 @@ public static class ChordNoteSystem
     {
         _savedState[player] = Serialize(state);
     }
+    
+    private static ChordStorageCapability? GetChords(Player player) => player.GetChords();
 
-    private static AnonGuitar? GetGuitar(Player player)
-    {
-        return player?.Relics?.OfType<AnonGuitar>().FirstOrDefault();
-    }
-
-    private static int GetFirstPlayBonus(Player player)
-    {
-        return GetGuitar(player)?.FirstPlayBonus ?? 0;
-    }
-
-    private static int GetBaseChordBonus(Player player)
-    {
-        return GetGuitar(player)?.BaseChordBonus ?? 0;
-    }
+    private static int GetFirstPlayBonus(Player player) => GetChords(player)?.FirstPlayBonus ?? 0;
+    private static int GetBaseChordBonus(Player player) => GetChords(player)?.BaseChordBonus ?? 0;
+    
 
     // ==================== 激活/停用 ====================
 
@@ -140,7 +132,8 @@ public static class ChordNoteSystem
         TryConsumeFirstPlayBonus(state, player);
     }
 
-    private static int CalculateBaseBonus(Player player)
+    private static int CalculateBaseBonus(
+        Player player, string? chordId = null, bool applyChordCardBonus = true)
     {
         var bonus = GetBaseChordBonus(player);
         if (player?.Creature == null) return bonus;
@@ -153,6 +146,13 @@ public static class ChordNoteSystem
         var chordBonusPower = player.Creature.GetPower<ChordBonusPower>();
         if (chordBonusPower != null && chordBonusPower.Amount > 0)
             bonus += 1;
+
+        if (applyChordCardBonus && !string.IsNullOrEmpty(chordId))
+        {
+            var chords = GetChords(player);
+            if (chords != null)
+                bonus += chords.GetChordCardBonus(chordId);
+        }
 
         return bonus;
     }
@@ -176,7 +176,11 @@ public static class ChordNoteSystem
 
     // ==================== 添加音符 ====================
 
-    public static async Task AddNoteAsync(Player player, CardType noteType, PlayerChoiceContext context)
+    public static async Task AddNoteAsync(
+        Player player,
+        CardType noteType,
+        PlayerChoiceContext context,
+        bool triggerEffect = false)
     {
         var state = GetState(player);
         if (!state.IsActive || player.Creature?.CombatState == null) return;
@@ -204,6 +208,39 @@ public static class ChordNoteSystem
             await vocalPower.OnNoteGained(context, 1);
 
         await TryMatchAndAutoPlayAsync(player, context);
+
+        // 若需要，触发对应音符效果
+        if (triggerEffect)
+            await TriggerNoteEffectAsync(player, noteType, context);
+
+        PlayerNotesChanged?.Invoke(player);
+    }
+    
+    public static async Task PlayChordsAsync(
+        Player player, IReadOnlyList<string> chordIds, PlayerChoiceContext context)
+    {
+        // 默认全部应用升级加成
+        var list = chordIds.Select(id => (chordId: id, applyUpgraded: true)).ToList();
+        await PlayChordsAsync(player, list, context);
+    }
+
+    public static async Task PlayChordsAsync(
+        Player player, IReadOnlyList<(string chordId, bool applyUpgraded)> chords,
+        PlayerChoiceContext context)
+    {
+        var state = GetState(player);
+        if (!state.IsActive || chords.Count == 0) return;
+
+        BeginPlayOperation(state, player);
+        SaveState(player, state);
+
+        foreach (var (chordId, applyUpgraded) in chords)
+        {
+            state = GetState(player);
+            await PlaySingleChordInternalAsync(
+                player, context, state, chordId, 1, removeStored: false,
+                applyChordCardBonus: applyUpgraded);
+        }
         PlayerNotesChanged?.Invoke(player);
     }
 
@@ -295,7 +332,8 @@ public static class ChordNoteSystem
 
     private static async Task PlaySingleChordInternalAsync(
         Player player, PlayerChoiceContext context, StateData state,
-        string chordId, int count = 1, bool removeStored = true)
+        string chordId, int count = 1, bool removeStored = true,
+        bool applyChordCardBonus = true)
     {
         var chordBonusPower = player.Creature?.GetPower<ChordBonusPower>();
         var shouldConsumeChordBonus =
@@ -313,23 +351,18 @@ public static class ChordNoteSystem
 
             if (ChordManager.AllChords.TryGetValue(chordId, out var def))
             {
-                var baseBonus = CalculateBaseBonus(player);
+                var baseBonus = CalculateBaseBonus(player, chordId, applyChordCardBonus);
                 var totalBonus = baseBonus + fixedFirstPlayBonus;
 
                 var combat = player.Creature?.CombatState;
                 if (combat != null)
                 {
-                    // ★ 演奏前钩子
                     await ChordNoteHooks.BeforeChordPlayed(combat, player, chordId, totalBonus, context);
-
                     await def.Effect(context, player.Creature, totalBonus);
-
-                    // ★ 演奏后钩子
                     await ChordNoteHooks.AfterChordPlayed(combat, player, chordId, totalBonus, context);
                 }
                 else
                 {
-                    // 没有战斗状态时也执行效果（例如战斗外模拟），但不触发钩子
                     await def.Effect(context, player.Creature, totalBonus);
                 }
             }
@@ -373,7 +406,7 @@ public static class ChordNoteSystem
         foreach (var card in cardsToMove)
             await CardPileCmd.Add(card, PileType.Hand);
 
-        if (cardsToMove.Count > 0) GetGuitar(player)?.Flash();
+        if (cardsToMove.Count > 0) GetChords(player)?.Flash();
     }
 
     // ==================== 公开演奏 API ====================
@@ -543,6 +576,52 @@ public static class ChordNoteSystem
         SaveState(player, state);
         PlayerNotesChanged?.Invoke(player);
         return count;
+    }
+    
+    /// <summary>
+    /// 按音符类型触发对应效果
+    /// 攻击 → 对所有敌人造成4点伤害；
+    /// 技能 → 所有友方获得3点格挡；
+    /// 能力 → 所有友方抽1张牌；
+    /// 其他音符 → 所有友方获得1点能量。
+    /// </summary>
+    public static async Task TriggerNoteEffectAsync(
+        Player player, CardType noteType, PlayerChoiceContext context)
+    {
+        if (player?.Creature?.CombatState == null) return;
+
+        var combat = player.Creature.CombatState;
+        var players = combat.Players.ToList();
+
+        switch (noteType)
+        {
+            case CardType.Attack:
+            {
+                var enemies = combat.HittableEnemies;
+                if (enemies.Count > 0)
+                    await CreatureCmd.Damage(
+                        context,
+                        enemies,
+                        new DamageVar(4m, ValueProp.Move),
+                        player.Creature,
+                        null,
+                        null);
+                break;
+            }
+            case CardType.Skill:
+                foreach (var p in players)
+                    await CreatureCmd.GainBlock(p.Creature, 3, 0, null);
+                break;
+            case CardType.Power:
+                foreach (var p in players)
+                    await CardPileCmd.Draw(context, 1, p);
+                break;
+            default:
+                // 其他音符（含特殊音符 / 爱音音符）
+                foreach (var p in players)
+                    await PlayerCmd.GainEnergy(1, p);
+                break;
+        }
     }
 
     public static void ClearNotes(Player player)

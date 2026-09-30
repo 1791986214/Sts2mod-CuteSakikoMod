@@ -16,6 +16,7 @@ public sealed class AnonSkinRegistry : ICharacterSkinRegistry
             [
                 (typeof(AnonStrike), 4),
                 (typeof(AnonDefend), 4),
+                (typeof(TurnIntoNote), 1),
                 (typeof(PlayChord), 1)
             ])
         ],

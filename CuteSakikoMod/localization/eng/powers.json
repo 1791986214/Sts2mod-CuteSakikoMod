@@ -1,4 +1,7 @@
 {
+  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.title": "Played Messily",
+  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.description": "For every certain number of [img]CuteSakikoMod/images/ui/text/text_note.png[/img] gained, additionally generate random [img]CuteSakikoMod/images/ui/text/text_note.png[/img] and trigger their effects.",
+  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.smartDescription": "Can gain [blue]{Amount}[/blue] additional [img]CuteSakikoMod/images/ui/text/text_note.png[/img] and trigger their effects.\nProgress: {NoteCount}/{Threshold}",
   "CUTE_SAKIKO_MOD_POWER_BOW_TO_ME_POWER.title": "Bow to Me",
   "CUTE_SAKIKO_MOD_POWER_BOW_TO_ME_POWER.description": "Whenever your [gold]Knight's Sword[/gold] deals damage, apply that much [gold]Pressure[/gold] to the enemy.",
   "CUTE_SAKIKO_MOD_POWER_BOW_TO_ME_POWER.smartDescription": "Whenever your [gold]Knight's Sword[/gold] deals damage, apply that much [gold]Pressure[/gold] to the enemy.",
@@ -77,9 +80,6 @@
   "CUTE_SAKIKO_MOD_POWER_QUARREL_SELF_POWER.title": "Quarrel",
   "CUTE_SAKIKO_MOD_POWER_QUARREL_SELF_POWER.description": "At the start of your next turn, lose that much Pressure.",
   "CUTE_SAKIKO_MOD_POWER_QUARREL_SELF_POWER.smartDescription": "At the start of your next turn, lose [blue]{Amount}[/blue] [gold]Pressure[/gold].",
-  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.title": "Played Messily",
-  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.description": "Whenever you gain a certain number of [img]CuteSakikoMod/images/ui/text/text_note.png[/img], generate additional random [img]CuteSakikoMod/images/ui/text/text_note.png[/img].",
-  "CUTE_SAKIKO_MOD_POWER_MESSY_PLAY_POWER.smartDescription": "Can gain {Amount} additional [img]CuteSakikoMod/images/ui/text/text_note.png[/img].\nProgress: {NoteCount}/{Threshold}",
   "CUTE_SAKIKO_MOD_POWER_ESCAPISM_TENDENCY_POWER.title": "Tendency to Escape",
   "CUTE_SAKIKO_MOD_POWER_ESCAPISM_TENDENCY_POWER.description": "At the start of each turn, choose and [gold]discard[/gold] 1 card from your [gold]hand[/gold]. At the end of your turn, gain Block equal to the number of stacks.",
   "CUTE_SAKIKO_MOD_POWER_ESCAPISM_TENDENCY_POWER.smartDescription": "At the start of each turn, choose and [gold]discard[/gold] 1 card from your [gold]hand[/gold]. At the end of your turn, gain [blue]{Amount}[/blue] Block.",

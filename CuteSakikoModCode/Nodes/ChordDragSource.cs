@@ -57,12 +57,13 @@ public partial class ChordDragSource : Control
 
     private void OnMouseEntered()
     {
-        if (_screen?.Guitar?.Owner?.Creature != null)
+        var player = _screen?.Chords?.HostPlayer;
+        if (player?.Creature != null && _screen != null)
         {
             var tip = ChordDisplayHelper.GetDynamicChordHoverTip(
                 _chordId,
-                _screen.Guitar.Owner.Creature,
-                _screen.Guitar.GetDisplayBonus()); // 使用 GetTotalBonus
+                player.Creature,
+                _screen.Chords.GetDisplayBonus());
             var tipSet = NHoverTipSet.CreateAndShow(this, tip);
             if (tipSet == null) return;
 

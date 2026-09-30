@@ -49,8 +49,8 @@ public sealed class AiHeartPower : CuteSakikoModPower
             const string chordId = "GreyAnonChord";
             foreach (var player in combat.Players)
             {
-                var guitar = player.Relics.OfType<AnonGuitar>().FirstOrDefault();
-                if (guitar != null) guitar.ReplaceRandomEquippedChord(chordId);
+                var chords = player.GetChords();
+                chords?.ReplaceRandomEquippedChord(chordId);
             }
         }
     }
@@ -95,10 +95,7 @@ public sealed class AiHeartPower : CuteSakikoModPower
 
         foreach (var player in combat.Players)
         {
-            var guitar = player.Relics.OfType<AnonGuitar>().FirstOrDefault();
-            if (guitar == null) continue;
-
-            // 使用新系统添加存储和弦，不依赖吉他方法
+            if (player.GetChords() == null) continue;
             await ChordNoteSystem.AddStoredChordAsync(player, chordId, 3, choiceContext);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Others;
-using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -25,18 +26,27 @@ public class PlayTogether() : CuteAnonCard(-1, CardType.Skill, CardRarity.Rare, 
     {
         TriggerBanter();
 
-        var guitar = Owner.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = Owner.GetChords();
+        if (chords == null) return;
 
         var x = ResolveEnergyXValue();
         var times = IsUpgraded ? x + 4 : x + 2;
         if (times <= 0) return;
 
-        await guitar.PlayRandomEquippedChord(choiceContext, times);
+        var equipped = chords.GetEquippedChordIds();
+        if (equipped.Count == 0) return;
+
+        var rng = Owner.RunState.Rng.CombatCardSelection;
+        for (var i = 0; i < times; i++)
+        {
+            if (CombatManager.Instance.IsOverOrEnding || Owner.Creature.IsDead)
+                break;
+
+            await ChordNoteSystem.PlayChordAsync(Owner, rng.NextItem(equipped), choiceContext);
+        }
     }
 
     protected override void OnUpgrade()
     {
-        // 效果本身由 IsUpgraded 控制次数
     }
 }

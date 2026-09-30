@@ -1,4 +1,4 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
+﻿
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -48,22 +48,20 @@ public class MarksOfPracticePower : CuteSakikoModPower
         var owner = Owner;
         if (owner?.Player == null) return;
 
-        var guitar = owner.Player.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        if (guitar == null) return;
+        var chords = owner.Player.GetChords();
+        if (chords == null) return;
 
         var targetCount = Amount;
-        var existing = guitar.GetTemporaryChords().ToList();
+        var existing = chords.GetTemporaryChords().ToList();
         var currentCount = existing.Count;
 
         if (currentCount < targetCount)
-            // 调用封装方法添加随机临时和弦
-            ChordCmd.AddRandomTemporaryChords(guitar, targetCount);
+            ChordCmd.AddRandomTemporaryChords(chords, targetCount);
         else if (currentCount > targetCount)
-            // 移除多余的临时和弦
             while (currentCount > targetCount)
             {
                 var lastChordId = existing.Last();
-                guitar.RemoveTemporaryChord(lastChordId);
+                chords.RemoveTemporaryChord(lastChordId);
                 existing.RemoveAt(existing.Count - 1);
                 currentCount--;
             }
@@ -73,7 +71,6 @@ public class MarksOfPracticePower : CuteSakikoModPower
     {
         var owner = Owner;
         if (owner?.Player == null) return;
-        var guitar = owner.Player.Relics.OfType<AnonGuitar>().FirstOrDefault();
-        guitar?.ClearTemporaryChords();
+        owner.Player.GetChords()?.ClearTemporaryChords();
     }
 }

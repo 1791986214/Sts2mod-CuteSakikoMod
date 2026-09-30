@@ -1,0 +1,25 @@
+﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Mod;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+
+namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Token;
+
+public class SpeNote() : OtherModTokenCard(0, CardType.Status, CardRarity.Token, TargetType.Self)
+{
+    public override IEnumerable<CardKeyword> CanonicalKeywords => new[] { CardKeyword.Exhaust };
+    public override int MaxUpgradeLevel => 0;
+
+    protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+    {
+        // 空效果，仅获得音符（由遗物自动处理）
+    }
+
+    public async Task OnChosen()
+    {
+    }
+
+    protected override void OnUpgrade()
+    {
+        // Token 卡不升级
+    }
+}

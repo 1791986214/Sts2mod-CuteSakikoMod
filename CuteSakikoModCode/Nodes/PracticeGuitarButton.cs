@@ -1,4 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Relics.Anon.Starter;
+using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
 using Godot;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -31,7 +32,6 @@ public partial class PracticeGuitarButton : NButton
         img.SetAnchorsPreset(LayoutPreset.FullRect);
         AddChild(img);
 
-        // 位置：右下角
         AnchorLeft = 1.0f;
         AnchorRight = 1.0f;
         AnchorTop = 0.0f;
@@ -55,7 +55,6 @@ public partial class PracticeGuitarButton : NButton
             ? HoverTipAlignment.Left
             : HoverTipAlignment.Right;
         tipSet.SetAlignment(this, alignment);
-        // 边界修正
         var viewportRect = GetViewportRect();
         var pos = tipSet.GlobalPosition;
         if (pos.X < 0) pos.X = 10;
@@ -76,7 +75,7 @@ public partial class PracticeGuitarButton : NButton
         base.OnRelease();
         if (_guitar == null) return;
         var screen = new ChordManagementScreen();
-        screen.SetGuitar(_guitar);
+        screen.SetChords(_guitar.GetOrCreateChords());   // ← 唯一改动
         screen.ShowScreen();
     }
 }
