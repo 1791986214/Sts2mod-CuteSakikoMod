@@ -51,6 +51,8 @@ public class AnonGuitar : CuteAnonRelic, IChordProvider, IChordConfig, IChordDat
     {
         get
         {
+            if (!IsMutable) yield break;
+
             yield return new HoverTip(
                 new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_HOVER_TIP_INSTRUMENT.title"),
                 new LocString("static_hover_tips", "CUTE_SAKIKO_MOD_HOVER_TIP_INSTRUMENT.description"));

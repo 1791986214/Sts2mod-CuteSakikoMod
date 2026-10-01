@@ -1,10 +1,12 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Token;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Chord;
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Keywords;
 
@@ -29,6 +31,11 @@ public class Strum() : CuteAnonCard(2, CardType.Skill, CardRarity.Uncommon, Targ
         var chords = Owner.GetChords();
         if (chords == null) return;
 
+        // 4 张卡超 FromChooseACardScreen 上限，改用 FromSimpleGrid
+        var prefs = new CardSelectorPrefs(
+            new LocString("card_selection", "CUTE_SAKIKO_MOD_STRUM_SELECT"),
+            1); // selectCount = 1
+
         for (var i = 0; i < 3; i++)
         {
             var options = new List<CardModel>
@@ -39,9 +46,11 @@ public class Strum() : CuteAnonCard(2, CardType.Skill, CardRarity.Uncommon, Targ
                 combatState.CreateCard<SpeNote>(Owner)
             };
 
-            var selected = await CardSelectCmd.FromChooseACardScreen(choiceContext, options, Owner);
-            if (selected != null)
-                await chords.OnNoteGenerated(choiceContext, Owner, selected.Type, triggerEffect: IsUpgraded);
+            var selected = await CardSelectCmd.FromSimpleGrid(choiceContext, options, Owner, prefs);
+            var picked = selected.FirstOrDefault();
+
+            if (picked != null)
+                await chords.OnNoteGenerated(choiceContext, Owner, picked.Type, triggerEffect: IsUpgraded);
 
             foreach (var option in options)
                 combatState.RemoveCard(option);

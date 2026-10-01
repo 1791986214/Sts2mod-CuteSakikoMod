@@ -19,6 +19,7 @@
   "CUTE_SAKIKO_MOD_CARD_KEEP_CENTER.description": "造成{Damage:diff()}点伤害。\n获得{Notes:diff()}[img]CuteSakikoMod/images/ui/text/text_attack.png[/img]，并触发对应效果",
   "CUTE_SAKIKO_MOD_CARD_STRUM.title": "扫弦",
   "CUTE_SAKIKO_MOD_CARD_STRUM.description": "打出三个自选[img]CuteSakikoMod/images/ui/text/text_note.png[/img]{IfUpgraded:show:，并触发对应[gold]音符效果[/gold]|}。",
+  "CUTE_SAKIKO_MOD_STRUM_SELECT": "选择一个音符",
   "CUTE_SAKIKO_MOD_CARD_SLOWER_BEAT.title": "节奏能再慢点吗？",
   "CUTE_SAKIKO_MOD_CARD_SLOWER_BEAT.description": "获得{Block:diff()}点[gold]格挡[/gold]，获得{notes:diff()}[img]CuteSakikoMod/images/ui/text/text_skill.png[/img]并触发对应效果。\n下回合获得{BlockNextTurn:diff()}点[gold]格挡[/gold]。",
   "CUTE_SAKIKO_MOD_CARD_DONT_RUN.title": "别跑！",

@@ -1,4 +1,33 @@
 ﻿{
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_TAKI.name": "Ten Days - Shiina Taki",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_TAKI.moves.ATTACK_1.title": "Last Breath Strike",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_TAKI.moves.ATTACK_2.title": "Chain Slash",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_TAKI.moves.ATTACK_3.title": "Heavy Blow",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_TAKI.moves.BLOCK_4.title": "Defensive Stance",
+
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_ANON.name": "Ten Days - Anon Chihaya",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_ANON.moves.HEAL_ALLIES.title": "Accompaniment Heal",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_ANON.moves.BLOCK_ALLIES.title": "Chorus Shield",
+
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_RANA.name": "Ten Days - Rana Kaname",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_RANA.moves.MULTI_HIT.title": "Gale Picking",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_RANA.moves.BUFF_TEAM.title": "Resonant Fortissimo",
+
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_TOMORI.name": "Ten Days - Tomori Takamatsu",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_TOMORI.moves.TEMP_STR_DOWN.title": "Silent Pain",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_TOMORI.moves.TEMP_DEX_DOWN.title": "Silent Sigh",
+
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_UMIRIN.name": "Ten Days - Umiri Yahata",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_UMIRIN.moves.APPLY_VULNERABLE.title": "Unguarded Performance",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_UMIRIN.moves.APPLY_FRAIL.title": "Weakened Chord",
+
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_SOYO.name": "Ten Days - Soyo Nagasaki",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_SOYO.moves.BUFF_DEX.title": "Skilled Fingertips",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_SOYO.moves.BLOCK_TEAM.title": "Layered Encircling",
+
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_SAKI.name": "Ten Days - Sakiko Togawa",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_SAKI.moves.APPLY_WEAK.title": "Dominating Gaze",
+  "CUTE_SAKIKO_MOD_MONSTER_TEN_DAY_SAKI.moves.ATTACK.title": "Curtain Call Blade",
   "CUTE_SAKIKO_MOD_MONSTER_ARALUO.name": "Alaro",
   "CUTE_SAKIKO_MOD_MONSTER_ARALUO.moves.HEAVY_ATTACK.title": "Ume wa Pawa!",
   "CUTE_SAKIKO_MOD_MONSTER_ARALUO.moves.POWER_UP.title": "Ume wa Pawa!!",

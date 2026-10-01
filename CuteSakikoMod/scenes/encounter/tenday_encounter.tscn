@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dy45fftdx5kk3"]
+
+[node name="Encounter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="snail1" type="Marker2D" parent="."]
+position = Vector2(1083, 775.3219)
+
+[node name="snail2" type="Marker2D" parent="."]
+position = Vector2(1380.6416, 775.5653)
+
+[node name="snail3" type="Marker2D" parent="."]
+position = Vector2(1977.8182, 775.41284)
+
+[node name="snail4" type="Marker2D" parent="."]
+position = Vector2(1234, 418.32193)
+
+[node name="snail5" type="Marker2D" parent="."]
+position = Vector2(1521.856, 418)
+
+[node name="snail6" type="Marker2D" parent="."]
+position = Vector2(1806, 418.32193)
+
+[node name="boss" type="Marker2D" parent="."]
+position = Vector2(1675, 775.3219)

@@ -577,6 +577,9 @@ public class ChordStorageCapability : RelicCapability
     // ==================== 悬浮提示构建 ====================
     public IEnumerable<IHoverTip> BuildHoverTips()
     {
+        // canonical 上下文（预览/图鉴）没有玩家，直接跳过
+        if (!IsMutable) yield break;
+
         if (HostPlayer == null) yield break;
 
         var desc = new LocString("relics", "CUTE_SAKIKO_MOD_RELIC_ANON_GUITAR_CHORDS_DESC");

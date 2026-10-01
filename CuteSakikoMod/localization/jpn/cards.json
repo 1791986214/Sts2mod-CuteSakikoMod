@@ -19,6 +19,7 @@
   "CUTE_SAKIKO_MOD_CARD_KEEP_CENTER.description": "{Damage:diff()}ダメージを与える。\n{Notes:diff()}つの[img]CuteSakikoMod/images/ui/text/text_attack.png[/img]を得て、対応する効果を発動する。",
   "CUTE_SAKIKO_MOD_CARD_STRUM.title": "ストローク",
   "CUTE_SAKIKO_MOD_CARD_STRUM.description": "好きな[img]CuteSakikoMod/images/ui/text/text_note.png[/img]を3つプレイする{IfUpgraded:show:、対応する[gold]音符効果[/gold]を発動する|}。",
+  "CUTE_SAKIKO_MOD_STRUM_SELECT": "音符を選択",
   "CUTE_SAKIKO_MOD_CARD_SLOWER_BEAT.title": "もっとゆっくりできない？",
   "CUTE_SAKIKO_MOD_CARD_SLOWER_BEAT.description": "{Block:diff()}の[gold]ブロック[/gold]を得て、{notes:diff()}つの[img]CuteSakikoMod/images/ui/text/text_skill.png[/img]を得て対応する効果を発動する。\n次のターン、{BlockNextTurn:diff()}の[gold]ブロック[/gold]を得る。",
   "CUTE_SAKIKO_MOD_CARD_DONT_RUN.title": "逃げるな！",

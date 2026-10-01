@@ -19,6 +19,7 @@
   "CUTE_SAKIKO_MOD_CARD_KEEP_CENTER.description": "Deal {Damage:diff()} damage.\nGain {Notes:diff()} [img]CuteSakikoMod/images/ui/text/text_attack.png[/img] and trigger their effects.",
   "CUTE_SAKIKO_MOD_CARD_STRUM.title": "Strum",
   "CUTE_SAKIKO_MOD_CARD_STRUM.description": "Play three [img]CuteSakikoMod/images/ui/text/text_note.png[/img] of your choice{IfUpgraded:show:, and trigger their corresponding [gold]Note effects[/gold]|}.",
+  "CUTE_SAKIKO_MOD_STRUM_SELECT": "Choose a note",
   "CUTE_SAKIKO_MOD_CARD_SLOWER_BEAT.title": "Can We Slow the Beat?",
   "CUTE_SAKIKO_MOD_CARD_SLOWER_BEAT.description": "Gain {Block:diff()} [gold]Block[/gold], gain {notes:diff()} [img]CuteSakikoMod/images/ui/text/text_skill.png[/img] and trigger their effects.\nNext turn, gain {BlockNextTurn:diff()} [gold]Block[/gold].",
   "CUTE_SAKIKO_MOD_CARD_DONT_RUN.title": "Don't Run!",
