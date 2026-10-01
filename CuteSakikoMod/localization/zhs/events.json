@@ -71,24 +71,39 @@
   "CUTE_SAKIKO_MOD_EVENT_STEAM_EVENT.pages.GIVE_MASK.options.CONTINUE.description": "",
   "CUTE_SAKIKO_MOD_EVENT_STEAM_EVENT.pages.EPILOGUE.description": "[blue]「……『朋友』这个说法，太随便了。」[/blue]\n[blue]「[sine]但在今晚，勉强可以。[/sine]」[/blue]\n\n[pink]粉色的虚影[/pink]闻言欢呼着扑过去，[aqua]水面[/aqua]溅起巨大的水花。\n\n[aqua]蒸汽越来越浓[/aqua]，把[pink]两道[/pink][blue]身影[/blue]都笼在了里面。\n\n你退出门外时，隐约听见[pink]两道[/pink][blue]声音[/blue]在池子里[b][sine]吵闹[/sine][/b]——\n手中不知何时还多出了点什么。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.title": "神秘的商场",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INITIAL.description": "你在尖塔内前进，发现前方有一个[gold]商场[/gold]。\n\n你看着眼前和周围[jitter]格格不入[/jitter]的[gold]商场[/gold]。\n\n虽然不管你怎么看都很奇怪，\n但是你总感觉里面有你[sine][green]感兴趣的东西[/green][/sine]。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INITIAL.options.ENTER_MALL.title": "进入商场",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INITIAL.options.ENTER_MALL.description": "",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.description": "在你踏入大门后的第一秒你就[purple]后悔了[/purple]，\n因为在你进来的一瞬间本该在你[fade_in]身后的大门就[red]消失[/red]了[/fade_in]。\n\n你在这个[gold]商场[/gold]里走了很久，一个人都没有，周围的景象也一直在重复。\n\n[thinky_dots]你决定找个柱子休息会[/thinky_dots]。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR.title": "柱子旁好像有什么东西...",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR.description": "",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR.description": "获得[gold]一袋抹茶糖果🍬[/gold]。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR_LOCKED.title": "柱子旁好像有什么东西...",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR_LOCKED.description": "队伍中没有[green]要乐奈[/green]。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.FIND_EXIT.title": "继续寻找出口",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.FIND_EXIT.description": "",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.FIND_EXIT.description": "随机为[blue]{Cards}[/blue]张牌附魔[purple]MyGo了[/purple]。",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.SIT_DOWN.title": "坐下休息",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.SIT_DOWN.description": "使你接下来的[blue]4[/blue]个节点随机化。",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.description": "你看向柱子旁发现了一个……[green][sine]抹茶糖果[/sine][/green]？\n\n你将其捡起来，抬头在不远处看见了更多的[green]抹茶[/green]🍬\n\n你手中的🍬越来越多，你跟着🍬钻进一个[gold]狭小的通道[/gold]。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.options.TAKE_VENT.title": "从通风口钻出来",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.options.TAKE_VENT.description": "获得[gold]一袋抹茶糖果🍬[/gold]。",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.options.TAKE_VENT.description": "",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.VENT_DESC.description": "在🍬的带领下你从一个[gold]通风口[/gold]里钻了出来。\n\n你也看到了不远处的[green]乐奈[/green]。\n\n[green]“迷路的人。”[/green]\n\n“这些🍬是[green]乐奈[/green]放的吧！谢谢[green]乐奈[/green]。”\n\n你把手中🍬递给[green]乐奈[/green]。“不要，这些🍬，吃了会[aqua]迷路[/aqua]”[green]乐奈[/green]将🍬推回去，然后离开了。",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.description": "[thinky_dots]你起身继续寻找[gold]出口[/gold]，但很显然[gold]出口[/gold]不是这么好找的……[/thinky_dots]\n\n所以你[blue]MyGo[/blue]了，万幸的是这里不会让你待太久。\n\n你脚下的地板突然消失，待你落地时发现已经离开的那个[gold]商场[/gold]，但是你感觉你的[gold]方向感[/gold]变的很[jitter]奇怪[/jitter]。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.options.CHECK_SELF.title": "检查自己",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.options.CHECK_SELF.description": "随机为[blue]{Cards}[/blue]张牌附魔[purple]MyGo了[/purple]。",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.options.CHECK_SELF.description": "",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.CHECK_SELF_DESC.description": "你发现你分不清[sine][pink]东[/pink][blue]南[/blue][purple]西[/purple][orange]北[/orange][/sine]了……大概没事？\n\n于是你拍拍身上的灰尘，盲目地继续前进。",
+
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SIT_DOWN.description": "你望着空无一人的[gold]商场[/gold]陷入了沉思。\n\n你开始怀疑这个[gold]商场[/gold]是专门等你进来的，\n所以你决定：\n\n[b]一直坐着[/b]\n\n[thinky_dots]毕竟要是能出去早出去了……[/thinky_dots]",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SIT_DOWN.options.SLEEP.title": "睡觉",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SIT_DOWN.options.SLEEP.description": "",
+
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SLEEP_DESC.description": "在坐了一会后你打算睡一觉，反正也没事干了。\n\n就在你闭眼的时候，一阵[jitter]失重感[/jitter]传来，你狠狠地摔在了地上。\n\n起身后你发现，这里不是刚进[gold]商场[/gold]时的那条路了。",
+
   "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.title": "奖学金？",
   "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.pages.INITIAL.description": "转过弯，你发现走廊尽头多出了一间[gold][b]不该存在的教室[/b][/gold]。\n[fly_in][orange]暖黄[/orange]的灯光从门缝里漏出来[/fly_in]，[sine][color=#cccccc]粉笔灰[/color]在光柱里浮动[/sine]。\n\n黑板上，工整地写着[orange]期末考试的成绩排名[/orange]。\n两道虚影正立在榜前，一[blue]蓝[/blue]，一[pink]粉[/pink]。\n\n[pink]粉发[/pink]的少女指着榜单最上方的名字，笑得[sine]眼睛都弯了起来[/sine]。\n[pink]「年级第一！[gold]千早爱音[/gold]年级第一！怎么样，要不要签名？现在预约[gold]免费[/gold]哦！」[/pink]\n\n没有人回应[pink]她[/pink]。",
   "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.pages.INITIAL.options.LISTEN_CLOSELY.title": "靠近仔细听",

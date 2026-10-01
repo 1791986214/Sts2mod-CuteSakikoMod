@@ -1,4 +1,7 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.CardPiles;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CuteSakikoMod.CuteSakikoModCode.CardPiles;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -14,17 +17,10 @@ public sealed class MyGoEnchantment : ModEnchantmentTemplate
 {
     private static readonly Lazy<PileType?> _forgetPileType = new(() =>
     {
-        try
-        {
-            return ForgetCardPile.GetPileType();
-        }
-        catch
-        {
-            return null;
-        }
+        try { return ForgetCardPile.GetPileType(); }
+        catch { return null; }
     });
 
-    private Player? _pendingDeckOwner;
     public override bool ShowAmount => false;
     public override bool HasExtraCardText => true;
 
@@ -32,75 +28,54 @@ public sealed class MyGoEnchantment : ModEnchantmentTemplate
         "CuteSakikoMod/images/enchantments/mygo.png"
     );
 
-    public override bool CanEnchant(CardModel card)
-    {
-        return true;
-    }
+    public override bool CanEnchant(CardModel card) => true;
 
-    public override CardLocation ModifyCardPlayResultLocation(
-        CardModel card,
-        bool isAutoPlay,
-        ResourceInfo resources,
-        CardLocation cardLocation)
+    // 弃牌行为结束后：每张附魔牌各自随机移动到一个牌堆
+    public override async Task AfterFlush(
+        PlayerChoiceContext choiceContext,
+        Player player,
+        IReadOnlyCollection<CardModel> flushedCards,
+        IReadOnlyCollection<CardModel> retainedCards)
     {
-        if (card != Card) return cardLocation;
-        if (card.IsDupe || card.Type == CardType.Power) return cardLocation;
+        if (player != Card.Owner) return;
 
-        var combatState = card.CombatState;
-        if (combatState == null) return cardLocation;
+        // 卡必须在战斗堆里（不在战斗堆说明已离场）
+        var currentPile = Card.Pile;
+        if (currentPile == null || !currentPile.IsCombatPile) return;
+
+        var combatState = Card.CombatState;
+        if (combatState == null) return;
 
         var players = combatState.Players.ToList();
-        if (players.Count == 0) return cardLocation;
+        if (players.Count == 0) return;
 
-        var piles = new List<PileType>
+        // 候选牌堆（不含 None / Deck / Play）
+        var pileTypes = new List<PileType>
         {
+            PileType.Hand,
             PileType.Draw,
             PileType.Discard,
             PileType.Exhaust,
-            PileType.Hand,
-            PileType.None
         };
         if (_forgetPileType.Value is { } forget)
-            piles.Add(forget);
+            pileTypes.Add(forget);
 
-        var rng = card.Owner.RunState.Rng.CombatCardGeneration;
-        var targetPlayer = players[rng.NextInt(players.Count)];
-
-        // 追加“进牌组”分支
-        var roll = rng.NextInt(piles.Count + 1);
-        if (roll == piles.Count)
+        // 构造候选目标（排除"同玩家同牌堆"，避免原地移动）
+        var targets = new List<(Player Player, PileType Pile)>();
+        foreach (var p in players)
+        foreach (var pt in pileTypes)
         {
-            _pendingDeckOwner = targetPlayer;
-            return new CardLocation(card.Owner, PileType.None, CardPilePosition.Bottom);
+            if (p == Card.Owner && pt == currentPile.Type) continue;
+            targets.Add((p, pt));
         }
+        if (targets.Count == 0) return;
 
-        return new CardLocation(targetPlayer, piles[roll], CardPilePosition.Bottom);
-    }
+        var rng = Card.Owner.RunState.Rng.CombatCardGeneration;
+        var chosen = targets[rng.NextInt(targets.Count)];
 
-    public override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay? cardPlay)
-    {
-        await base.OnPlay(choiceContext, cardPlay);
-
-        var deckOwner = _pendingDeckOwner;
-        if (deckOwner == null) return;
-        _pendingDeckOwner = null;
-
-        var canonical = ModelDb.GetById<CardModel>(Card.Id);
-        var newCard = deckOwner.RunState.CreateCard(canonical, deckOwner);
-
-        var upgradeCount = Math.Min(Card.CurrentUpgradeLevel, newCard.MaxUpgradeLevel);
-        for (var i = 0; i < upgradeCount; i++)
-            CardCmd.Upgrade(newCard);
-
-        if (Card.Enchantment != null)
-        {
-            var ench = (EnchantmentModel)Card.Enchantment.MutableClone();
-            if (ench.CanEnchant(newCard))
-                CardCmd.Enchant(ench, newCard, ench.Amount);
-        }
-
-        await CardPileCmd.Add(newCard, PileType.Deck);
-
-        PileType.Deck.GetPile(deckOwner).InvokeCardAddFinished();
+        if (chosen.Player == Card.Owner)
+            await CardPileCmd.Add(Card, chosen.Pile);
+        else
+            await CardPileCmd.GiveToAnotherPlayer(Card, chosen.Player, chosen.Pile);
     }
 }

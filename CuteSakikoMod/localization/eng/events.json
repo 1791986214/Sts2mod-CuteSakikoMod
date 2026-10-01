@@ -71,25 +71,38 @@
   "CUTE_SAKIKO_MOD_EVENT_STEAM_EVENT.pages.GIVE_MASK.options.CONTINUE.description": "",
   "CUTE_SAKIKO_MOD_EVENT_STEAM_EVENT.pages.EPILOGUE.description": "[blue]\"...The word 'friends' is too casual.\"[/blue]\n[blue]\"[sine]But for tonight, I suppose it can pass.[/sine]\"[/blue]\n\nHearing this, the [pink]pink phantom[/pink] cheers and lunges over, sending up a huge splash from the [aqua]water[/aqua].\n\n[aqua]The steam grows thicker and thicker[/aqua], enveloping the [pink]two[/pink] [blue]figures[/blue].\n\nAs you step back out the door, you faintly hear [pink]two[/pink] [blue]voices[/blue] [b][sine]squabbling[/sine][/b] in the pool——\nAt some point, something extra has found its way into your hand.",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.title": "Mysterious Mall",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INITIAL.description": "You press on within the Spire and find a [gold]mall[/gold] ahead.\n\nYou look at the [gold]mall[/gold] that is so [jitter]out of place[/jitter] with its surroundings.\n\nNo matter how you look at it, it's strange,\nbut you can't shake the feeling that there's something [sine][green]you're interested in[/green][/sine] inside.",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INITIAL.options.ENTER_MALL.title": "Enter the mall",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INITIAL.options.ENTER_MALL.description": "",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.description": "The first second after you step through the doors, you [purple]regret it[/purple],\nbecause the instant you enter, the door that should be [fade_in]behind you [red]vanishes[/red][/fade_in].\n\nYou walk through the [gold]mall[/gold] for a long time, not a single person around, and the surroundings keep repeating.\n\n[thinky_dots]You decide to find a pillar and rest for a bit[/thinky_dots].",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR.title": "There seems to be something by the pillar...",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR.description": "",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR.description": "Obtain [gold]A Bag of Matcha Candy 🍬[/gold].",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR_LOCKED.title": "There seems to be something by the pillar...",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR_LOCKED.description": "Requires [green]Rana Kaname[/green] in your party.",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.FIND_EXIT.title": "Keep looking for the exit",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.FIND_EXIT.description": "",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.FIND_EXIT.description": "Randomly enchant [blue]{Cards}[/blue] {Cards:plural:card|cards} with [purple]MyGo'd[/purple].",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.SIT_DOWN.title": "Sit down and rest",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.SIT_DOWN.description": "Randomize your next [blue]4[/blue] nodes.",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.description": "You look beside the pillar and find... [green][sine]a matcha candy[/sine][/green]?\n\nYou pick it up, and looking up, you spot more [green]matcha[/green]🍬 not far away.\n\nThe 🍬 in your hand multiply, and you follow them into a [gold]narrow passage[/gold].",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.options.TAKE_VENT.title": "Crawl out through the vent",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.options.TAKE_VENT.description": "Obtain [gold]A Bag of Matcha Candy 🍬[/gold].",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.options.TAKE_VENT.description": "",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.VENT_DESC.description": "Led by the 🍬, you crawl out from a [gold]vent[/gold].\n\nYou also spot [green]Rana[/green] not far away.\n\n[green]\"A lost person.\"[/green]\n\n\"These 🍬 were left by [green]Rana[/green], right! Thank you, [green]Rana[/green].\"\n\nYou hold out the 🍬 to [green]Rana[/green]. \"No, these 🍬, if you eat them you'll get [aqua]lost[/aqua]\" [green]Rana[/green] pushes them back, then leaves.",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.description": "[thinky_dots]You get up and keep searching for the [gold]exit[/gold], but clearly the [gold]exit[/gold] isn't so easy to find...[/thinky_dots]\n\nSo you get [blue]MyGo'd[/blue], and thankfully this place won't keep you for long.\n\nThe floor beneath you suddenly vanishes, and when you land, you find you've left that [gold]mall[/gold] behind, but your sense of [gold]direction[/gold] feels very [jitter]strange[/jitter].",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.options.CHECK_SELF.title": "Check yourself",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.options.CHECK_SELF.description": "Randomly enchant [blue]{Cards}[/blue] {Cards:plural:card|cards} with [purple]MyGo'd[/purple].",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.options.CHECK_SELF.description": "",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.CHECK_SELF_DESC.description": "You find you can no longer tell [sine][pink]east[/pink][blue]south[/blue][purple]west[/purple][orange]north[/orange][/sine] apart... Probably fine?\n\nSo you dust yourself off and press blindly onward.",
-  "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.title": "Scholarship?",
+
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SIT_DOWN.description": "You gaze into the empty [gold]mall[/gold] and fall into thought.\n\nYou begin to suspect this [gold]mall[/gold] was waiting specifically for you to come in,\nso you decide:\n\n[b]Just keep sitting[/b]\n\n[thinky_dots]After all, if you could leave, you'd have left already...[/thinky_dots]",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SIT_DOWN.options.SLEEP.title": "Sleep",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SIT_DOWN.options.SLEEP.description": "",
+
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SLEEP_DESC.description": "After sitting for a while, you decide to sleep—there's nothing else to do anyway.\n\nJust as you close your eyes, a [jitter]sensation of weightlessness[/jitter] washes over you, and you crash hard onto the ground.\n\nWhen you get up, you find this isn't the path you took when you first entered the [gold]mall[/gold].",  "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.title": "Scholarship?",
   "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.pages.INITIAL.description": "Turning the corner, you find a [gold][b]classroom that shouldn't exist[/b][/gold] at the end of the hallway.\n[fly_in][orange]Warm yellow[/orange] light spills from the crack under the door[/fly_in], [sine][color=#cccccc]chalk dust[/color] drifting in the beam[/sine].\n\nOn the blackboard, written neatly, are the [orange]final exam rankings[/orange].\nTwo phantoms stand before the board—one [blue]blue[/blue], one [pink]pink[/pink].\n\nThe [pink]pink-haired[/pink] girl points at the top name on the list, smiling [sine]so widely her eyes curve[/sine].\n[pink]\"Top of the grade! [gold]Anon Chihaya[/gold], top of the grade! How about it, want an autograph? Pre-orders are [gold]free[/gold]!\"[/pink]\n\nNo one responds to [pink]her[/pink].",
   "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.pages.INITIAL.options.LISTEN_CLOSELY.title": "Move closer and listen",
   "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.pages.INITIAL.options.LISTEN_CLOSELY.description": "",

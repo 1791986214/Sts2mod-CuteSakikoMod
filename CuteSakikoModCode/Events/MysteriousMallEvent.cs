@@ -1,4 +1,7 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using CuteSakikoMod.CuteSakikoModCode.Character.Mygo;
 using CuteSakikoMod.CuteSakikoModCode.Enchantments;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Event;
 using MegaCrit.Sts2.Core.Commands;
@@ -7,6 +10,7 @@ using MegaCrit.Sts2.Core.Events;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Map;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Runs;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -18,6 +22,7 @@ namespace CuteSakikoMod.CuteSakikoModCode.Events;
 public sealed class MysteriousMallEvent : CuteSakikoEvent
 {
     private IHoverTip[]? _relicTips;
+    private IHoverTip[]? _enchantTips;
 
     public override EventAssetProfile AssetProfile => new(
         InitialPortraitPath: "res://CuteSakikoMod/images/events/mysterious_mall.png"
@@ -30,10 +35,7 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
         new CardsVar(4)
     ];
 
-    protected override bool IsAllowedInternal(IRunState runState)
-    {
-        return true;
-    }
+    protected override bool IsAllowedInternal(IRunState runState) => true;
 
     protected override IReadOnlyList<EventOption> GenerateInitialOptions()
     {
@@ -43,16 +45,21 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
         };
     }
 
+    // ---------- 进入商场：三选项，提示已在这里挂好 ----------
     private Task EnterMall()
     {
+        _relicTips ??= HoverTipFactory.FromRelic<BagOfMatchaCandy>().ToArray();
+        _enchantTips ??= HoverTipFactory.FromEnchantment<MyGoEnchantment>().ToArray();
+
         var options = new List<EventOption>();
 
         if (HasRanaPlayer())
-            options.Add(new EventOption(this, CheckPillar, ModOptionKey("INSIDE", "CHECK_PILLAR")));
+            options.Add(new EventOption(this, CheckPillar, ModOptionKey("INSIDE", "CHECK_PILLAR"), _relicTips));
         else
             options.Add(new EventOption(this, null, ModOptionKey("INSIDE", "CHECK_PILLAR_LOCKED")));
 
-        options.Add(new EventOption(this, FindExit, ModOptionKey("INSIDE", "FIND_EXIT")));
+        options.Add(new EventOption(this, FindExit, ModOptionKey("INSIDE", "FIND_EXIT"), _enchantTips));
+        options.Add(new EventOption(this, SitDown, ModOptionKey("INSIDE", "SIT_DOWN")));
 
         SetEventState(PageDescription("INSIDE"), options);
         return Task.CompletedTask;
@@ -64,42 +71,36 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
         return Owner.RunState.Players.Any(p => p.Character is CuteRana);
     }
 
-    // 选项1.1：柱子旁好像有什么东西（需要乐奈）
+    // ---------- 选项1：柱子旁 ----------
+    // 提示已挂在 INSIDE 的选项上，这里不再传
     private Task CheckPillar()
     {
-        _relicTips ??= HoverTipFactory.FromRelic<BagOfMatchaCandy>().ToArray();
-
-        SetEventState(
-            PageDescription("PILLAR"),
+        SetEventState(PageDescription("PILLAR"),
             new List<EventOption>
             {
-                new(this, TakeVent, ModOptionKey("PILLAR", "TAKE_VENT"), _relicTips)
+                new(this, TakeVent, ModOptionKey("PILLAR", "TAKE_VENT"))
             });
         return Task.CompletedTask;
     }
 
-    // 选项1.1.1：从通风口钻出来 → 获得遗物
     private async Task TakeVent()
     {
         await RelicCmd.Obtain(ModelDb.Relic<BagOfMatchaCandy>().ToMutable(), Owner!);
         SetEventFinished(PageDescription("VENT_DESC"));
     }
 
-    // 选项1.2：继续寻找出口
+    // ---------- 选项2：寻找出口 ----------
     private Task FindExit()
     {
-        var enchantTips = HoverTipFactory.FromEnchantment<MyGoEnchantment>().ToArray();
-
-        SetEventState(
-            PageDescription("FIND_EXIT"),
+        SetEventState(PageDescription("FIND_EXIT"),
             new List<EventOption>
             {
-                new(this, CheckSelf, ModOptionKey("FIND_EXIT", "CHECK_SELF"), enchantTips)
+                new(this, CheckSelf, ModOptionKey("FIND_EXIT", "CHECK_SELF"))
             });
         return Task.CompletedTask;
     }
 
-    // 选项1.2.1：检查自己 → 随机为 {Cards} 张牌附魔 MyGo了
+    // 选项2.1：检查自己 → 随机为 4 张牌附魔 MyGo了（附魔前先预览）
     private async Task CheckSelf()
     {
         var enchantment = ModelDb.Enchantment<MyGoEnchantment>();
@@ -108,6 +109,7 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
         var deck = PileType.Deck.GetPile(Owner!);
         var candidates = deck.Cards.Where(c => c.Enchantment == null).ToList();
 
+        // 随机挑选
         var chosen = new List<CardModel>();
         for (var i = 0; i < count && candidates.Count > 0; i++)
         {
@@ -116,13 +118,86 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
             candidates.RemoveAt(idx);
         }
 
-        foreach (var card in chosen) CardCmd.Enchant(enchantment.ToMutable(), card, 1);
+        // ★ 附魔前预览：把这 4 张牌展示出来
+        if (chosen.Count > 0)
+        {
+            var previews = chosen
+                .Select(c => new CardPileAddResult
+                {
+                    cardAdded = c,
+                    success = true,
+                    oldPile = deck,
+                    targetPile = PileType.Deck,
+                })
+                .ToList();
+
+            CardCmd.PreviewCardPileAdd(previews, 0.5f);
+            await Cmd.Wait(0.5f);
+        }
+
+        // 执行附魔
+        foreach (var card in chosen)
+            CardCmd.Enchant(enchantment.ToMutable(), card, 1);
 
         SetEventFinished(PageDescription("CHECK_SELF_DESC"));
     }
 
-    private LocString PageDescription(string pageKey)
+    // ---------- 选项3：坐下休息 ----------
+    private Task SitDown()
     {
-        return L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
+        SetEventState(PageDescription("SIT_DOWN"),
+            new List<EventOption>
+            {
+                new(this, Sleep, ModOptionKey("SIT_DOWN", "SLEEP"))
+            });
+        return Task.CompletedTask;
     }
+
+    private Task Sleep()
+    {
+        RandomizeNextFourMapPoints(Owner!.RunState);
+        SetEventFinished(PageDescription("SLEEP_DESC"));
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// 将当前坐标往下 4 行的所有地图节点类型随机化。
+    /// </summary>
+    private static void RandomizeNextFourMapPoints(IRunState runState)
+    {
+        var map = runState.Map;
+        if (map == null) return;
+
+        var currentCoord = runState.CurrentMapCoord;
+        if (currentCoord == null) return;
+
+        var startRow = currentCoord.Value.row + 1;
+        var endRow = System.Math.Min(map.GetRowCount() - 1, startRow + 3);
+        if (endRow < startRow) return;
+
+        var rng = runState.Rng.UpFront;
+        var types = new[]
+        {
+            MapPointType.Monster,
+            MapPointType.Elite,
+            MapPointType.Unknown,
+            MapPointType.Shop,
+            MapPointType.Treasure,
+            MapPointType.RestSite,
+        };
+
+        for (var row = startRow; row <= endRow; row++)
+        {
+            foreach (var point in map.GetPointsInRow(row))
+            {
+                if (point.PointType == MapPointType.Boss) continue;
+                if (point.PointType == MapPointType.Ancient) continue;
+                if (point.PointType == MapPointType.Unassigned) continue;
+
+                point.PointType = types[rng.NextInt(types.Length)];
+            }
+        }
+    }
+
+    private LocString PageDescription(string pageKey) => L10NLookup($"{Id.Entry}.pages.{pageKey}.description");
 }

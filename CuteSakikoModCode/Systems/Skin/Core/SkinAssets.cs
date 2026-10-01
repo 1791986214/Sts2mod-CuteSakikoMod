@@ -1,9 +1,5 @@
 ﻿namespace CuteSakikoMod.CuteSakikoModCode.Systems.Skin.Core;
 
-/// <summary>
-///     一个皮肤的全部资源路径。
-///     角色选择背景、角色选择图标、地图标记图标由角色固定提供，不属于皮肤。
-/// </summary>
 public sealed record SkinAssets(
     string VisualsPath,
     string EnergyCounterPath,
@@ -16,4 +12,7 @@ public sealed record SkinAssets(
     string ArmPointingPath,
     string ArmRockPath,
     string ArmPaperPath,
-    string ArmScissorsPath);
+    string ArmScissorsPath,
+    // ★ 新增：true → 该皮肤走 AnimationPlayer 状态机
+    //          false（默认）→ 走原版 Spine 路径（saki 皮肤）
+    bool UsesAnimationPlayerStateMachine = true);

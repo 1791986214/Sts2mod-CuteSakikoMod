@@ -71,25 +71,38 @@
   "CUTE_SAKIKO_MOD_EVENT_STEAM_EVENT.pages.GIVE_MASK.options.CONTINUE.description": "",
   "CUTE_SAKIKO_MOD_EVENT_STEAM_EVENT.pages.EPILOGUE.description": "[blue]「……『友達』という言い方は、安直すぎる。」[/blue]\n[blue]「[sine]ですが今夜だけは、まあ許しましょう。[/sine]」[/blue]\n\nそれを聞いた[pink]ピンクの残影[/pink]が歓声を上げて飛びつき、[aqua]水面[/aqua]が大きく跳ねる。\n\n[aqua]湯気はますます濃くなり[/aqua]、[pink]二つの[/pink][blue]影[/blue]を包み込んでいく。\n\nあなたが扉の外へ退がる時、[pink]二つの[/pink][blue]声[/blue]が湯船の中で[b][sine]言い争っている[/sine][/b]のがかすかに聞こえた——\nいつの間にか、手の中に何かが増えていた。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.title": "神秘のショッピングモール",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INITIAL.description": "尖塔の中を進むと、前方に[gold]ショッピングモール[/gold]があるのが見えた。\n\nあなたは目の前の、周囲と[jitter]あまりにも不釣り合い[/jitter]な[gold]ショッピングモール[/gold]を見つめる。\n\nどう見ても奇妙だが、\n中にあなたが[sine][green]興味を惹かれるもの[/green][/sine]がある気がしてならない。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INITIAL.options.ENTER_MALL.title": "ショッピングモールに入る",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INITIAL.options.ENTER_MALL.description": "",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.description": "扉をくぐった最初の一秒で、あなたは[purple]後悔した[/purple]。\nなぜなら、入った瞬間、[fade_in]背後にあるはずの扉が[red]消えて[/red]しまったからだ[/fade_in]。\n\nあなたはこの[gold]ショッピングモール[/gold]を長いこと歩いたが、誰一人おらず、周囲の景色もずっと繰り返している。\n\n[thinky_dots]あなたは柱を見つけて少し休むことにした[/thinky_dots]。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR.title": "柱のそばに何かあるような...",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR.description": "",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR.description": "[gold]抹茶キャンディの袋🍬[/gold]を入手する。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR_LOCKED.title": "柱のそばに何かあるような...",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.CHECK_PILLAR_LOCKED.description": "パーティーに[green]要楽奈[/green]がいない。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.FIND_EXIT.title": "出口を探し続ける",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.FIND_EXIT.description": "",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.FIND_EXIT.description": "ランダムに[blue]{Cards}[/blue]枚のカードに[purple]MyGoった[/purple]を付与する。",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.SIT_DOWN.title": "座って休む",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.INSIDE.options.SIT_DOWN.description": "次の[blue]4[/blue]ノードをランダム化する。",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.description": "柱のそばを見ると、[green][sine]抹茶キャンディ[/sine][/green]が……？\n\nあなたはそれを拾い上げ、顔を上げるとすぐ先にさらに多くの[green]抹茶[/green]🍬を見つける。\n\n手の中の🍬がどんどん増えていき、あなたは🍬を追って[gold]狭い通路[/gold]へと入り込む。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.options.TAKE_VENT.title": "通風口から這い出す",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.options.TAKE_VENT.description": "[gold]抹茶キャンディの袋🍬[/gold]を入手する。",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.PILLAR.options.TAKE_VENT.description": "",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.VENT_DESC.description": "🍬に導かれて、あなたは[gold]通風口[/gold]から這い出した。\n\nすぐ近くに[green]楽奈[/green]の姿も見える。\n\n[green]「迷子の人。」[/green]\n\n「この🍬は[green]楽奈[/green]が置いたんだよね！ありがとう、[green]楽奈[/green]。」\n\nあなたは手の🍬を[green]楽奈[/green]に差し出す。「いらない、この🍬、食べると[aqua]迷子[/aqua]になる」[green]楽奈[/green]は🍬を押し返し、それから去っていった。",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.description": "[thinky_dots]あなたは立ち上がって[gold]出口[/gold]を探し続けるが、明らかに[gold]出口[/gold]はそう簡単には見つからない……[/thinky_dots]\n\nそこであなたは[blue]MyGo[/blue]った。幸いなことに、ここは長居させる場所ではない。\n\n足元の床が突然消え、着地した時にはもうあの[gold]ショッピングモール[/gold]を出ていたが、自分の[gold]方向感覚[/gold]がとても[jitter]おかしい[/jitter]ことに気づく。",
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.options.CHECK_SELF.title": "自分を確認する",
-  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.options.CHECK_SELF.description": "ランダムに[blue]{Cards}[/blue]枚のカードに[purple]MyGoった[/purple]を付与する。",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.FIND_EXIT.options.CHECK_SELF.description": "",
+
   "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.CHECK_SELF_DESC.description": "あなたは[sine][pink]東[/pink][blue]南[/blue][purple]西[/purple][orange]北[/orange][/sine]が分からなくなっていることに気づく……たぶん大丈夫？\n\nそこでほこりを払い、当てもなく前に進み続ける。",
-  "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.title": "奨学金？",
+
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SIT_DOWN.description": "あなたは誰もいない[gold]ショッピングモール[/gold]を見つめ、物思いに沈む。\n\nあなたはこの[gold]ショッピングモール[/gold]が、あなたが入ってくるのを待っていたのではないかと思い始め、\nそこでこう決めた：\n\n[b]ずっと座っている[/b]\n\n[thinky_dots]どうせ出られるならとっくに出ている……[/thinky_dots]",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SIT_DOWN.options.SLEEP.title": "眠る",
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SIT_DOWN.options.SLEEP.description": "",
+
+  "CUTE_SAKIKO_MOD_EVENT_MYSTERIOUS_MALL_EVENT.pages.SLEEP_DESC.description": "しばらく座った後、あなたは眠ることにした。どうせ他にやることもない。\n\n目を閉じた瞬間、[jitter]浮遊感[/jitter]が襲い、あなたは地面に激しく叩きつけられた。\n\n起き上がってみると、ここは[gold]ショッピングモール[/gold]に入ったばかりのあの道ではない。",  "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.title": "奨学金？",
   "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.pages.INITIAL.description": "角を曲がると、廊下の突き当たりに[gold][b]存在しないはずの教室[/b][/gold]が現れていた。\n[fly_in][orange]暖かな黄色[/orange]の光が扉の隙間から漏れ[/fly_in]、[sine][color=#cccccc]チョークの粉[/color]が光の筋の中を漂っている[/sine]。\n\n黒板には、丁寧な字で[orange]期末試験の成績順位[/orange]が書かれていた。\n二つの残影が掲示の前に立っている。一つは[blue]青[/blue]、一つは[pink]ピンク[/pink]。\n\n[pink]ピンク髪[/pink]の少女がリストの一番上の名前を指差し、[sine]目が三日月になるほど笑って[/sine]いる。\n[pink]「学年一位！[gold]千早愛音[/gold]が学年一位！どう？サイン要る？今なら予約[gold]無料[/gold]だよ！」[/pink]\n\n誰も[pink]彼女[/pink]に応えない。",
   "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.pages.INITIAL.options.LISTEN_CLOSELY.title": "近づいてよく聞く",
   "CUTE_SAKIKO_MOD_EVENT_SCHOLARSHIP_EVENT.pages.INITIAL.options.LISTEN_CLOSELY.description": "",

@@ -3,6 +3,6 @@
   "CUTE_SAKIKO_MOD_ENCHANTMENT_PLAY_ENCHANTMENT.extraCardText": "打出时演奏最新储存的[gold]和弦[/gold]。",
   "CUTE_SAKIKO_MOD_ENCHANTMENT_PLAY_ENCHANTMENT.description": "打出这张牌时，演奏最新储存的[gold]和弦[/gold]。",
   "CUTE_SAKIKO_MOD_ENCHANTMENT_MY_GO_ENCHANTMENT.title": "MyGo了",
-  "CUTE_SAKIKO_MOD_ENCHANTMENT_MY_GO_ENCHANTMENT.extraCardText": "打出后随机进入一个[gold]牌堆[/gold]。",
-  "CUTE_SAKIKO_MOD_ENCHANTMENT_MY_GO_ENCHANTMENT.description": "打出后随机进入一个[gold]牌堆[/gold]。"
+  "CUTE_SAKIKO_MOD_ENCHANTMENT_MY_GO_ENCHANTMENT.extraCardText": "回合结束后，随机移动到任意[gold]牌堆[/gold]内。",
+  "CUTE_SAKIKO_MOD_ENCHANTMENT_MY_GO_ENCHANTMENT.description": "回合结束后，随机移动到任意[gold]牌堆[/gold]内。"
 }
