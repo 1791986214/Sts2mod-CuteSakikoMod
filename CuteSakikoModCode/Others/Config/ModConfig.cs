@@ -10,6 +10,11 @@ public class CuteSakikoModConfigData
     private bool _enableAudio = true;
     private float _modBgmVolume = 0.40f;
 
+    /// <summary>
+    /// 多人模式下是否缩放压力层数（房主权威开关，默认关闭）。
+    /// </summary>
+    public bool ScalePressureInMultiplayer { get; set; } = false;
+    
     public bool EggsCard { get; set; }
     public bool EnableModMonsters { get; set; } = true;
 
@@ -75,6 +80,8 @@ public static class ModConfig
     public static bool EnableReactionReplacement => Load().EnableReactionReplacement;
     public static float ReactionWheelScale => Load().ReactionWheelScale;
     public static float ReactionEmoteScale => Load().ReactionEmoteScale;
+    
+    public static bool ScalePressureInMultiplayer => Load().ScalePressureInMultiplayer;
 
     private static CuteSakikoModConfigData Load()
     {

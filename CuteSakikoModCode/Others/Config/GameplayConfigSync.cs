@@ -211,6 +211,7 @@ public static class GameplayConfigSync
         if (delta.EnableModMonsters.HasValue) next.EnableModMonsters = delta.EnableModMonsters.Value;
         if (delta.EnableCustomAncients.HasValue) next.EnableCustomAncients = delta.EnableCustomAncients.Value;
         if (delta.EnableCustomEvents.HasValue) next.EnableCustomEvents = delta.EnableCustomEvents.Value;
+        if (delta.ScalePressureInMultiplayer.HasValue) next.ScalePressureInMultiplayer = delta.ScalePressureInMultiplayer.Value;  // ★
         return next;
     }
 

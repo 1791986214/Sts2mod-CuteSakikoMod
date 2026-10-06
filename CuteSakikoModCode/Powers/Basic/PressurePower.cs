@@ -1,5 +1,7 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+﻿using CuteSakikoMod.CuteSakikoModCode.Others.Config;
+using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 using Godot;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -25,6 +27,26 @@ public sealed class PressurePower : CuteSakikoModPower, IHealthBarForecastSource
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
     public override bool AllowNegative => false;
+    // 启用多人缩放
+    public override bool ShouldScaleInMultiplayer => true;
+
+    public override decimal GetScaledAmountForMultiplayer(
+        ICombatState combatState,
+        Creature? applier,
+        decimal amount,
+        Creature target,
+        CardModel? cardSource)
+    {
+        // 配置未开启缩放 → 保持原值
+        if (!ModConfig.ScalePressureInMultiplayer)
+            return amount;
+
+        // 只对敌人按血量系数缩放；对友方/自己保持原值
+        if (target == null || !target.IsEnemy)
+            return amount;
+
+        return base.GetScaledAmountForMultiplayer(combatState, applier, amount, target, cardSource);
+    }
 
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[] { };
 

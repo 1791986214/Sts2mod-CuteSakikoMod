@@ -116,6 +116,16 @@ public class Entry
                 GameplayConfigSync.OnLocalConfigChanged();
             }
         );
+        var scalePressureBinding = ModSettingsBindings.Global<CuteSakikoModConfigData, bool>(
+            ModId, "config",
+            model => model.ScalePressureInMultiplayer,
+            (model, value) =>
+            {
+                if (GameplayConfigSync.ShouldLockGameplaySettings) return;
+                model.ScalePressureInMultiplayer = value;
+                GameplayConfigSync.OnLocalConfigChanged();
+            }
+        );
         var volumeBinding = ModSettingsBindings.Global<CuteSakikoModConfigData, double>(
             ModId, "config",
             model => model.ModBgmVolume,
@@ -147,6 +157,7 @@ public class Entry
             model => model.ReactionEmoteScale,
             (model, value) => model.ReactionEmoteScale = (float)value
         );
+        
 
         var i18n = I18n;
 
@@ -179,6 +190,12 @@ public class Entry
                     ModSettingsText.I18N(i18n, "MOD_SETTINGS.CUSTOM_EVENT_TOGGLE.DESC",
                         "Allow custom events to appear naturally."))
                 .WithEntryEnabledWhen("custom_event_toggle", () => !GameplayConfigSync.ShouldLockGameplaySettings)
+                .AddToggle("scale_pressure_toggle",
+                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.SCALE_PRESSURE.LABEL", "Multiplayer Pressure Scaling"),
+                    scalePressureBinding,
+                    ModSettingsText.I18N(i18n, "MOD_SETTINGS.SCALE_PRESSURE.DESC",
+                        "Scale Pressure stacks applied to enemies based on player count in multiplayer. Host-authoritative."))
+                .WithEntryEnabledWhen("scale_pressure_toggle", () => !GameplayConfigSync.ShouldLockGameplaySettings)
             )
             .AddSection("reaction", section => section
                 .WithTitle(ModSettingsText.I18N(i18n, "MOD_SETTINGS.SECTION.REACTION", "Reaction Stickers"))

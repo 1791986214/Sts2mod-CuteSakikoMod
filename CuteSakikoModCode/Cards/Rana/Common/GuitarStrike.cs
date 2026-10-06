@@ -12,8 +12,6 @@ public class GuitarStrike() : CuteRanaCard(1, CardType.Attack, CardRarity.Common
 {
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CutesakiKeywords.Playguitar.GetModCardKeyword()];
-
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(4m, ValueProp.Move),

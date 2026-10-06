@@ -390,6 +390,9 @@ public static class ChordNoteSystem
             if (power.OnChordPlayed() && power.Amount > 0)
                 await PlayerCmd.GainEnergy(power.Amount, player);
 
+        // ★ 每回合只回手一次
+        if (state.CurtainCallRecalledThisTurn) return;
+
         state.CurtainCallRecalledThisTurn = true;
         SaveState(player, state);
 

@@ -5,6 +5,8 @@
   "MOD_SETTINGS.SECTION.GENERAL": "一般",
   "MOD_SETTINGS.SECTION.GAME_CONTENT": "ゲーム内容",
   "MOD_SETTINGS.SECTION.AUDIO": "オーディオ",
+  "MOD_SETTINGS.SCALE_PRESSURE.LABEL": "マルチプレイ重圧スケーリング",
+  "MOD_SETTINGS.SCALE_PRESSURE.DESC": "マルチプレイ時、敵に付与する[gold]重圧[/gold]の量をプレイヤー人数に応じてスケーリングします。",
   "MOD_SETTINGS.EGG_TOGGLE.LABEL": "エッグカード",
   "MOD_SETTINGS.EGG_TOGGLE.DESC": "有効にすると、ゲーム開始時にエッグのレリックを自動で獲得します。",
   "MOD_SETTINGS.MONSTER_TOGGLE.LABEL": "mod モンスターを有効化",

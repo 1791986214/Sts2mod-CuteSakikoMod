@@ -11,6 +11,8 @@ public sealed class GameplayConfigDto
     public bool EnableCustomAncients { get; set; } = true;
     public bool EnableCustomEvents { get; set; } = true;
 
+    public bool ScalePressureInMultiplayer { get; set; }
+
     public static GameplayConfigDto FromConfig(CuteSakikoModConfigData cfg)
     {
         return new GameplayConfigDto
@@ -18,7 +20,8 @@ public sealed class GameplayConfigDto
             EggsCard = cfg.EggsCard,
             EnableModMonsters = cfg.EnableModMonsters,
             EnableCustomAncients = cfg.EnableCustomAncients,
-            EnableCustomEvents = cfg.EnableCustomEvents
+            EnableCustomEvents = cfg.EnableCustomEvents,
+            ScalePressureInMultiplayer = cfg.ScalePressureInMultiplayer  // ★
         };
     }
 
@@ -28,6 +31,7 @@ public sealed class GameplayConfigDto
         cfg.EnableModMonsters = EnableModMonsters;
         cfg.EnableCustomAncients = EnableCustomAncients;
         cfg.EnableCustomEvents = EnableCustomEvents;
+        cfg.ScalePressureInMultiplayer = ScalePressureInMultiplayer;  // ★
     }
 
     public GameplayConfigDto Clone()
@@ -37,7 +41,8 @@ public sealed class GameplayConfigDto
             EggsCard = EggsCard,
             EnableModMonsters = EnableModMonsters,
             EnableCustomAncients = EnableCustomAncients,
-            EnableCustomEvents = EnableCustomEvents
+            EnableCustomEvents = EnableCustomEvents,
+            ScalePressureInMultiplayer = ScalePressureInMultiplayer  // ★
         };
     }
 }
@@ -49,4 +54,5 @@ public sealed class GameplayConfigDelta
     public bool? EnableModMonsters { get; set; }
     public bool? EnableCustomAncients { get; set; }
     public bool? EnableCustomEvents { get; set; }
+    public bool? ScalePressureInMultiplayer { get; set; }
 }

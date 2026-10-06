@@ -8,9 +8,9 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using STS2RitsuLib.Keywords;
 
-namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Common;
+namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Uncommon;
 
-public class LookCchord() : CuteAnonCard(0, CardType.Skill, CardRarity.Common, TargetType.Self)
+public class LookCchord() : CuteAnonCard(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     private const string MyChordId = "AnonCChord";
 

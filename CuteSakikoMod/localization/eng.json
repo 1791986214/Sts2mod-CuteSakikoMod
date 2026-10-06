@@ -4,6 +4,8 @@
   "MOD_SETTINGS.SECTION.GENERAL": "General",
   "MOD_SETTINGS.EGG_TOGGLE.LABEL": "Easter Egg Cards",
   "MOD_SETTINGS.EGG_TOGGLE.DESC": "Automatically obtain the Easter Egg relic at the start of the game.",
+  "MOD_SETTINGS.SCALE_PRESSURE.LABEL": "Multiplayer Pressure Scaling",
+  "MOD_SETTINGS.SCALE_PRESSURE.DESC": "In multiplayer, scale [gold]Pressure[/gold] applied to enemies based on player count.",
   "MOD_SETTINGS.MONSTER_TOGGLE.LABEL": "Enable Mod Monsters",
   "MOD_SETTINGS.MONSTER_TOGGLE.DESC": "If enabled, custom monsters and encounters from the mod will appear naturally.",
   "MOD_SETTINGS.MOD_BGM_VOLUME.LABEL": "Mod BGM Volume",

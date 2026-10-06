@@ -130,34 +130,36 @@ public sealed class SwordManager : HookedSingletonModel
         if (power is not PressurePower) return;
         if (amount <= 0) return;
 
-        var pressureOwner = power.Owner;
-        if (pressureOwner == null || !pressureOwner.IsPlayer) return;
-        if (power.CombatState == null) return;
+        var combatState = power.CombatState;
+        if (combatState == null) return;
 
         var delta = (int)amount;
         if (delta <= 0) return;
 
-        var pressurePlayer = power.CombatState.Players
+        var pressureOwner = power.Owner;
+        if (pressureOwner == null || !pressureOwner.IsPlayer) return;
+
+        var pressurePlayer = combatState.Players
             .FirstOrDefault(p => p.Creature == pressureOwner);
         if (pressurePlayer == null) return;
 
-        // 是否有任何玩家持有 OblivionisSword
-        var anyHasRelic = power.CombatState.Players
-            .Any(p => p.GetRelic<OblivionisSword>() != null);
-
-        if (anyHasRelic)
+        // 按玩家独立判断
+        foreach (var targetPlayer in combatState.Players)
         {
-            // 遗物效果：任何人压力增加 → 所有玩家剑伤增加
-            IncreaseAllSwordDamage(delta, power.CombatState);
+            var hasRelic = targetPlayer.Relics.OfType<OblivionisSword>().Any();
 
-            // 视觉反馈：所有持有遗物的玩家 Flash
-            foreach (var p in power.CombatState.Players)
-                p.GetRelic<OblivionisSword>()?.Flash();
-        }
-        else
-        {
-            // 基础效果：仅压力 owner 自己的剑伤增加
-            IncreasePlayerSwordDamage(pressurePlayer, delta);
+            if (hasRelic)
+            {
+                // 有遗物：任何人的压力增加，都为这个玩家的剑增伤
+                IncreasePlayerSwordDamage(targetPlayer, delta);
+                targetPlayer.Relics.OfType<OblivionisSword>().FirstOrDefault()?.Flash();
+            }
+            else
+            {
+                // 无遗物：只有自己压力增加时才增伤
+                if (targetPlayer == pressurePlayer)
+                    IncreasePlayerSwordDamage(targetPlayer, delta);
+            }
         }
     }
 }

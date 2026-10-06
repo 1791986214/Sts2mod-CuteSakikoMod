@@ -107,7 +107,11 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
         var count = DynamicVars.Cards.IntValue;
 
         var deck = PileType.Deck.GetPile(Owner!);
-        var candidates = deck.Cards.Where(c => c.Enchantment == null).ToList();
+
+        // ★ 排除诅咒牌 + 已有附魔的牌
+        var candidates = deck.Cards
+            .Where(c => c.Enchantment == null && c.Type != CardType.Curse)
+            .ToList();
 
         // 随机挑选
         var chosen = new List<CardModel>();
@@ -118,7 +122,7 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
             candidates.RemoveAt(idx);
         }
 
-        // ★ 附魔前预览：把这 4 张牌展示出来
+        // 附魔前预览
         if (chosen.Count > 0)
         {
             var previews = chosen
@@ -135,7 +139,6 @@ public sealed class MysteriousMallEvent : CuteSakikoEvent
             await Cmd.Wait(0.5f);
         }
 
-        // 执行附魔
         foreach (var card in chosen)
             CardCmd.Enchant(enchantment.ToMutable(), card, 1);
 

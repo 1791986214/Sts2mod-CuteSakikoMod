@@ -6,9 +6,9 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization;
 using STS2RitsuLib.Keywords;
 
-namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Uncommon;
+namespace CuteSakikoMod.CuteSakikoModCode.Cards.Anon.Rare;
 
-public class HandleTheTeamOutfits() : CuteAnonCard(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+public class HandleTheTeamOutfits() : CuteAnonCard(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
     public override string ChordId => "AnonEChord";
 
