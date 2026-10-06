@@ -1,7 +1,5 @@
-﻿using CuteSakikoMod.CuteSakikoModCode.Others.Config;
-using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 using Godot;
-using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -27,26 +25,6 @@ public sealed class PressurePower : CuteSakikoModPower, IHealthBarForecastSource
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
     public override bool AllowNegative => false;
-    // 启用多人缩放
-    public override bool ShouldScaleInMultiplayer => true;
-
-    public override decimal GetScaledAmountForMultiplayer(
-        ICombatState combatState,
-        Creature? applier,
-        decimal amount,
-        Creature target,
-        CardModel? cardSource)
-    {
-        // 配置未开启缩放 → 保持原值
-        if (!ModConfig.ScalePressureInMultiplayer)
-            return amount;
-
-        // 只对敌人按血量系数缩放；对友方/自己保持原值
-        if (target == null || !target.IsEnemy)
-            return amount;
-
-        return base.GetScaledAmountForMultiplayer(combatState, applier, amount, target, cardSource);
-    }
 
     protected override IEnumerable<DynamicVar> CanonicalVars => new DynamicVar[] { };
 
@@ -72,8 +50,6 @@ public sealed class PressurePower : CuteSakikoModPower, IHealthBarForecastSource
             TaskHelper.RunSafely(PowerCmd.Remove(this));
     }
 
-    // 压力层数变化时只处理崩溃检查
-    // 翻倍与骑士之剑增伤已迁移到 SwordManager / MasqueradeRhapsody
     public override async Task AfterPowerAmountChanged(
         PlayerChoiceContext choiceContext,
         PowerModel power,
@@ -85,14 +61,12 @@ public sealed class PressurePower : CuteSakikoModPower, IHealthBarForecastSource
         await CheckAndTriggerCollapse(choiceContext);
     }
 
-    // 受伤时检查崩溃（兼容玩家与敌人）
     public override async Task AfterCurrentHpChanged(Creature creature, decimal delta)
     {
         if (creature != Owner) return;
-        if (delta >= 0) return; // 只关心受伤
+        if (delta >= 0) return;
         if (Owner == null || CombatState == null) return;
 
-        // 使用 CombatState 的第一个玩家作为 Owner 构造合法上下文
         var ownerPlayer = CombatState.Players[0];
         var ctx = new HookPlayerChoiceContext(ownerPlayer, ownerPlayer.NetId, GameActionType.Combat);
 

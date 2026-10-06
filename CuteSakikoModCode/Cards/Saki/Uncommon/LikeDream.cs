@@ -1,6 +1,7 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
 using CuteSakikoMod.CuteSakikoModCode.Relics.Saki.Rare;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -40,7 +41,7 @@ public class LikeDream() : CuteSakikoModCard(2, CardType.Skill, CardRarity.Uncom
         var previousBreakDownAmount = Owner.Creature.GetPower<BreakDownPower>()?.Amount ?? 0;
 
         // 翻倍
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, currentAmount, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, Owner.Creature, currentAmount, Owner.Creature, this);
 
         bool triggeredCollapse;
         if (hasMask)

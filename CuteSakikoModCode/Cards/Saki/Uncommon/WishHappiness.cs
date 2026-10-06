@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -44,11 +45,11 @@ public class WishHappiness() : CuteSakikoModCard(1, CardType.Skill, CardRarity.U
         const int pressureAmount = 2;
 
         // 自身增加压力
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
 
         // 如果目标玩家不是自己，则也给目标玩家增加压力
         if (targetPlayer != Owner)
-            await PowerCmd.Apply<PressurePower>(choiceContext, targetPlayer.Creature, pressureAmount, Owner.Creature,
+            await PressureCmd.Apply(choiceContext, targetPlayer.Creature, pressureAmount, Owner.Creature,
                 this);
     }
 

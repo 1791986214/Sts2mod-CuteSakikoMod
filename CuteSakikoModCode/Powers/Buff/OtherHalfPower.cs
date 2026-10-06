@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -42,7 +43,7 @@ public sealed class OtherHalfPower : CuteSakikoModPower
         var gain = (int)amount;
         if (gain <= 0) return;
 
-        await PowerCmd.Apply<PressurePower>(choiceContext, Target, gain, Owner, cardSource);
+        await PressureCmd.Apply(choiceContext, Target, gain, Owner, cardSource);
     }
 
     // 当主能力被移除时，同时移除目标身上的标记能力

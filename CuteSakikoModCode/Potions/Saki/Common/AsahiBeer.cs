@@ -1,4 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -43,7 +44,7 @@ public sealed class AsahiBeer : CuteSakikoModPotion
         );
 
         // 给予 15 层压力
-        await PowerCmd.Apply<PressurePower>(
+        await PressureCmd.Apply(
             choiceContext,
             target,
             DynamicVars["PressurePower"].BaseValue,

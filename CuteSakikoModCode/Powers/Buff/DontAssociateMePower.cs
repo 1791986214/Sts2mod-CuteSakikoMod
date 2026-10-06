@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -40,7 +41,7 @@ public sealed class DontAssociateMePower : CuteSakikoModPower
         if (Amount <= 0) return;
 
         // 触发一次攻击即施加压力
-        await PowerCmd.Apply<PressurePower>(choiceContext, dealer, Amount, Owner, cardSource);
+        await PressureCmd.Apply(choiceContext, dealer, Amount, Owner, cardSource);
     }
 
     // 在下一回合开始时（自身回合）移除能力

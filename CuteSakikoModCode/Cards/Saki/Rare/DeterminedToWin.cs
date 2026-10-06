@@ -1,4 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -54,7 +55,7 @@ public class DeterminedToWin() : CuteSakikoModCard(0, CardType.Attack, CardRarit
             if (cardPlay.Target.IsDead) break;
 
             if (pressure > 0)
-                await PowerCmd.Apply<PressurePower>(choiceContext, cardPlay.Target, pressure, Owner.Creature, this);
+                await PressureCmd.Apply(choiceContext, cardPlay.Target, pressure, Owner.Creature, this);
         }
     }
 

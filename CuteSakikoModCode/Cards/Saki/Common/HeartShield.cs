@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -33,7 +34,7 @@ public class HeartShield() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Com
         var pressureToGain = DynamicVars["PressurePower"].BaseValue;
 
         // 先施加压力
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, pressureToGain, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, Owner.Creature, pressureToGain, Owner.Creature, this);
 
         // 获取当前压力层数（已包含刚施加的）
         var pressure = Owner.Creature.GetPower<PressurePower>();

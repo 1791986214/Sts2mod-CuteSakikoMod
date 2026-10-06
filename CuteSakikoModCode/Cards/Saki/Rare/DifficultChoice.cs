@@ -1,6 +1,7 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Token;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -56,7 +57,7 @@ public class DifficultChoice() : CuteSakikoModCard(1, CardType.Skill, CardRarity
 
         if (selected is PressureOption)
         {
-            await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature,
+            await PressureCmd.Apply(choiceContext, Owner.Creature,
                 selected.DynamicVars["PressurePower"].IntValue, Owner.Creature, this);
             await PowerCmd.Apply<StrengthPower>(choiceContext, Owner.Creature,
                 selected.DynamicVars["StrengthPower"].IntValue, Owner.Creature, this);

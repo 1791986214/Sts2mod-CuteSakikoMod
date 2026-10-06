@@ -1,4 +1,5 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -26,6 +27,6 @@ public sealed class DaggersDrawnPower : CuteSakikoModPower
         if (enemies == null || enemies.Count == 0) return;
 
         foreach (var enemy in enemies)
-            await PowerCmd.Apply<PressurePower>(choiceContext, enemy, amount, Owner, null);
+            await PressureCmd.Apply(choiceContext, enemy, amount, Owner, null);
     }
 }

@@ -60,7 +60,7 @@ public class VentAngry() : CuteSakikoModCard(1, CardType.Attack, CardRarity.Comm
             await CardPileCmd.Draw(choiceContext, drawCount, Owner);
 
             // 给敌人施加压力
-            await PowerCmd.Apply<PressurePower>(choiceContext, cardPlay.Target, pressureAmount, Owner.Creature, this);
+            await PressureCmd.Apply(choiceContext, cardPlay.Target, pressureAmount, Owner.Creature, this);
         }
     }
 

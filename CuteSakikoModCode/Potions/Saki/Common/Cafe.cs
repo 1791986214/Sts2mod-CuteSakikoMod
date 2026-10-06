@@ -33,7 +33,7 @@ public sealed class Cafe : CuteSakikoModPotion
             return; // 或者抛出异常提示
 
         NCombatRoom.Instance?.PlaySplashVfx(target, new Color("8B4513"));
-        await PowerCmd.Apply<PressurePower>(choiceContext, target, DynamicVars["PressurePower"].BaseValue,
+        await PressureCmd.Apply(choiceContext, target, DynamicVars["PressurePower"].BaseValue,
             Owner.Creature, null);
     }
 }

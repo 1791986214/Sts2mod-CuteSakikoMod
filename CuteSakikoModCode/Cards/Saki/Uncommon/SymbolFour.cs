@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -57,7 +58,7 @@ public class SymbolFour() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Unco
         var currentTotal = totalPressureVar.BaseValue;
 
         // 给予目标当前累积的总压力
-        await PowerCmd.Apply<PressurePower>(choiceContext, target, (int)currentTotal, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, target, (int)currentTotal, Owner.Creature, this);
 
         // 获得等量格挡（此处作为 BlockVar 传入 GainBlock，会自动享受格挡加成）
         await CreatureCmd.GainBlock(Owner.Creature, new BlockVar(currentTotal, ValueProp.Move), cardPlay);

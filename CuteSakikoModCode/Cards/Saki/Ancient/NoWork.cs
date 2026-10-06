@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -40,7 +41,7 @@ public class NoWork() : CuteSakikoModCard(0, CardType.Attack, CardRarity.Ancient
             .Execute(choiceContext);
 
         // 施加压力
-        await PowerCmd.Apply<PressurePower>(choiceContext, cardPlay.Target, DynamicVars["PressurePower"].IntValue,
+        await PressureCmd.Apply(choiceContext, cardPlay.Target, DynamicVars["PressurePower"].IntValue,
             Owner.Creature,
             this);
     }

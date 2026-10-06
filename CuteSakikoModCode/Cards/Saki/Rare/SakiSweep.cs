@@ -2,6 +2,7 @@
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -34,7 +35,7 @@ public class SakiSweep() : CuteSakikoModCard(1, CardType.Power, CardRarity.Rare,
     {
         // 施加压力和横扫能力（补剑交给 SwordManager.AfterCardPlayed）
         var pressureAmount = DynamicVars["PressurePower"].IntValue;
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
         await PowerCmd.Apply<SakiSweepPower>(choiceContext, Owner.Creature, 1, Owner.Creature, this);
     }
 

@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Relics;
@@ -43,7 +44,7 @@ public class MasqueradeRhapsody : CuteSakikoEventRelic
         try
         {
             // 重复施加一次相同层数的压力
-            await PowerCmd.Apply<PressurePower>(
+            await PressureCmd.Apply(
                 choiceContext, Owner.Creature, amount, Owner.Creature, null);
         }
         finally

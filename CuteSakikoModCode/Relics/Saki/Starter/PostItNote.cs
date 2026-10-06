@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.CardPiles;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -23,7 +24,7 @@ public sealed class PostItNote : KabutoNote
         {
             // 给自己施加 5 层压力
             var powerCount = Math.Min(5, Owner.Creature.CurrentHp - 1);
-            await PowerCmd.Apply<PressurePower>(
+            await PressureCmd.Apply(
                 new ThrowingPlayerChoiceContext(), Owner.Creature, powerCount, Owner.Creature, null);
 
             // 确保记忆牌堆已初始化（防止读档时牌堆为空）
@@ -38,7 +39,7 @@ public sealed class PostItNote : KabutoNote
         // 给所有可攻击的敌人施加 5 层压力（原有效果，每回合都执行）
         if (combatState.HittableEnemies != null)
             foreach (var enemy in combatState.HittableEnemies)
-                await PowerCmd.Apply<PressurePower>(
+                await PressureCmd.Apply(
                     new ThrowingPlayerChoiceContext(), enemy, 5, Owner.Creature, null);
     }
 }

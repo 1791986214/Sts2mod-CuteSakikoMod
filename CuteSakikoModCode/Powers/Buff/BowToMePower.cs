@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Token;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
@@ -28,7 +29,7 @@ public sealed class BowToMePower : CuteSakikoModPower
         if (result.UnblockedDamage <= 0) return;
 
         // 给予目标等量压力
-        await PowerCmd.Apply<PressurePower>(
+        await PressureCmd.Apply(
             choiceContext, target, result.UnblockedDamage, Owner, cardSource);
     }
 }

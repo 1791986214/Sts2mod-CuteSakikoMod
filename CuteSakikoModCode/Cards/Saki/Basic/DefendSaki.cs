@@ -1,5 +1,6 @@
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -37,7 +38,7 @@ public class DefendSaki() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Basi
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, DynamicVars["PressurePower"].IntValue,
+        await PressureCmd.Apply(choiceContext, Owner.Creature, DynamicVars["PressurePower"].IntValue,
             Owner.Creature,
             this);
     }

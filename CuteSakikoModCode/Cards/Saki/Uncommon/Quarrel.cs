@@ -1,6 +1,7 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Buff;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -27,10 +28,10 @@ public class Quarrel() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Uncommo
         var enemyPressureGain = IsUpgraded ? 15 : 10;
 
         // 自身增加压力
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, selfPressureGain, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, Owner.Creature, selfPressureGain, Owner.Creature, this);
 
         // 给选中的敌人增加压力
-        await PowerCmd.Apply<PressurePower>(choiceContext, cardPlay.Target, enemyPressureGain, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, cardPlay.Target, enemyPressureGain, Owner.Creature, this);
 
         // 下回合自身扣除等量压力（无论是否升级都生效）
         await PowerCmd.Apply<QuarrelSelfPower>(choiceContext, Owner.Creature, selfPressureGain, Owner.Creature, this);

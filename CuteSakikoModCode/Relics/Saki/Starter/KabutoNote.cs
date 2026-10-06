@@ -2,6 +2,7 @@
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using CuteSakikoMod.CuteSakikoModCode.Systems.Memory;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
@@ -39,7 +40,7 @@ public class KabutoNote : CuteSakiRelic
 
         // 1. 开局给压力（原有效果）
         var powerCount = Math.Min(3, Owner.Creature.CurrentHp - 1);
-        await PowerCmd.Apply<PressurePower>(
+        await PressureCmd.Apply(
             new ThrowingPlayerChoiceContext(),
             Owner.Creature, powerCount, Owner.Creature, null);
 

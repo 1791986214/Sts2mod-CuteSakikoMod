@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -23,10 +24,8 @@ public class Obsession() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Commo
     {
         get
         {
-            // 返回压力能力的悬停提示
             yield return HoverTipFactory.FromPower<PressurePower>();
             yield return HoverTipFactory.FromPower<BreakDownPower>();
-            // 如果有其他提示，继续 yield return
         }
     }
 
@@ -35,15 +34,17 @@ public class Obsession() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Commo
         // 获得格挡
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
 
-        // 使全体敌人获得压力
+        // 使全体敌人获得压力（逐个施加）
         var pressureAmount = DynamicVars["PressurePower"].IntValue;
-        await PowerCmd.Apply<PressurePower>(choiceContext, CombatState.HittableEnemies, pressureAmount, Owner.Creature,
-            this);
+        var enemies = CombatState?.HittableEnemies;
+        if (enemies == null) return;
+
+        foreach (var enemy in enemies)
+            await PressureCmd.Apply(choiceContext, enemy, pressureAmount, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()
     {
-        // 升级：格挡增加6点（6→12），压力增加1层（2→3）
         DynamicVars.Block.UpgradeValueBy(6m);
         DynamicVars["PressurePower"].UpgradeValueBy(2m);
     }

@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -33,7 +34,7 @@ public class Work() : CuteSakikoModCard(0, CardType.Skill, CardRarity.Common, Ta
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await PlayerCmd.GainGold(DynamicVars["Gold"].IntValue, Owner);
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, DynamicVars["PressurePower"].IntValue,
+        await PressureCmd.Apply(choiceContext, Owner.Creature, DynamicVars["PressurePower"].IntValue,
             Owner.Creature,
             this);
     }

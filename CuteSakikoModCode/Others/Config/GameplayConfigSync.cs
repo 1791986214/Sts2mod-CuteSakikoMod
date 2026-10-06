@@ -7,34 +7,23 @@ using STS2RitsuLib.RunData;
 
 namespace CuteSakikoMod.CuteSakikoModCode.Others.Config;
 
-/// <summary>
-///     游戏性配置的房主权威同步。
-///     只同步游戏性开关（彩蛋卡 / 怪物 / 古代事件 / 普通事件），音频设置保持本地。
-/// </summary>
 public static class GameplayConfigSync
 {
     public const string TopicId = "cute_sakiko_gameplay";
 
-    /// <summary>run snapshot 槽位；必须在 Init() 之前由 Entry 注册。</summary>
     public static RunSavedData<RunGameplayConfigData> RunConfigSlot = null!;
 
-    // 防止远端快照写回本地配置时触发回环广播
     private static bool _applyingRemote;
 
     private static IDisposable? _handshakeSub;
     private static IDisposable? _topicChangedSub;
     private static IDisposable? _sessionBoundSub;
     private static IDisposable? _sessionUnboundSub;
+    private static IDisposable? _runDataPreparingSub;
     private static bool _runStartedSubscribed;
 
-    /// <summary>本机是否为权威（单机或房主）。用于广播和 snapshot 判定。</summary>
     public static bool IsHostAuthority { get; private set; }
 
-    /// <summary>
-    ///     是否锁定游戏性设置 UI（禁止修改）。
-    ///     只有"联机 + 客户端 + 跑局中"三件事同时满足才锁。
-    ///     大厅、主菜单、断连后均不锁，客户端可自由改自己的本地值。
-    /// </summary>
     public static bool ShouldLockGameplaySettings
     {
         get
@@ -47,10 +36,6 @@ public static class GameplayConfigSync
         }
     }
 
-    /// <summary>
-    ///     Entry.Init() 里调用一次，注册 topic、订阅事件。
-    ///     调用前必须先注册 RunConfigSlot。
-    /// </summary>
     public static void Init()
     {
         if (RunConfigSlot == null)
@@ -59,7 +44,6 @@ public static class GameplayConfigSync
 
         UpdateAuthority(RunManager.Instance?.NetService);
 
-        // 两端都必须注册 topic，否则 Sidecar 不会挂上快照/请求处理器
         RitsuLibSidecarConfigSyncService.RegisterTopic<GameplayConfigDto, GameplayConfigDelta>(
             TopicId,
             GameplayConfigDto.FromConfig(LoadConfig()),
@@ -68,7 +52,6 @@ public static class GameplayConfigSync
 
         _topicChangedSub ??= RitsuLibSidecarEvents.OnConfigTopicChanged(OnTopicChanged);
 
-        // 订阅会话绑定/解绑，实时更新权威状态
         _sessionBoundSub ??= RitsuLibSidecarEvents.OnSessionBound(evt =>
         {
             UpdateAuthority(evt.NetService);
@@ -78,20 +61,18 @@ public static class GameplayConfigSync
 
         _sessionUnboundSub ??= RitsuLibSidecarEvents.OnSessionUnbound(_ =>
         {
-            // 会话解绑 = 离开联机房间，回退到本地/单机权威
             UpdateAuthority(null);
             Entry.Logger.Info($"[ConfigSync] SessionUnbound: IsHostAuthority={IsHostAuthority}");
         });
 
-        // 订阅官方 RunStartedEvent
         if (!_runStartedSubscribed)
         {
             _runStartedSubscribed = true;
             RitsuLibFramework.SubscribeLifecycle<RunStartedEvent>(OnRunStarted);
+            _runDataPreparingSub ??= RitsuLibFramework.SubscribeLifecycle<RunSavedDataPreparingEvent>(OnRunSavedDataPreparing);
         }
     }
 
-    /// <summary>原版 RunStarted 之后调用，用于客户端读取 run snapshot。</summary>
     public static void OnNetServiceReady(INetGameService? netService)
     {
         UpdateAuthority(netService);
@@ -99,17 +80,14 @@ public static class GameplayConfigSync
         if (IsHostAuthority)
         {
             EnsureHandshakeSubscription();
-            // snapshot 写入由 RunStartedEvent 处理
             return;
         }
 
-        // 客户端：立即从 run snapshot 应用房主配置
         TryApplyRunSnapshotConfig();
     }
 
     private static void UpdateAuthority(INetGameService? netService)
     {
-        // netService 为 null 视为单机（本地权威）
         IsHostAuthority = netService == null
                           || netService.Type is NetGameType.Singleplayer or NetGameType.Host;
     }
@@ -119,7 +97,14 @@ public static class GameplayConfigSync
         _handshakeSub ??= RitsuLibSidecarEvents.OnHandshakeCompleted(_ => BroadcastHostState("handshake"));
     }
 
-    // ========== RunStartedEvent（房主写 snapshot） ==========
+    // ========== RunSnapshot 写入 ==========
+
+    private static void OnRunSavedDataPreparing(RunSavedDataPreparingEvent evt)
+    {
+        if (!IsHostAuthority) return;
+        Entry.Logger.Info("[ConfigSync] RunSavedDataPreparingEvent: 房主写入 snapshot（导出前）");
+        TryWriteRunSnapshotConfig(evt.RunState);
+    }
 
     private static void OnRunStarted(RunStartedEvent evt)
     {
@@ -131,7 +116,6 @@ public static class GameplayConfigSync
         BroadcastHostState("run_started");
     }
 
-    /// <summary>房主把当前真实配置写入 run snapshot。</summary>
     private static void TryWriteRunSnapshotConfig(RunState state)
     {
         try
@@ -139,7 +123,8 @@ public static class GameplayConfigSync
             var cfg = LoadConfig();
             Entry.Logger.Info(
                 $"[ConfigSync] 房主写入 run snapshot: Eggs={cfg.EggsCard} Monsters={cfg.EnableModMonsters} " +
-                $"Ancients={cfg.EnableCustomAncients} Events={cfg.EnableCustomEvents}");
+                $"Ancients={cfg.EnableCustomAncients} Events={cfg.EnableCustomEvents} " +
+                $"ScalePressure={cfg.ScalePressureInMultiplayer}");
 
             RunConfigSlot.Modify(state, data => data.CopyFrom(cfg));
         }
@@ -149,9 +134,8 @@ public static class GameplayConfigSync
         }
     }
 
-    // ========== 客户端读 run snapshot ==========
+    // ========== RunSnapshot 读取 ==========
 
-    /// <summary>客户端在 RunStarted 时调用，从 RunSavedData 读房主配置。</summary>
     private static void TryApplyRunSnapshotConfig()
     {
         try
@@ -172,7 +156,8 @@ public static class GameplayConfigSync
 
             Entry.Logger.Info(
                 $"[ConfigSync] run snapshot 读到: Eggs={data.EggsCard} Monsters={data.EnableModMonsters} " +
-                $"Ancients={data.EnableCustomAncients} Events={data.EnableCustomEvents}");
+                $"Ancients={data.EnableCustomAncients} Events={data.EnableCustomEvents} " +
+                $"ScalePressure={data.ScalePressureInMultiplayer}");
 
             _applyingRemote = true;
             try
@@ -181,7 +166,8 @@ public static class GameplayConfigSync
                 data.ApplyTo(cfg);
                 SaveConfig();
                 Entry.Logger.Info(
-                    $"[ConfigSync] 从 run snapshot 应用房主配置: Eggs={cfg.EggsCard} Monsters={cfg.EnableModMonsters}");
+                    $"[ConfigSync] 从 run snapshot 应用房主配置: Eggs={cfg.EggsCard} Monsters={cfg.EnableModMonsters} " +
+                    $"ScalePressure={cfg.ScalePressureInMultiplayer}");
             }
             finally
             {
@@ -196,12 +182,11 @@ public static class GameplayConfigSync
 
     // ========== Sidecar ==========
 
-    /// <summary>只允许房主自己通过请求路径更新；客户端一律拒绝。</summary>
     private static bool CanClientRequest(ulong sender, GameplayConfigDelta delta)
     {
         var netService = RunManager.Instance?.NetService;
-        if (netService == null) return true; // 单机
-        return sender == netService.NetId; // 仅房主
+        if (netService == null) return true;
+        return sender == netService.NetId;
     }
 
     private static GameplayConfigDto ApplyDelta(GameplayConfigDto current, GameplayConfigDelta delta)
@@ -211,24 +196,24 @@ public static class GameplayConfigSync
         if (delta.EnableModMonsters.HasValue) next.EnableModMonsters = delta.EnableModMonsters.Value;
         if (delta.EnableCustomAncients.HasValue) next.EnableCustomAncients = delta.EnableCustomAncients.Value;
         if (delta.EnableCustomEvents.HasValue) next.EnableCustomEvents = delta.EnableCustomEvents.Value;
-        if (delta.ScalePressureInMultiplayer.HasValue) next.ScalePressureInMultiplayer = delta.ScalePressureInMultiplayer.Value;  // ★
+        if (delta.ScalePressureInMultiplayer.HasValue) next.ScalePressureInMultiplayer = delta.ScalePressureInMultiplayer.Value;
         return next;
     }
 
-    /// <summary>
-    ///     本地游戏性配置改变后调用。房主会刷新 topic 并广播；客户端只落盘。
-    ///     音频等本地设置不要调用此方法。
-    /// </summary>
     public static void OnLocalConfigChanged()
     {
         if (_applyingRemote) return;
         SaveConfig();
         if (!IsHostAuthority) return;
 
+        // ★ 房主配置变更后，立即把最新值写进 run snapshot
+        var state = RunManager.Instance?.DebugOnlyGetState();
+        if (state != null)
+            TryWriteRunSnapshotConfig(state);
+
         var netService = RunManager.Instance?.NetService;
         if (netService == null) return;
 
-        // 用本地最新配置刷新 Topics[topic].StateJson（PublishHostState 只广播缓存）。
         RitsuLibSidecarConfigSyncService.RegisterTopic<GameplayConfigDto, GameplayConfigDelta>(
             TopicId,
             GameplayConfigDto.FromConfig(LoadConfig()),
@@ -261,7 +246,6 @@ public static class GameplayConfigSync
         if (evt.Topic != TopicId) return;
         if (_applyingRemote) return;
 
-        // 房主自己触发的 PublishHostState 也会走到这里，跳过
         var netService = RunManager.Instance?.NetService;
         if (IsHostAuthority && netService != null && evt.ChangedByPeer == netService.NetId)
             return;
@@ -285,6 +269,12 @@ public static class GameplayConfigSync
             var cfg = LoadConfig();
             dto.ApplyTo(cfg);
             SaveConfig();
+
+            // ★ Sidecar 收到后也写一次 snapshot，保持一致性
+            var state = RunManager.Instance?.DebugOnlyGetState();
+            if (state != null)
+                RunConfigSlot.Modify(state, data => data.CopyFrom(cfg));
+
             Entry.Logger.Info($"[ConfigSync] 已应用房主配置 rev={evt.Revision} reason={evt.Reason}");
         }
         finally
@@ -292,8 +282,6 @@ public static class GameplayConfigSync
             _applyingRemote = false;
         }
     }
-
-    // ========== 工具 ==========
 
     private static CuteSakikoModConfigData LoadConfig()
     {

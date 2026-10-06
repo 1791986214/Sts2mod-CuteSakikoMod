@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -50,7 +51,7 @@ public sealed class DoAnything() : CuteSakikoModCard(0, CardType.Skill, CardRari
         if (selectedCard != null) await CardPileCmd.Add(selectedCard, PileType.Hand);
 
         var pressureToGain = _nextPressure;
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, pressureToGain, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, Owner.Creature, pressureToGain, Owner.Creature, this);
 
         _nextPressure *= 2;
         if (DynamicVars.TryGetValue("PressureGain", out var var)) var.BaseValue = _nextPressure;

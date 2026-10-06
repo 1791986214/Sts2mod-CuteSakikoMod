@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -49,7 +50,7 @@ public class DontCareOthers() : CuteSakikoModCard(1, CardType.Skill, CardRarity.
         }
 
         if (totalPressure > 0)
-            await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, totalPressure, Owner.Creature, this);
+            await PressureCmd.Apply(choiceContext, Owner.Creature, totalPressure, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

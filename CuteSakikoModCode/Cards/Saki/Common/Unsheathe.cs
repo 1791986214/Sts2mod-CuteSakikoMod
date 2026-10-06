@@ -3,6 +3,7 @@ using CuteSakikoMod.CuteSakikoModCode.Cards.Saki.Token;
 using CuteSakikoMod.CuteSakikoModCode.Others;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -35,7 +36,7 @@ public class Unsheathe() : CuteSakikoModCard(1, CardType.Skill, CardRarity.Commo
     {
         // 1. 获得压力
         var pressureAmount = DynamicVars["PressurePower"].IntValue;
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
 
         // 2. 手牌已有剑则跳过（避免与 SwordManager 重复）
         var swordKeyword = CutesakiKeywords.Sword.GetModCardKeyword();

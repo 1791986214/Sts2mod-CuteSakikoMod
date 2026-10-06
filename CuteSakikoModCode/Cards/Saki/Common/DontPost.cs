@@ -1,5 +1,6 @@
 ﻿using CuteSakikoMod.CuteSakikoModCode.Powers.Basic;
 using CuteSakikoMod.CuteSakikoModCode.Powers.Debuff;
+using CuteSakikoMod.CuteSakikoModCode.Systems;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -32,7 +33,7 @@ public class DontPost() : CuteSakikoModCard(2, CardType.Skill, CardRarity.Common
     {
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
         var pressureAmount = (int)DynamicVars["PressurePower"].BaseValue;
-        await PowerCmd.Apply<PressurePower>(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
+        await PressureCmd.Apply(choiceContext, Owner.Creature, pressureAmount, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()
